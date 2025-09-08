@@ -12,4 +12,4 @@ plugins {
 }
 
 rootProject.name = "GameBook"
-include("app")
+include("src")

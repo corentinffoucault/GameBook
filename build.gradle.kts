@@ -12,18 +12,16 @@ plugins {
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    // This dependency is used by the application.
     implementation(libs.guava)
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 testing {
     suites {
-        // Configure the built-in test suite
         val test by getting(JvmTestSuite::class) {
             // Use JUnit4 test framework
             useJUnit("4.13.2")
@@ -31,7 +29,6 @@ testing {
     }
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(24)
@@ -39,6 +36,5 @@ java {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "com.reader.adventure.Main"
 }

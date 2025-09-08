@@ -1,0 +1,54 @@
+[
+  {
+    "id": "Noeud 1",
+    "title": "Arrivé",
+    "text": "Arrivé du héros par le sud, il fait froid, la neige a déployé son manteau sur la ville.",
+    "choice": [
+      {
+        "name": "Aller à la taverne du centre?",
+        "text": "Vous avez trop envie de vous mettre au chaud à la taverne et manger une bonne soupe chaude avec un morceau de boudin. Vous dirigez donc vos pas vers le nord en empruntant ***",
+        "next": "Noeud 1.1"
+      },
+      {
+        "name": "Se diriger vers l'est et les commerces",
+        "text": "Vous avez quelques babioles à vendre et/ou des provisions à refaire. Vous savez qu'un donjon facile se trouve à l'est. De plus quelques échoppes locales dont des boucheries pourraient encore être ouvertes et proposer le célèbre boudin de Valtordu.",
+        "next": "Noeud 1.2"
+      }
+    ]
+  },
+  {
+    "id": "Noeud 1.1",
+    "title": "La Taverne",
+    "text": "La taverne est chaleureuse, l'odeur de soupe est réconfortante. Un musicien joue un air plaintif.",
+    "choice": [
+      {
+        "name": "Commander une soupe",
+        "text": "Vous commandez une soupe fumante et engagez la conversation avec le tavernier.",
+        "next": "Noeud Fini"
+      },
+      {
+        "name": "Sortir et aller au donjon",
+        "text": "La curiosité l'emporte, vous foncez vers le donjon à l'est.",
+        "next": "Noeud 1.2"
+      }
+    ]
+  },
+  {
+    "id": "Noeud 1.2",
+    "title": "Les Échoppes de l'Est",
+    "text": "Les portes sont ouvertes, on voit des habitants affairés à changer la marchandise avant l'hiver.",
+    "choice": [
+      {
+        "name": "Explorer le donjon",
+        "text": "Vous partez vers l'entrée du donjon, épée à la main.",
+        "next": "Noeud Fini"
+      }
+    ]
+  },
+  {
+    "id": "Noeud Fini",
+    "title": "Fin",
+    "text": "Fin de l'exemple. Merci d'avoir joué !",
+    "choice": []
+  }
+]
