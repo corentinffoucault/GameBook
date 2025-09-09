@@ -1,4 +1,4 @@
-package com.reader.adventure;
+package com.reader.adventure.story.model;
 
 import java.util.List;
 

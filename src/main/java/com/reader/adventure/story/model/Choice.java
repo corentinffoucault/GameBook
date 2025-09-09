@@ -1,11 +1,10 @@
-package com.reader.adventure;
+package com.reader.adventure.story.model;
 
 public class Choice {
     private String name;
     private String text;
     private String next;
 
-    // getters & setters (Gson en a besoin)
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

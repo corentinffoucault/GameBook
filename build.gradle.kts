@@ -9,6 +9,8 @@ repositories {
 dependencies {
     implementation(libs.guava)
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("org.apache.logging.log4j:log4j-core:2.25.1")
+    implementation("org.apache.logging.log4j:log4j-api:2.25.1")
 }
 
 testing {
