@@ -1,7 +1,8 @@
-package com.reader.adventure.story.model;
+package com.reader.adventure.story.model.choice;
 
 import com.reader.adventure.story.model.condition.ICondition;
 import com.reader.adventure.player.model.Player;
+import com.reader.adventure.story.model.choice.visitor.IChoiceVisitor;
 
 public class ChoiceConditional implements IChoice {
     private String name;
@@ -34,15 +35,7 @@ public class ChoiceConditional implements IChoice {
     public void setCondition(ICondition condition) { this.condition = condition; }
 
     @Override
-    public SelectedChoice ApplyChoice(Player player) {
-        StringBuilder stringBuilder = new StringBuilder(this.getText());
-        stringBuilder.append('\n');
-        if(this.condition.evaluate(player)) {
-            stringBuilder.append(this.getSuccess());
-            return new SelectedChoice(stringBuilder.toString(), next);
-        } else {
-            stringBuilder.append(this.getFail());
-            return new SelectedChoice(stringBuilder.toString(), nextFail);
-        }
+    public SelectedChoice applyChoice(IChoiceVisitor visitor, Player player) {
+        return visitor.visit(this, player);
     }
 }

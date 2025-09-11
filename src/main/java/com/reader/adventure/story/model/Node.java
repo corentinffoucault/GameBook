@@ -1,5 +1,7 @@
 package com.reader.adventure.story.model;
 
+import com.reader.adventure.story.model.choice.IChoice;
+
 import java.util.List;
 
 public class Node {

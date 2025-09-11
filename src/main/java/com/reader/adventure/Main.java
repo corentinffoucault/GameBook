@@ -4,6 +4,8 @@ import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.player.dao.PlayerJsonDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.StoryJsonDao;
+import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
+import com.reader.adventure.story.model.condition.visitor.ApplyConditionVisitor;
 import com.reader.adventure.ui.player.AUIPlayer;
 import com.reader.adventure.ui.player.UIPlayerJFrame;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +29,9 @@ public class Main {
     private void start() throws Exception {
         IStoryDao storyDao = new StoryJsonDao();
         IPlayerDao playerDao = new PlayerJsonDao();
-        AUIPlayer playerUI = new UIPlayerJFrame(storyDao, playerDao);
+        ApplyConditionVisitor conditionVisitor = new ApplyConditionVisitor();
+        ApplyChoiceVisitor choiceVisitor = new ApplyChoiceVisitor(conditionVisitor);
+        AUIPlayer playerUI = new UIPlayerJFrame(storyDao, playerDao, choiceVisitor);
         playerUI.startGame("Noeud 1");
     }
 }

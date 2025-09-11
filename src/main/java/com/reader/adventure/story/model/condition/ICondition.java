@@ -3,6 +3,7 @@ package com.reader.adventure.story.model.condition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.reader.adventure.player.model.Player;
+import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -17,5 +18,5 @@ public interface ICondition {
 
     public String getComparator();
 
-    public boolean evaluate(Player player);
+    public boolean evaluate(IConditionVisitor visitor, Player player);
 }

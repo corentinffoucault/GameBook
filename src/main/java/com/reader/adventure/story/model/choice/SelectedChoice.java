@@ -1,4 +1,4 @@
-package com.reader.adventure.story.model;
+package com.reader.adventure.story.model.choice;
 
 public class SelectedChoice {
         private String text;

@@ -1,6 +1,7 @@
 package com.reader.adventure.story.model.condition;
 
 import com.reader.adventure.player.model.Player;
+import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 
 public class ConditionGold implements ICondition {
     private Integer value;
@@ -14,7 +15,7 @@ public class ConditionGold implements ICondition {
         return comparator;
     }
 
-    public boolean evaluate(Player player) {
-        return Comparator.compare(value, player.getGold(), comparator);
+    public boolean evaluate(IConditionVisitor visitor, Player player) {
+        return visitor.visit(this, player);
     }
 }
