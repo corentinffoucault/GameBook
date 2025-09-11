@@ -1,19 +1,13 @@
 package com.reader.adventure.ui.player;
 
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
+import com.reader.adventure.game.GameBook;
 
 public abstract class AUIPlayer {
 
-    protected IStoryDao storyDao;
-    protected IPlayerDao playerDao;
-    protected ApplyChoiceVisitor choiceVisitor;
+    protected GameBook gameBook;
 
-    public AUIPlayer(IStoryDao storyDao, IPlayerDao playerDao, ApplyChoiceVisitor choiceVisitor) {
-        this.storyDao = storyDao;
-        this.playerDao = playerDao;
-        this.choiceVisitor = choiceVisitor;
+    public AUIPlayer(GameBook gameBook) {
+        this.gameBook = gameBook;
     }
 
     public void startGame(String startingNode) {

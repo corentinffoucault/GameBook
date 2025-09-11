@@ -1,11 +1,9 @@
 package com.reader.adventure.ui.player;
 
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.Node;
 import com.reader.adventure.story.model.choice.SelectedChoice;
-import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
+import com.reader.adventure.game.GameBook;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,8 +17,8 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JPanel choicesPanel;
     private Node current;
 
-    public UIPlayerJFrame(IStoryDao storyDao, IPlayerDao playerDao, ApplyChoiceVisitor choiceVisitor) {
-        super(storyDao, playerDao, choiceVisitor);
+    public UIPlayerJFrame(GameBook gameBook) {
+        super(gameBook);
     }
 
     public void startGame(String startingNode) {
@@ -57,15 +55,16 @@ public class UIPlayerJFrame extends AUIPlayer {
     }
 
     protected void showNode(String id) {
-        Node node = storyDao.getNodeById(id);
-        if (node == null) {
-            JOptionPane.showMessageDialog(frame, "Noeud introuvable: " + id);
-            return;
+        try {
+            Node node = gameBook.getNodeById(id);
+            current = node;
+            titleLabel.setText(node.getTitle());
+            textArea.setText(node.getText());
+            refreshChoices();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage());
+            throw new RuntimeException(e);
         }
-        current = node;
-        titleLabel.setText(node.getTitle());
-        textArea.setText(node.getText());
-        refreshChoices();
     }
 
     private void refreshChoices() {
@@ -92,7 +91,7 @@ public class UIPlayerJFrame extends AUIPlayer {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         b.addActionListener((ActionEvent e) -> {
-            SelectedChoice selectedChoice = c.applyChoice(choiceVisitor, playerDao.getPlayer());
+            SelectedChoice selectedChoice = gameBook.applyChoice(c);
             JOptionPane.showMessageDialog(frame, selectedChoice.getText(), c.getName(), JOptionPane.PLAIN_MESSAGE);
             showNode(selectedChoice.getNextNode());
         });

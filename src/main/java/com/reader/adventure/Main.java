@@ -6,6 +6,7 @@ import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.StoryJsonDao;
 import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ApplyConditionVisitor;
+import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.AUIPlayer;
 import com.reader.adventure.ui.player.UIPlayerJFrame;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +32,8 @@ public class Main {
         IPlayerDao playerDao = new PlayerJsonDao();
         ApplyConditionVisitor conditionVisitor = new ApplyConditionVisitor();
         ApplyChoiceVisitor choiceVisitor = new ApplyChoiceVisitor(conditionVisitor);
-        AUIPlayer playerUI = new UIPlayerJFrame(storyDao, playerDao, choiceVisitor);
+        GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
+        AUIPlayer playerUI = new UIPlayerJFrame(gameBook);
         playerUI.startGame("Noeud 1");
     }
 }
