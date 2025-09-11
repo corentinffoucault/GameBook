@@ -1,7 +1,7 @@
 package com.reader.adventure.ui.player;
 
 import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.Choice;
+import com.reader.adventure.story.model.IChoice;
 import com.reader.adventure.story.model.Node;
 
 import javax.swing.*;
@@ -73,7 +73,7 @@ public class UIPlayerJFrame extends AUIPlayer {
             done.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
             choicesPanel.add(done);
         } else {
-            for (Choice c : current.getChoice()) {
+            for (IChoice c : current.getChoice()) {
                 JButton b = getButton(c);
                 choicesPanel.add(Box.createRigidArea(new Dimension(0,6)));
                 choicesPanel.add(b);
@@ -84,13 +84,13 @@ public class UIPlayerJFrame extends AUIPlayer {
         choicesPanel.repaint();
     }
 
-    private JButton getButton(Choice c) {
+    private JButton getButton(IChoice c) {
         JButton b = new JButton(c.getName());
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         b.addActionListener((ActionEvent e) -> {
             if (c.getText() != null && !c.getText().isBlank()) {
-                JOptionPane.showMessageDialog(frame, c.getText(), c.getName(), JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(frame, c.ApplyChoice(), c.getName(), JOptionPane.PLAIN_MESSAGE);
             }
             showNode(c.getNext());
         });

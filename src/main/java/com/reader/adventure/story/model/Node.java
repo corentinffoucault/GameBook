@@ -6,7 +6,7 @@ public class Node {
     private String id;
     private String title;
     private String text;
-    private List<Choice> choice;
+    private List<IChoice> choice;
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -17,6 +17,6 @@ public class Node {
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
 
-    public List<Choice> getChoice() { return choice; }
-    public void setChoice(List<Choice> choice) { this.choice = choice; }
+    public List<IChoice> getChoice() { return choice; }
+    public void setChoice(List<IChoice> choice) { this.choice = choice; }
 }

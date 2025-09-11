@@ -1,6 +1,6 @@
 package com.reader.adventure.story.model;
 
-public class Choice {
+public class ChoiceDirect implements IChoice {
     private String name;
     private String text;
     private String next;
@@ -13,4 +13,9 @@ public class Choice {
 
     public String getNext() { return next; }
     public void setNext(String next) { this.next = next; }
+
+    @Override
+    public String ApplyChoice() {
+        return this.getText();
+    }
 }

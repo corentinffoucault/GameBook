@@ -8,8 +8,10 @@ repositories {
 
 dependencies {
     implementation(libs.guava)
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation ("org.apache.logging.log4j:log4j-core:2.25.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.20")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.20.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.25.1")
     implementation("org.apache.logging.log4j:log4j-api:2.25.1")
 }
 
