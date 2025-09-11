@@ -11,6 +11,6 @@ public class ConditionAgility implements ICondition {
     }
 
     public boolean evaluate(IConditionVisitor visitor, Player player) {
-        return visitor.visit(this, player);
+        return visitor.evaluate(this, player);
     }
 }

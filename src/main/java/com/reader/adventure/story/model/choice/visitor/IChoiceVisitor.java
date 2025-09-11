@@ -6,6 +6,6 @@ import com.reader.adventure.story.model.choice.ChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 
 public interface IChoiceVisitor {
-    SelectedChoice visit(ChoiceDirect choice, Player player);
-    SelectedChoice visit(ChoiceConditional choice, Player player);
+    SelectedChoice applyChoice(ChoiceDirect choice, Player player);
+    SelectedChoice applyChoice(ChoiceConditional choice, Player player);
 }

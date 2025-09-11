@@ -6,20 +6,20 @@ import com.reader.adventure.story.model.choice.ChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 
-public class ApplyChoiceVisitor implements IChoiceVisitor {
+public class ChoiceVisitor implements IChoiceVisitor {
     private final IConditionVisitor conditionVisitor;
 
-    public ApplyChoiceVisitor(IConditionVisitor conditionVisitor) {
+    public ChoiceVisitor(IConditionVisitor conditionVisitor) {
         this.conditionVisitor = conditionVisitor;
     }
 
     @Override
-    public SelectedChoice visit(ChoiceDirect choice, Player player) {
+    public SelectedChoice applyChoice(ChoiceDirect choice, Player player) {
         return new SelectedChoice(choice.getText(), choice.getNext());
     }
 
     @Override
-    public SelectedChoice visit(ChoiceConditional choice, Player player) {
+    public SelectedChoice applyChoice(ChoiceConditional choice, Player player) {
         StringBuilder sb = new StringBuilder(choice.getText()).append('\n');
         if (choice.getCondition().evaluate(conditionVisitor, player)) {
             sb.append(choice.getSuccess());

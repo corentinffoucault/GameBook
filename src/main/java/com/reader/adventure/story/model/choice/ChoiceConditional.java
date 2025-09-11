@@ -36,6 +36,6 @@ public class ChoiceConditional implements IChoice {
 
     @Override
     public SelectedChoice applyChoice(IChoiceVisitor visitor, Player player) {
-        return visitor.visit(this, player);
+        return visitor.applyChoice(this, player);
     }
 }

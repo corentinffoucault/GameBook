@@ -4,8 +4,8 @@ import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.player.dao.PlayerJsonDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.StoryJsonDao;
-import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
-import com.reader.adventure.story.model.condition.visitor.ApplyConditionVisitor;
+import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
+import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.AUIPlayer;
 import com.reader.adventure.ui.player.UIPlayerJFrame;
@@ -30,8 +30,8 @@ public class Main {
     private void start() throws Exception {
         IStoryDao storyDao = new StoryJsonDao();
         IPlayerDao playerDao = new PlayerJsonDao();
-        ApplyConditionVisitor conditionVisitor = new ApplyConditionVisitor();
-        ApplyChoiceVisitor choiceVisitor = new ApplyChoiceVisitor(conditionVisitor);
+        ConditionVisitor conditionVisitor = new ConditionVisitor();
+        ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
         GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
         AUIPlayer playerUI = new UIPlayerJFrame(gameBook);
         playerUI.startGame("Noeud 1");

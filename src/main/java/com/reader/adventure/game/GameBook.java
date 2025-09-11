@@ -5,7 +5,7 @@ import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.Node;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.choice.SelectedChoice;
-import com.reader.adventure.story.model.choice.visitor.ApplyChoiceVisitor;
+import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,17 +14,17 @@ public class GameBook {
 
     public IStoryDao storyDao;
     public IPlayerDao playerDao;
-    public ApplyChoiceVisitor applyChoiceVisitor;
+    public ChoiceVisitor choiceVisitor;
     private static final Logger logger = LogManager.getLogger(GameBook.class);
 
-    public GameBook(IStoryDao storyDao, IPlayerDao playerDao, ApplyChoiceVisitor applyChoiceVisitor) {
+    public GameBook(IStoryDao storyDao, IPlayerDao playerDao, ChoiceVisitor choiceVisitor) {
         this.storyDao = storyDao;
         this.playerDao = playerDao;
-        this.applyChoiceVisitor = applyChoiceVisitor;
+        this.choiceVisitor = choiceVisitor;
     }
 
     public SelectedChoice applyChoice(IChoice choice) {
-        return choice.applyChoice(applyChoiceVisitor, playerDao.getPlayer());
+        return choice.applyChoice(choiceVisitor, playerDao.getPlayer());
     }
 
     public Node getNodeById(String id) {

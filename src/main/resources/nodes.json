@@ -21,6 +21,7 @@
         "name": "Sauter",
         "text": "Vous tentez de sauter",
         "next": "Noeud 1.2",
+        "nextFail": "Noeud 1.1",
         "condition" : {
           "type": "AG",
           "comparator": "<"
