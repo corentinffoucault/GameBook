@@ -19,15 +19,28 @@
       {
         "type": "conditional",
         "name": "Sauter",
-        "text": "vous tentez de sauter",
+        "text": "Vous tentez de sauter",
         "next": "Noeud 1.2",
+        "condition" : {
+          "type": "AG",
+          "comparator": "<"
+        },
+        "success": "Le saut est réussis",
+        "fail": "Le saut est échoué"
+      },
+      {
+        "type": "conditional",
+        "name": "Payer",
+        "text": "Vous payez",
+        "next": "Noeud 1.2",
+        "nextFail": "Noeud 1.1",
         "condition" : {
           "type": "Gold",
           "value": 10,
           "comparator": "<"
         },
-        "success": "Le saut est réussis",
-        "fail": "Le saut est échoué"
+        "success": "Vous avez assez d'argent",
+        "fail": "Vous n'avez pas assez d'argent"
       }
     ]
   },

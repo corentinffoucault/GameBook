@@ -1,21 +1,19 @@
 package com.reader.adventure.story.model.condition;
 
-public class ConditionAgility implements ICondition {
-    private Integer value;
-    private String comparator;
+import com.reader.adventure.player.model.Player;
 
-    public Integer getValue() {
-        return value;
-    }
+import java.util.Random;
+
+public class ConditionAgility implements ICondition {
+    private String comparator;
 
     public String getComparator() {
         return comparator;
     }
 
-    public boolean evaluate() {
+    public boolean evaluate(Player player) {
         // TODO: replace with a valid dice roller and move the condition check in specific class
-        double randomValue =Math.random()*20;
-        System.out.println(randomValue);
-        return randomValue < value;
+        int randomValue = new Random().nextInt(20)+1;
+        return Comparator.compare(randomValue, player.getAgility(), comparator);
     }
 }

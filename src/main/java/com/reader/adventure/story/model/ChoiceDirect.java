@@ -1,5 +1,7 @@
 package com.reader.adventure.story.model;
 
+import com.reader.adventure.player.model.Player;
+
 public class ChoiceDirect implements IChoice {
     private String name;
     private String text;
@@ -15,7 +17,7 @@ public class ChoiceDirect implements IChoice {
     public void setNext(String next) { this.next = next; }
 
     @Override
-    public String ApplyChoice() {
-        return this.getText();
+    public SelectedChoice ApplyChoice(Player player) {
+        return new SelectedChoice(text, next);
     }
 }

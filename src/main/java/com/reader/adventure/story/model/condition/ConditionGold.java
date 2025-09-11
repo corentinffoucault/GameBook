@@ -1,5 +1,7 @@
 package com.reader.adventure.story.model.condition;
 
+import com.reader.adventure.player.model.Player;
+
 public class ConditionGold implements ICondition {
     private Integer value;
     private String comparator;
@@ -12,10 +14,7 @@ public class ConditionGold implements ICondition {
         return comparator;
     }
 
-    public boolean evaluate() {
-        // TODO: replace with a valid dice roller and move the condition check in specific class
-        double randomValue =Math.random()*20;
-        System.out.println(randomValue);
-        return randomValue < value;
+    public boolean evaluate(Player player) {
+        return Comparator.compare(value, player.getGold(), comparator);
     }
 }

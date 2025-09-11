@@ -1,8 +1,10 @@
 package com.reader.adventure.ui.player;
 
+import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.IChoice;
 import com.reader.adventure.story.model.Node;
+import com.reader.adventure.story.model.SelectedChoice;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +18,8 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JPanel choicesPanel;
     private Node current;
 
-    public UIPlayerJFrame(IStoryDao storyDao) {
-        super(storyDao);
+    public UIPlayerJFrame(IStoryDao storyDao, IPlayerDao playerDao) {
+        super(storyDao, playerDao);
     }
 
     public void startGame(String startingNode) {
@@ -89,10 +91,9 @@ public class UIPlayerJFrame extends AUIPlayer {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         b.addActionListener((ActionEvent e) -> {
-            if (c.getText() != null && !c.getText().isBlank()) {
-                JOptionPane.showMessageDialog(frame, c.ApplyChoice(), c.getName(), JOptionPane.PLAIN_MESSAGE);
-            }
-            showNode(c.getNext());
+            SelectedChoice selectedChoice = c.ApplyChoice(playerDao.getPlayer());
+            JOptionPane.showMessageDialog(frame, selectedChoice.getText(), c.getName(), JOptionPane.PLAIN_MESSAGE);
+            showNode(selectedChoice.getNextNode());
         });
         return b;
     }

@@ -2,6 +2,7 @@ package com.reader.adventure.story.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.reader.adventure.player.model.Player;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -23,5 +24,5 @@ public interface IChoice {
     public String getNext();
     public void setNext(String next);
 
-    public String ApplyChoice();
+    public SelectedChoice ApplyChoice(Player player);
 }

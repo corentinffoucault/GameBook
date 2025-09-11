@@ -1,5 +1,7 @@
 package com.reader.adventure;
 
+import com.reader.adventure.player.dao.IPlayerDao;
+import com.reader.adventure.player.dao.PlayerJsonDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.StoryJsonDao;
 import com.reader.adventure.ui.player.AUIPlayer;
@@ -24,7 +26,8 @@ public class Main {
 
     private void start() throws Exception {
         IStoryDao storyDao = new StoryJsonDao();
-        AUIPlayer playerUI = new UIPlayerJFrame(storyDao);
+        IPlayerDao playerDao = new PlayerJsonDao();
+        AUIPlayer playerUI = new UIPlayerJFrame(storyDao, playerDao);
         playerUI.startGame("Noeud 1");
     }
 }
