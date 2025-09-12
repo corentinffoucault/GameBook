@@ -1,5 +1,7 @@
 package com.reader.adventure;
 
+import com.reader.adventure.game.dice.ADice;
+import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.player.dao.PlayerJsonDao;
 import com.reader.adventure.story.dao.IStoryDao;
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
@@ -28,9 +31,10 @@ public class Main {
     }
 
     private void start() throws Exception {
+        ADice dice = new Dice20(ThreadLocalRandom.current());
         IStoryDao storyDao = new StoryJsonDao();
         IPlayerDao playerDao = new PlayerJsonDao();
-        ConditionVisitor conditionVisitor = new ConditionVisitor();
+        ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
         ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
         GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
         AUIPlayer playerUI = new UIPlayerJFrame(gameBook);
