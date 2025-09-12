@@ -14,7 +14,7 @@ public class Comparator {
                 "!=", (a, b) -> !a.equals(b)
         );
 
-        public static boolean compare(int a, int b, String operator) {
+        public static boolean compare(int a, String operator, int b) {
             BiPredicate<Integer, Integer> predicate = OPERATORS.get(operator);
             if (predicate == null) {
                 throw new IllegalArgumentException("Opérateur non reconnu : " + operator);

@@ -11,8 +11,16 @@ public class ConditionGold implements ICondition {
         return value;
     }
 
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
     public String getComparator() {
         return comparator;
+    }
+
+    public void setComparator(String comparator) {
+        this.comparator = comparator;
     }
 
     public boolean evaluate(IConditionVisitor visitor, Player player) {

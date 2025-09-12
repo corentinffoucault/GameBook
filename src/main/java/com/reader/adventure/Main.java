@@ -31,7 +31,7 @@ public class Main {
     }
 
     private void start() throws Exception {
-        ADice dice = new Dice20(ThreadLocalRandom.current());
+        Dice20 dice = new Dice20(ThreadLocalRandom.current());
         IStoryDao storyDao = new StoryJsonDao();
         IPlayerDao playerDao = new PlayerJsonDao();
         ConditionVisitor conditionVisitor = new ConditionVisitor(dice);

@@ -10,6 +10,10 @@ public class ConditionAgility implements ICondition {
         return comparator;
     }
 
+    public void setComparator(String comparator) {
+        this.comparator = comparator;
+    }
+
     public boolean evaluate(IConditionVisitor visitor, Player player) {
         return visitor.evaluate(this, player);
     }
