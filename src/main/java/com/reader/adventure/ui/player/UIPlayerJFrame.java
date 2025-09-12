@@ -92,8 +92,8 @@ public class UIPlayerJFrame extends AUIPlayer {
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         b.addActionListener((ActionEvent e) -> {
             SelectedChoice selectedChoice = gameBook.applyChoice(c);
-            JOptionPane.showMessageDialog(frame, selectedChoice.getText(), c.getName(), JOptionPane.PLAIN_MESSAGE);
-            showNode(selectedChoice.getNextNode());
+            JOptionPane.showMessageDialog(frame, selectedChoice.text(), c.getName(), JOptionPane.PLAIN_MESSAGE);
+            showNode(selectedChoice.nextNode());
         });
         return b;
     }
