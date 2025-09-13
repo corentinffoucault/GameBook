@@ -10,6 +10,7 @@ import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.AUIPlayer;
+import com.reader.adventure.ui.player.FileLoader;
 import com.reader.adventure.ui.player.UIPlayerJFrame;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,13 +32,17 @@ public class Main {
     }
 
     private void start() throws Exception {
-        Dice20 dice = new Dice20(ThreadLocalRandom.current());
-        IStoryDao storyDao = new StoryJsonDao();
-        IPlayerDao playerDao = new PlayerJsonDao();
-        ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
-        ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
-        GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
-        AUIPlayer playerUI = new UIPlayerJFrame(gameBook);
-        playerUI.startGame("Noeud 1");
+        try {
+            Dice20 dice = new Dice20(ThreadLocalRandom.current());
+            IStoryDao storyDao = new StoryJsonDao(FileLoader.loadFile());
+            IPlayerDao playerDao = new PlayerJsonDao();
+            ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
+            ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
+            GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
+            AUIPlayer playerUI = new UIPlayerJFrame(gameBook);
+            playerUI.startGame("Noeud 1");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erreur : " + e.getMessage());
+        }
     }
 }
