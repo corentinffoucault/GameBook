@@ -1,13 +1,8 @@
 package com.reader.adventure.game.dice;
 
-import com.reader.adventure.game.GameBook;
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.HashSet;
 import java.util.Set;

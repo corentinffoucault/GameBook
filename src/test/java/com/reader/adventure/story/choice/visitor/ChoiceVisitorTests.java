@@ -1,11 +1,11 @@
 package com.reader.adventure.story.choice.visitor;
 
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.model.choice.ChoiceConditional;
-import com.reader.adventure.story.model.choice.ChoiceDirect;
+import com.reader.adventure.story.dao.Jackson.choice.ChoiceConditionalJackson;
+import com.reader.adventure.story.dao.Jackson.choice.ChoiceDirectJackson;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
-import com.reader.adventure.story.model.condition.ConditionGold;
+import com.reader.adventure.story.dao.Jackson.condition.ConditionGoldJackson;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,52 +33,58 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_direct() {
-        ChoiceDirect choiceDirect = new ChoiceDirect();
-        choiceDirect.setText("Text of node");
-        choiceDirect.setNext("NextNode");
+        ChoiceDirectJackson choiceDirect = new ChoiceDirectJackson(
+                "choice1",
+                "Text of node",
+                "NextNode"
+        );
         Player player = new Player();
 
-        SelectedChoice expectedSelectedChoice = new SelectedChoice(choiceDirect.getText(), choiceDirect.getNext());
+        SelectedChoice expectedSelectedChoice = new SelectedChoice(choiceDirect.text(), choiceDirect.next());
         SelectedChoice result = choiceVisitor.applyChoice(choiceDirect, player);
         assertEquals(result, expectedSelectedChoice);
     }
 
     @Test
     void apply_choice_conditional_success() {
-        ConditionGold  conditionGold = new ConditionGold();
+        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(100, "<");
         Player player = new Player();
 
-        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(true);
+        when(mockedConditionVisitor.evaluate(conditionGoldJackson, player)).thenReturn(true);
 
-        ChoiceConditional choiceConditional = new ChoiceConditional();
-        choiceConditional.setText("Text of node");
-        choiceConditional.setNext("NextSuccessNode");
-        choiceConditional.setSuccess("success");
-        choiceConditional.setCondition(conditionGold);
+        ChoiceConditionalJackson choiceConditional = new ChoiceConditionalJackson("choice1",
+                "Text of node",
+                "NextSuccessNode",
+                "NextFailNode",
+                "success",
+                "Fail",
+                conditionGoldJackson);
 
-        String expectedText = choiceConditional.getText() + '\n' + choiceConditional.getSuccess();
+        String expectedText = choiceConditional.text() + '\n' + choiceConditional.success();
 
-        SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.getNext());
+        SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.next());
         SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, player);
         assertEquals(result, expectedSelectedChoice);
     }
 
     @Test
     void apply_choice_conditional_fail() {
-        ConditionGold  conditionGold = new ConditionGold();
+        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(100, "<");
         Player player = new Player();
 
-        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(false);
+        when(mockedConditionVisitor.evaluate(conditionGoldJackson, player)).thenReturn(false);
 
-        ChoiceConditional choiceConditional = new ChoiceConditional();
-        choiceConditional.setText("Text of node");
-        choiceConditional.setFail("Fail");
-        choiceConditional.setNextFail("NextFailNode");
-        choiceConditional.setCondition(conditionGold);
+        ChoiceConditionalJackson choiceConditional = new ChoiceConditionalJackson("choice1",
+                "Text of node",
+                "NextSuccessNode",
+                "NextFailNode",
+                "success",
+                "Fail",
+                conditionGoldJackson);
 
-        String expectedText = choiceConditional.getText() + '\n' + choiceConditional.getFail();
+        String expectedText = choiceConditional.text() + '\n' + choiceConditional.fail();
 
-        SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.getNextFail());
+        SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.nextFail());
         SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, player);
         assertEquals(result, expectedSelectedChoice);
     }

@@ -23,7 +23,8 @@
         "next": "Noeud 1.2",
         "nextFail": "Noeud 1.1",
         "condition" : {
-          "type": "AG",
+          "type": "attribute",
+          "attribute": "AG",
           "comparator": "<"
         },
         "success": "Le saut est réussis",

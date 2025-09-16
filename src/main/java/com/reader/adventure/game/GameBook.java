@@ -2,7 +2,7 @@ package com.reader.adventure.game;
 
 import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.Node;
+import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
@@ -27,8 +27,8 @@ public class GameBook {
         return choice.applyChoice(choiceVisitor, playerDao.getPlayer());
     }
 
-    public Node getNodeById(String id) {
-        Node node = storyDao.getNodeById(id);
+    public INode getNodeById(String id) {
+        INode node = storyDao.getNodeById(id);
         if (node == null) {
             String errorMessage = String.format("Node with id %s not found", id);
             logger.error(errorMessage);

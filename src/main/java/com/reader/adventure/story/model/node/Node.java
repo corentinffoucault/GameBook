@@ -1,10 +1,10 @@
-package com.reader.adventure.story.model;
+package com.reader.adventure.story.model.node;
 
 import com.reader.adventure.story.model.choice.IChoice;
 
 import java.util.List;
 
-public class Node {
+public class Node implements INode<IChoice> {
     private String id;
     private String title;
     private String text;

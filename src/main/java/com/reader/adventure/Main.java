@@ -1,11 +1,10 @@
 package com.reader.adventure;
 
-import com.reader.adventure.game.dice.ADice;
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.player.dao.PlayerJsonDao;
 import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.dao.StoryJsonDao;
+import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
@@ -34,7 +33,7 @@ public class Main {
     private void start() throws Exception {
         try {
             Dice20 dice = new Dice20(ThreadLocalRandom.current());
-            IStoryDao storyDao = new StoryJsonDao(FileLoader.loadFile());
+            IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile());
             IPlayerDao playerDao = new PlayerJsonDao();
             ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
             ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);

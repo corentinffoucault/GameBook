@@ -1,7 +1,7 @@
 package com.reader.adventure.ui.player;
 
+import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.choice.IChoice;
-import com.reader.adventure.story.model.Node;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.game.GameBook;
 
@@ -15,7 +15,7 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JLabel titleLabel;
     private JTextArea textArea;
     private JPanel choicesPanel;
-    private Node current;
+    private INode<IChoice> current;
 
     public UIPlayerJFrame(GameBook gameBook) {
         super(gameBook);
@@ -56,7 +56,7 @@ public class UIPlayerJFrame extends AUIPlayer {
 
     protected void showNode(String id) {
         try {
-            Node node = gameBook.getNodeById(id);
+            INode node = gameBook.getNodeById(id);
             current = node;
             titleLabel.setText(node.getTitle());
             textArea.setText(node.getText());
@@ -87,12 +87,12 @@ public class UIPlayerJFrame extends AUIPlayer {
     }
 
     private JButton getButton(IChoice c) {
-        JButton b = new JButton(c.getName());
+        JButton b = new JButton(c.name());
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         b.addActionListener((ActionEvent e) -> {
             SelectedChoice selectedChoice = gameBook.applyChoice(c);
-            JOptionPane.showMessageDialog(frame, selectedChoice.text(), c.getName(), JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(frame, selectedChoice.text(), c.name(), JOptionPane.PLAIN_MESSAGE);
             showNode(selectedChoice.nextNode());
         });
         return b;

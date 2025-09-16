@@ -1,8 +1,8 @@
 package com.reader.adventure.story.model.choice.visitor;
 
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.model.choice.ChoiceConditional;
-import com.reader.adventure.story.model.choice.ChoiceDirect;
+import com.reader.adventure.story.model.choice.IChoiceConditional;
+import com.reader.adventure.story.model.choice.IChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 
@@ -14,19 +14,19 @@ public class ChoiceVisitor implements IChoiceVisitor {
     }
 
     @Override
-    public SelectedChoice applyChoice(ChoiceDirect choice, Player player) {
-        return new SelectedChoice(choice.getText(), choice.getNext());
+    public SelectedChoice applyChoice(IChoiceDirect choice, Player player) {
+        return new SelectedChoice(choice.text(), choice.next());
     }
 
     @Override
-    public SelectedChoice applyChoice(ChoiceConditional choice, Player player) {
-        StringBuilder sb = new StringBuilder(choice.getText()).append('\n');
-        if (choice.getCondition().evaluate(conditionVisitor, player)) {
-            sb.append(choice.getSuccess());
-            return new SelectedChoice(sb.toString(), choice.getNext());
+    public SelectedChoice applyChoice(IChoiceConditional choice, Player player) {
+        StringBuilder sb = new StringBuilder(choice.text()).append('\n');
+        if (choice.condition().evaluate(conditionVisitor, player)) {
+            sb.append(choice.success());
+            return new SelectedChoice(sb.toString(), choice.next());
         } else {
-            sb.append(choice.getFail());
-            return new SelectedChoice(sb.toString(), choice.getNextFail());
+            sb.append(choice.fail());
+            return new SelectedChoice(sb.toString(), choice.nextFail());
         }
     }
 }

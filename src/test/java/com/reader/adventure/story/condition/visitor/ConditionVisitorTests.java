@@ -1,9 +1,10 @@
 package com.reader.adventure.story.condition.visitor;
 
+import com.reader.adventure.game.AttributeKey;
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.model.condition.ConditionAttributes;
-import com.reader.adventure.story.model.condition.ConditionGold;
+import com.reader.adventure.story.dao.Jackson.condition.ConditionAttributesJackson;
+import com.reader.adventure.story.dao.Jackson.condition.ConditionGoldJackson;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,13 +56,11 @@ public class ConditionVisitorTests {
             "5,10,!=,true",
     })
     void evaluate_gold_condition(int playerGold, int goldLimit, String comparator, boolean expectedResult) {
-        ConditionGold conditionGold = new ConditionGold();
-        conditionGold.setValue(goldLimit);
-        conditionGold.setComparator(comparator);
+        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(goldLimit, comparator);
         Player player = new Player();
         player.setGold(playerGold);
 
-        boolean result = conditionVisitor.evaluate(conditionGold, player);
+        boolean result = conditionVisitor.evaluate(conditionGoldJackson, player);
         assertEquals(result, expectedResult);
     }
 
@@ -92,9 +91,7 @@ public class ConditionVisitorTests {
 
         when(mockedDice20.roll()).thenReturn(agilityResult);
 
-        ConditionAttributes conditionAgility = new ConditionAttributes();
-        conditionAgility.setComparator(comparator);
-        conditionAgility.setType("AG");
+        ConditionAttributesJackson conditionAgility = new ConditionAttributesJackson(AttributeKey.AG, comparator);
 
         Player player = new Player();
         player.setAgility(playerAgility);

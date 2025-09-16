@@ -2,7 +2,8 @@ package com.reader.adventure.game;
 
 import com.reader.adventure.player.dao.IPlayerDao;
 import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.Node;
+import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.node.Node;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ class GameBookTests {
         expectedNode.setText("A test node");
         when(mockedStoryDao.getNodeById("1")).thenReturn(expectedNode);
 
-        Node result = gameBook.getNodeById("1");
+        INode result = gameBook.getNodeById("1");
 
         assertNotNull(result);
         assertEquals("1", result.getId());
