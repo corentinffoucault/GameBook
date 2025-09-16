@@ -12,7 +12,7 @@ import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ConditionGold.class, name = "Gold"),
-        @JsonSubTypes.Type(value = ConditionAgility.class, name = "AG")
+        @JsonSubTypes.Type(value = ConditionAttributes.class, name = "AG")
 })
 public interface ICondition {
 

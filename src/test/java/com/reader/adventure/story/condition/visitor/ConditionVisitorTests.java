@@ -2,7 +2,7 @@ package com.reader.adventure.story.condition.visitor;
 
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.model.condition.ConditionAgility;
+import com.reader.adventure.story.model.condition.ConditionAttributes;
 import com.reader.adventure.story.model.condition.ConditionGold;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
@@ -92,8 +92,9 @@ public class ConditionVisitorTests {
 
         when(mockedDice20.roll()).thenReturn(agilityResult);
 
-        ConditionAgility conditionAgility = new ConditionAgility();
+        ConditionAttributes conditionAgility = new ConditionAttributes();
         conditionAgility.setComparator(comparator);
+        conditionAgility.setType("AG");
 
         Player player = new Player();
         player.setAgility(playerAgility);
