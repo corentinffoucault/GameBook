@@ -1,5 +1,6 @@
 package com.reader.adventure.story.choice.visitor;
 
+import com.reader.adventure.game.ComparatorKey;
 import com.reader.adventure.player.model.Player;
 import com.reader.adventure.story.model.choice.ChoiceConditional;
 import com.reader.adventure.story.model.choice.ChoiceDirect;
@@ -47,7 +48,7 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_conditional_success() {
-        ConditionGold conditionGold = new ConditionGold(100, "<");
+        ConditionGold conditionGold = new ConditionGold(100, ComparatorKey.LT);
         Player player = new Player();
 
         when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(true);
@@ -69,7 +70,7 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_conditional_fail() {
-        ConditionGold conditionGold = new ConditionGold(100, "<");
+        ConditionGold conditionGold = new ConditionGold(100, ComparatorKey.LT);
         Player player = new Player();
 
         when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(false);

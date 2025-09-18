@@ -1,6 +1,7 @@
 package com.reader.adventure.story.condition.visitor;
 
 import com.reader.adventure.game.AttributeKey;
+import com.reader.adventure.game.ComparatorKey;
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.model.Player;
 import com.reader.adventure.story.model.condition.ConditionAttributes;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,28 +36,28 @@ public class ConditionVisitorTests {
 
     @ParameterizedTest
     @CsvSource({
-            "10,5,<,false",
-            "10,5,<=,false",
-            "10,5,>,true",
-            "10,5,>=,true",
-            "10,5,==,false",
-            "10,5,!=,true",
+            "10,5,LT,false",
+            "10,5,LTE,false",
+            "10,5,GT,true",
+            "10,5,GTE,true",
+            "10,5,EQ,false",
+            "10,5,NEQ,true",
 
-            "5,5,<,false",
-            "5,5,<=,true",
-            "5,5,>,false",
-            "5,5,>=,true",
-            "5,5,==,true",
-            "5,5,!=,false",
+            "5,5,LT,false",
+            "5,5,LTE,true",
+            "5,5,GT,false",
+            "5,5,GTE,true",
+            "5,5,EQ,true",
+            "5,5,NEQ,false",
 
-            "5,10,<,true",
-            "5,10,<=,true",
-            "5,10,>,false",
-            "5,10,>=,false",
-            "5,10,==,false",
-            "5,10,!=,true",
+            "5,10,LT,true",
+            "5,10,LTE,true",
+            "5,10,GT,false",
+            "5,10,GTE,false",
+            "5,10,EQ,false",
+            "5,10,NEQ,true",
     })
-    void evaluate_gold_condition(int playerGold, int goldLimit, String comparator, boolean expectedResult) {
+    void evaluate_gold_condition(int playerGold, int goldLimit, ComparatorKey comparator, boolean expectedResult) {
         ConditionGold conditionGold = new ConditionGold(goldLimit, comparator);
         Player player = new Player();
         player.setGold(playerGold);
@@ -66,28 +68,28 @@ public class ConditionVisitorTests {
 
     @ParameterizedTest
     @CsvSource({
-            "10,5,<,true",
-            "10,5,<=,true",
-            "10,5,>,false",
-            "10,5,>=,false",
-            "10,5,==,false",
-            "10,5,!=,true",
+            "10,5,LT,true",
+            "10,5,LTE,true",
+            "10,5,GT,false",
+            "10,5,GTE,false",
+            "10,5,EQ,false",
+            "10,5,NEQ,true",
 
-            "5,5,<,false",
-            "5,5,<=,true",
-            "5,5,>,false",
-            "5,5,>=,true",
-            "5,5,==,true",
-            "5,5,!=,false",
+            "5,5,LT,false",
+            "5,5,LTE,true",
+            "5,5,GT,false",
+            "5,5,GTE,true",
+            "5,5,EQ,true",
+            "5,5,NEQ,false",
 
-            "5,10,<,false",
-            "5,10,<=,false",
-            "5,10,>,true",
-            "5,10,>=,true",
-            "5,10,==,false",
-            "5,10,!=,true",
+            "5,10,LT,false",
+            "5,10,LTE,false",
+            "5,10,GT,true",
+            "5,10,GTE,true",
+            "5,10,EQ,false",
+            "5,10,NEQ,true",
     })
-    void evaluate_agility_condition(int playerAgility, int agilityResult, String comparator, boolean expectedResult) {
+    void evaluate_agility_condition(int playerAgility, int agilityResult, ComparatorKey comparator, boolean expectedResult) {
 
         when(mockedDice20.roll()).thenReturn(agilityResult);
 
