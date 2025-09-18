@@ -3,8 +3,8 @@ package com.reader.adventure.story.condition.visitor;
 import com.reader.adventure.game.AttributeKey;
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.dao.Jackson.condition.ConditionAttributesJackson;
-import com.reader.adventure.story.dao.Jackson.condition.ConditionGoldJackson;
+import com.reader.adventure.story.model.condition.ConditionAttributes;
+import com.reader.adventure.story.model.condition.ConditionGold;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,7 +23,7 @@ public class ConditionVisitorTests {
 
     @BeforeAll
     static void initAll() {
-        mockedDice20 = Mockito.mock(Dice20.class);;
+        mockedDice20 = Mockito.mock(Dice20.class);
         conditionVisitor = new ConditionVisitor(mockedDice20);
     }
 
@@ -56,11 +56,11 @@ public class ConditionVisitorTests {
             "5,10,!=,true",
     })
     void evaluate_gold_condition(int playerGold, int goldLimit, String comparator, boolean expectedResult) {
-        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(goldLimit, comparator);
+        ConditionGold conditionGold = new ConditionGold(goldLimit, comparator);
         Player player = new Player();
         player.setGold(playerGold);
 
-        boolean result = conditionVisitor.evaluate(conditionGoldJackson, player);
+        boolean result = conditionVisitor.evaluate(conditionGold, player);
         assertEquals(result, expectedResult);
     }
 
@@ -91,7 +91,7 @@ public class ConditionVisitorTests {
 
         when(mockedDice20.roll()).thenReturn(agilityResult);
 
-        ConditionAttributesJackson conditionAgility = new ConditionAttributesJackson(AttributeKey.AG, comparator);
+        ConditionAttributes conditionAgility = new ConditionAttributes(AttributeKey.AG, comparator);
 
         Player player = new Player();
         player.setAgility(playerAgility);

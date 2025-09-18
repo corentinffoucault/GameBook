@@ -1,11 +1,10 @@
 package com.reader.adventure.story.dao.Jackson.node;
 
 import com.reader.adventure.story.dao.Jackson.choice.IChoiceJackson;
-import com.reader.adventure.story.model.node.INode;
 
 import java.util.List;
 
-public class NodeJackson implements INode<IChoiceJackson> {
+public class NodeJackson  {
     private String id;
     private String title;
     private String text;

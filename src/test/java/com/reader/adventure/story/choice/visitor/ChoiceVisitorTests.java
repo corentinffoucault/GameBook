@@ -1,11 +1,11 @@
 package com.reader.adventure.story.choice.visitor;
 
 import com.reader.adventure.player.model.Player;
-import com.reader.adventure.story.dao.Jackson.choice.ChoiceConditionalJackson;
-import com.reader.adventure.story.dao.Jackson.choice.ChoiceDirectJackson;
+import com.reader.adventure.story.model.choice.ChoiceConditional;
+import com.reader.adventure.story.model.choice.ChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
-import com.reader.adventure.story.dao.Jackson.condition.ConditionGoldJackson;
+import com.reader.adventure.story.model.condition.ConditionGold;
 import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_direct() {
-        ChoiceDirectJackson choiceDirect = new ChoiceDirectJackson(
+        ChoiceDirect choiceDirect = new ChoiceDirect(
                 "choice1",
                 "Text of node",
                 "NextNode"
@@ -47,18 +47,18 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_conditional_success() {
-        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(100, "<");
+        ConditionGold conditionGold = new ConditionGold(100, "<");
         Player player = new Player();
 
-        when(mockedConditionVisitor.evaluate(conditionGoldJackson, player)).thenReturn(true);
+        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(true);
 
-        ChoiceConditionalJackson choiceConditional = new ChoiceConditionalJackson("choice1",
+        ChoiceConditional choiceConditional = new ChoiceConditional("choice1",
                 "Text of node",
                 "NextSuccessNode",
                 "NextFailNode",
                 "success",
                 "Fail",
-                conditionGoldJackson);
+                conditionGold);
 
         String expectedText = choiceConditional.text() + '\n' + choiceConditional.success();
 
@@ -69,18 +69,18 @@ public class ChoiceVisitorTests {
 
     @Test
     void apply_choice_conditional_fail() {
-        ConditionGoldJackson conditionGoldJackson = new ConditionGoldJackson(100, "<");
+        ConditionGold conditionGold = new ConditionGold(100, "<");
         Player player = new Player();
 
-        when(mockedConditionVisitor.evaluate(conditionGoldJackson, player)).thenReturn(false);
+        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(false);
 
-        ChoiceConditionalJackson choiceConditional = new ChoiceConditionalJackson("choice1",
+        ChoiceConditional choiceConditional = new ChoiceConditional("choice1",
                 "Text of node",
                 "NextSuccessNode",
                 "NextFailNode",
                 "success",
                 "Fail",
-                conditionGoldJackson);
+                conditionGold);
 
         String expectedText = choiceConditional.text() + '\n' + choiceConditional.fail();
 

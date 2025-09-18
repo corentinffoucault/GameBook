@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class FileLoader {
 
@@ -26,7 +27,7 @@ public class FileLoader {
                     if (in == null) {
                         throw new RuntimeException("nodes.json introuvable dans resources !");
                     }
-                    return new InputStreamReader(in, "UTF-8");
+                    return new InputStreamReader(in, StandardCharsets.UTF_8);
                 }
                 JFileChooser chooser = new JFileChooser(new File("."));
                 chooser.setDialogTitle("Choisissez un fichier nodes.json");

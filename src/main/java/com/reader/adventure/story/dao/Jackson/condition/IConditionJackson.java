@@ -2,7 +2,6 @@ package com.reader.adventure.story.dao.Jackson.condition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.reader.adventure.story.model.condition.ICondition;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -14,4 +13,4 @@ import com.reader.adventure.story.model.condition.ICondition;
         @JsonSubTypes.Type(value = ConditionAttributesJackson.class, name = "attribute")
 })
 
-public sealed interface IConditionJackson extends ICondition permits ConditionGoldJackson, ConditionAttributesJackson {}
+public sealed interface IConditionJackson permits ConditionGoldJackson, ConditionAttributesJackson {}

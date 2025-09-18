@@ -15,7 +15,7 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JLabel titleLabel;
     private JTextArea textArea;
     private JPanel choicesPanel;
-    private INode<IChoice> current;
+    private INode current;
 
     public UIPlayerJFrame(GameBook gameBook) {
         super(gameBook);

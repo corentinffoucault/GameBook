@@ -4,7 +4,7 @@ import com.reader.adventure.story.model.choice.IChoice;
 
 import java.util.List;
 
-public class Node implements INode<IChoice> {
+public class Node implements INode {
     private String id;
     private String title;
     private String text;
