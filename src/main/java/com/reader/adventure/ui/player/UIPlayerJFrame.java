@@ -4,6 +4,7 @@ import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.game.GameBook;
+import com.reader.adventure.ui.player.Adventurer.AdventurerSheet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,13 +18,8 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JPanel choicesPanel;
     private INode current;
 
-    public UIPlayerJFrame(GameBook gameBook) {
-        super(gameBook);
-    }
-
-    public void startGame(String startingNode) {
-        createUI();
-        showNode(startingNode); // TODO: Update model to get Starting info
+    public UIPlayerJFrame(GameBook gameBook, AdventurerSheet adventurerSheet) {
+        super(gameBook, adventurerSheet);
     }
 
     protected void createUI() {

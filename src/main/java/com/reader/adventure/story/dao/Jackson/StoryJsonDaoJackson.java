@@ -6,7 +6,6 @@ import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.Jackson.node.NodeJackson;
 import com.reader.adventure.story.dao.Jackson.node.NodeMapper;
 import com.reader.adventure.story.model.node.INode;
-import com.reader.adventure.story.model.node.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
