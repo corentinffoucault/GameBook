@@ -1,25 +1,22 @@
-package com.reader.adventure.ui.player;
+package com.reader.adventure.ui.player.story;
 
 import com.reader.adventure.story.model.node.INode;
-import com.reader.adventure.story.model.choice.IChoice;
-import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
+import com.reader.adventure.ui.player.story.choice.AChoicePanel;
+import com.reader.adventure.ui.player.story.choice.ChoiceWithAutoDicePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class UIPlayerJFrame extends AUIPlayer {
 
     private JFrame frame;
     private JLabel titleLabel;
     private JTextArea textArea;
-    private JPanel choicesPanel;
-    private INode current;
 
-    public UIPlayerJFrame(GameBook gameBook, AdventurerSheet adventurerSheet) {
-        super(gameBook, adventurerSheet);
+    public UIPlayerJFrame(GameBook gameBook, AdventurerSheet adventurerSheet, AChoicePanel choicesPanel) {
+        super(gameBook, adventurerSheet, choicesPanel);
     }
 
     protected void createUI() {
@@ -41,11 +38,15 @@ public class UIPlayerJFrame extends AUIPlayer {
         JScrollPane scroll = new JScrollPane(textArea);
         frame.add(scroll, BorderLayout.CENTER);
 
-        choicesPanel = new JPanel();
         choicesPanel.setLayout(new BoxLayout(choicesPanel, BoxLayout.Y_AXIS));
         JScrollPane cscroll = new JScrollPane(choicesPanel);
         cscroll.setPreferredSize(new Dimension(700, 140));
         frame.add(cscroll, BorderLayout.SOUTH);
+
+        choicesPanel.setChoiceHandler((choice, result) -> {
+            JOptionPane.showMessageDialog(frame, result.text(), choice.name(), JOptionPane.PLAIN_MESSAGE);
+            showNode(result.nextNode());
+        });
 
         frame.setVisible(true);
     }
@@ -53,44 +54,13 @@ public class UIPlayerJFrame extends AUIPlayer {
     protected void showNode(String id) {
         try {
             INode node = gameBook.getNodeById(id);
-            current = node;
             titleLabel.setText(node.getTitle());
             textArea.setText(node.getText());
-            refreshChoices();
+            choicesPanel.refreshChoices(node);
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private void refreshChoices() {
-        choicesPanel.removeAll();
-
-        if (current.getChoice() == null || current.getChoice().isEmpty()) {
-            JLabel done = new JLabel("Aucun choix disponible — fin possible.");
-            done.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
-            choicesPanel.add(done);
-        } else {
-            for (IChoice c : current.getChoice()) {
-                JButton b = getButton(c);
-                choicesPanel.add(Box.createRigidArea(new Dimension(0,6)));
-                choicesPanel.add(b);
-            }
-        }
-
-        choicesPanel.revalidate();
-        choicesPanel.repaint();
-    }
-
-    private JButton getButton(IChoice c) {
-        JButton b = new JButton(c.name());
-        b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-        b.addActionListener((ActionEvent e) -> {
-            SelectedChoice selectedChoice = gameBook.applyChoice(c);
-            JOptionPane.showMessageDialog(frame, selectedChoice.text(), c.name(), JOptionPane.PLAIN_MESSAGE);
-            showNode(selectedChoice.nextNode());
-        });
-        return b;
-    }
 }

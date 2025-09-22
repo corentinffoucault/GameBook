@@ -2,7 +2,7 @@ package com.reader.adventure.ui.player.adventurer;
 
 import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.adventurer.model.Adventurer;
-import com.reader.adventure.ui.player.AUIPlayer;
+import com.reader.adventure.ui.player.story.AUIPlayer;
 
 import javax.swing.*;
 import java.awt.*;

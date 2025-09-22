@@ -8,11 +8,13 @@ import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
-import com.reader.adventure.ui.player.AUIPlayer;
+import com.reader.adventure.ui.player.story.AUIPlayer;
 import com.reader.adventure.ui.player.adventurer.AdventurerForm;
 import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 import com.reader.adventure.ui.player.FileLoader;
-import com.reader.adventure.ui.player.UIPlayerJFrame;
+import com.reader.adventure.ui.player.story.UIPlayerJFrame;
+import com.reader.adventure.ui.player.story.choice.AChoicePanel;
+import com.reader.adventure.ui.player.story.choice.ChoiceWithAutoDicePanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +44,9 @@ public class Main {
             GameBook gameBook = new GameBook(storyDao, adventurerDao, choiceVisitor);
 
             AdventurerSheet adventurerSheet = new AdventurerSheet(adventurerDao);
-            AUIPlayer playerUI = new UIPlayerJFrame(gameBook, adventurerSheet);
+
+            AChoicePanel choicesPanel = new ChoiceWithAutoDicePanel(gameBook);
+            AUIPlayer playerUI = new UIPlayerJFrame(gameBook, adventurerSheet, choicesPanel);
             AdventurerForm adventurerForm = new AdventurerForm(playerUI, adventurerDao);
             adventurerForm.setVisible(true);
         } catch (Exception e) {
