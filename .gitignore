@@ -4,3 +4,4 @@ build
 
 # Log file
 *.log
+.run/GameBook*
