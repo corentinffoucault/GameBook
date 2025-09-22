@@ -1,16 +1,16 @@
 package com.reader.adventure;
 
 import com.reader.adventure.game.dice.Dice20;
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.player.dao.jackson.PlayerJsonDaoJackson;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
+import com.reader.adventure.adventurer.dao.jackson.AdventurerJsonDaoJackson;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.AUIPlayer;
-import com.reader.adventure.ui.player.Adventurer.AdventurerForm;
-import com.reader.adventure.ui.player.Adventurer.AdventurerSheet;
+import com.reader.adventure.ui.player.adventurer.AdventurerForm;
+import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 import com.reader.adventure.ui.player.FileLoader;
 import com.reader.adventure.ui.player.UIPlayerJFrame;
 import org.apache.logging.log4j.LogManager;
@@ -36,14 +36,14 @@ public class Main {
         try {
             Dice20 dice = new Dice20(ThreadLocalRandom.current());
             IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile());
-            IPlayerDao playerDao = new PlayerJsonDaoJackson();
+            IAdventurerDao adventurerDao = new AdventurerJsonDaoJackson();
             ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
             ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
-            GameBook gameBook = new GameBook(storyDao, playerDao, choiceVisitor);
+            GameBook gameBook = new GameBook(storyDao, adventurerDao, choiceVisitor);
 
-            AdventurerSheet adventurerSheet = new AdventurerSheet(playerDao);
+            AdventurerSheet adventurerSheet = new AdventurerSheet(adventurerDao);
             AUIPlayer playerUI = new UIPlayerJFrame(gameBook, adventurerSheet);
-            AdventurerForm adventurerForm = new AdventurerForm(playerUI, playerDao);
+            AdventurerForm adventurerForm = new AdventurerForm(playerUI, adventurerDao);
             adventurerForm.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erreur : " + e.getMessage());

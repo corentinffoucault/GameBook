@@ -1,4 +1,4 @@
-package com.reader.adventure.player.dao.jackson;
+package com.reader.adventure.adventurer.dao.jackson;
 
 public class AdventurerJackson {
     private String name;

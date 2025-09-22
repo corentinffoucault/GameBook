@@ -1,7 +1,7 @@
-package com.reader.adventure.ui.player.Adventurer;
+package com.reader.adventure.ui.player.adventurer;
 
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.player.model.Player;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.ui.player.AUIPlayer;
 
 import javax.swing.*;
@@ -29,13 +29,13 @@ public class AdventurerForm extends JFrame {
 
     private JTextField goldField;
 
-    private Player lastCreatedPlayer;
+    private Adventurer lastCreatedAdventurer;
     private AUIPlayer uiPlayerJFrame;
-    private IPlayerDao playerDao;
+    private IAdventurerDao adventurerDao;
 
-    public AdventurerForm(AUIPlayer uiPlayerJFrame, IPlayerDao playerDao) {
+    public AdventurerForm(AUIPlayer uiPlayerJFrame, IAdventurerDao adventurerDao) {
         this.uiPlayerJFrame = uiPlayerJFrame;
-        this.playerDao = playerDao;
+        this.adventurerDao = adventurerDao;
         setTitle("Création d'un personnage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(450, 650);
@@ -71,15 +71,15 @@ public class AdventurerForm extends JFrame {
         JButton ficheButton = new JButton("Afficher la fiche");
 
         createButton.addActionListener(e -> {
-            lastCreatedPlayer = createPlayer();
+            lastCreatedAdventurer = createAdventurer();
             JOptionPane.showMessageDialog(AdventurerForm.this,
-                    "Personnage " + lastCreatedPlayer.getName() + " créé !");
-            goToGame(lastCreatedPlayer);
+                    "Personnage " + lastCreatedAdventurer.getName() + " créé !");
+            goToGame(lastCreatedAdventurer);
         });
 
         ficheButton.addActionListener(e -> {
-            if (lastCreatedPlayer != null) {
-                goToGame(lastCreatedPlayer);
+            if (lastCreatedAdventurer != null) {
+                goToGame(lastCreatedAdventurer);
             } else {
                 JOptionPane.showMessageDialog(AdventurerForm.this,
                         "⚠ Aucun personnage créé pour l’instant !");
@@ -100,8 +100,8 @@ public class AdventurerForm extends JFrame {
         return field;
     }
 
-    private Player createPlayer() {
-        Player p = new Player();
+    private Adventurer createAdventurer() {
+        Adventurer p = new Adventurer();
         p.setName(nameField.getText());
 
         p.setAgility(parseInt(agilityField));
@@ -134,9 +134,9 @@ public class AdventurerForm extends JFrame {
         }
     }
 
-    private void goToGame(Player player) {
+    private void goToGame(Adventurer adventurer) {
         dispose();
-        this.playerDao.saveAdventurer(player);
+        this.adventurerDao.saveAdventurer(adventurer);
         uiPlayerJFrame.startGame("Noeud 1");
     }
 }

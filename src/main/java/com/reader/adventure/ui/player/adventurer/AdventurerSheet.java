@@ -1,28 +1,26 @@
-package com.reader.adventure.ui.player.Adventurer;
+package com.reader.adventure.ui.player.adventurer;
 
-import com.reader.adventure.player.dao.IPlayerDao;
-import com.reader.adventure.player.model.Player;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
+import com.reader.adventure.adventurer.model.Adventurer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class AdventurerSheet extends JFrame {
     private JTable table;
     private DefaultTableModel model;
     private boolean locked = false;
-    private IPlayerDao playerDao;
+    private IAdventurerDao adventurerDao;
 
-    public AdventurerSheet(IPlayerDao playerDao) {
-        this.playerDao = playerDao;
+    public AdventurerSheet(IAdventurerDao adventurerDao) {
+        this.adventurerDao = adventurerDao;
     }
 
     public void createUi() {
-        Player player = playerDao.getPlayer();
+        Adventurer adventurer = adventurerDao.getAdventurer();
 
-        setTitle("Fiche de " + player.getName());
+        setTitle("Fiche de " + adventurer.getName());
         setSize(500, 600);
         setLocationRelativeTo(null);
 
@@ -30,27 +28,27 @@ public class AdventurerSheet extends JFrame {
 
         Object[][] data = {
                 {"--- Caractéristiques ---", ""},
-                {"Agilité", player.getAgility()},
-                {"Force", player.getStrength()},
-                {"Intelligence", player.getIntelligence()},
-                {"Charisme", player.getCharisma()},
-                {"Courage", player.getCourage()},
+                {"Agilité", adventurer.getAgility()},
+                {"Force", adventurer.getStrength()},
+                {"Intelligence", adventurer.getIntelligence()},
+                {"Charisme", adventurer.getCharisma()},
+                {"Courage", adventurer.getCourage()},
 
                 {"--- Compétences ---", ""},
-                {"Attaque", player.getAttack()},
-                {"Parade", player.getParry()},
-                {"Lancer", player.getThrowing()},
-                {"Esquive", player.getDodge()},
-                {"Fouille", player.getSearch()},
+                {"Attaque", adventurer.getAttack()},
+                {"Parade", adventurer.getParry()},
+                {"Lancer", adventurer.getThrowing()},
+                {"Esquive", adventurer.getDodge()},
+                {"Fouille", adventurer.getSearch()},
 
                 {"--- Magie ---", ""},
-                {"Inventivité", player.getInventiveness()},
-                {"Magie Physique", player.getPhysical_magic()},
-                {"Magie Psychique", player.getPsychic_magic()},
-                {"Résistance Magique", player.getMagic_resistance()},
+                {"Inventivité", adventurer.getInventiveness()},
+                {"Magie Physique", adventurer.getPhysical_magic()},
+                {"Magie Psychique", adventurer.getPsychic_magic()},
+                {"Résistance Magique", adventurer.getMagic_resistance()},
 
                 {"--- Ressources ---", ""},
-                {"Or", player.getGold()}
+                {"Or", adventurer.getGold()}
         };
 
         model = new DefaultTableModel(data, columns) {
@@ -92,7 +90,7 @@ public class AdventurerSheet extends JFrame {
             String path = chooser.getSelectedFile().getAbsolutePath();
 
             try {
-                playerDao.exportToJson(path);
+                adventurerDao.exportToJson(path);
                 JOptionPane.showMessageDialog(this, "Sauvegarde réussie en JSON !");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde : " + ex.getMessage());

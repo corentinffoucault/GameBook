@@ -1,7 +1,7 @@
 package com.reader.adventure.ui.player;
 
 import com.reader.adventure.game.GameBook;
-import com.reader.adventure.ui.player.Adventurer.AdventurerSheet;
+import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 
 public abstract class AUIPlayer {
 

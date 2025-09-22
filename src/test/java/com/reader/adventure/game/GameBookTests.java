@@ -1,6 +1,6 @@
 package com.reader.adventure.game;
 
-import com.reader.adventure.player.dao.IPlayerDao;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.node.Node;
@@ -18,14 +18,14 @@ import static org.mockito.Mockito.*;
 class GameBookTests {
 
     private static IStoryDao mockedStoryDao;
-    private static IPlayerDao mockedPlayerDao;
+    private static IAdventurerDao mockedPlayerDao;
     private static ChoiceVisitor mockedChoiceVisitor;
     private static GameBook gameBook;
 
     @BeforeAll
     static void initAll() {
         mockedStoryDao = Mockito.mock(IStoryDao.class);
-        mockedPlayerDao = Mockito.mock(IPlayerDao.class);
+        mockedPlayerDao = Mockito.mock(IAdventurerDao.class);
         mockedChoiceVisitor = Mockito.mock(ChoiceVisitor.class);
 
         gameBook = new GameBook(mockedStoryDao, mockedPlayerDao, mockedChoiceVisitor);

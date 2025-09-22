@@ -1,6 +1,6 @@
 package com.reader.adventure.game;
 
-import com.reader.adventure.player.dao.IPlayerDao;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.choice.IChoice;
@@ -13,18 +13,18 @@ import org.apache.logging.log4j.Logger;
 public class GameBook {
 
     public IStoryDao storyDao;
-    public IPlayerDao playerDao;
+    public IAdventurerDao adventurerDao;
     public ChoiceVisitor choiceVisitor;
     private static final Logger logger = LogManager.getLogger(GameBook.class);
 
-    public GameBook(IStoryDao storyDao, IPlayerDao playerDao, ChoiceVisitor choiceVisitor) {
+    public GameBook(IStoryDao storyDao, IAdventurerDao adventurerDao, ChoiceVisitor choiceVisitor) {
         this.storyDao = storyDao;
-        this.playerDao = playerDao;
+        this.adventurerDao = adventurerDao;
         this.choiceVisitor = choiceVisitor;
     }
 
     public SelectedChoice applyChoice(IChoice choice) {
-        return choice.applyChoice(choiceVisitor, playerDao.getPlayer());
+        return choice.applyChoice(choiceVisitor, adventurerDao.getAdventurer());
     }
 
     public INode getNodeById(String id) {

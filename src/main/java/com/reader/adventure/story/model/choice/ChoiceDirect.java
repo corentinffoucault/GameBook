@@ -1,6 +1,6 @@
 package com.reader.adventure.story.model.choice;
 
-import com.reader.adventure.player.model.Player;
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.story.model.choice.visitor.IChoiceVisitor;
 
 public record ChoiceDirect(String name,
@@ -8,7 +8,7 @@ public record ChoiceDirect(String name,
                            String next) implements IChoice {
 
     @Override
-    public SelectedChoice applyChoice(IChoiceVisitor visitor, Player player) {
-        return visitor.applyChoice(this, player);
+    public SelectedChoice applyChoice(IChoiceVisitor visitor, Adventurer adventurer) {
+        return visitor.applyChoice(this, adventurer);
     }
 }

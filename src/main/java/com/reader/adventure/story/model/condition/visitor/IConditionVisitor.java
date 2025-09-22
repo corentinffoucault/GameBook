@@ -1,10 +1,10 @@
 package com.reader.adventure.story.model.condition.visitor;
 
-import com.reader.adventure.player.model.Player;
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.story.model.condition.ConditionAttributes;
 import com.reader.adventure.story.model.condition.ConditionGold;
 
 public interface IConditionVisitor {
-    boolean evaluate(ConditionAttributes condition, Player player);
-    boolean evaluate(ConditionGold condition, Player player);
+    boolean evaluate(ConditionAttributes condition, Adventurer adventurer);
+    boolean evaluate(ConditionGold condition, Adventurer adventurer);
 }

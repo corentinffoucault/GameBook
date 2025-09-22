@@ -1,6 +1,6 @@
-package com.reader.adventure.player.model;
+package com.reader.adventure.adventurer.model;
 
-public class Player {
+public class Adventurer {
     private String name;
 
     private Integer agility;

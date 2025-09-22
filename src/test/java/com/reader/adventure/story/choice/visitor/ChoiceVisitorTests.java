@@ -1,7 +1,7 @@
 package com.reader.adventure.story.choice.visitor;
 
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.game.ComparatorKey;
-import com.reader.adventure.player.model.Player;
 import com.reader.adventure.story.model.choice.ChoiceConditional;
 import com.reader.adventure.story.model.choice.ChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
@@ -39,19 +39,19 @@ public class ChoiceVisitorTests {
                 "Text of node",
                 "NextNode"
         );
-        Player player = new Player();
+        Adventurer adventurer = new Adventurer();
 
         SelectedChoice expectedSelectedChoice = new SelectedChoice(choiceDirect.text(), choiceDirect.next());
-        SelectedChoice result = choiceVisitor.applyChoice(choiceDirect, player);
+        SelectedChoice result = choiceVisitor.applyChoice(choiceDirect, adventurer);
         assertEquals(result, expectedSelectedChoice);
     }
 
     @Test
     void apply_choice_conditional_success() {
         ConditionGold conditionGold = new ConditionGold(100, ComparatorKey.LT);
-        Player player = new Player();
+        Adventurer adventurer = new Adventurer();
 
-        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(true);
+        when(mockedConditionVisitor.evaluate(conditionGold, adventurer)).thenReturn(true);
 
         ChoiceConditional choiceConditional = new ChoiceConditional("choice1",
                 "Text of node",
@@ -64,16 +64,16 @@ public class ChoiceVisitorTests {
         String expectedText = choiceConditional.text() + '\n' + choiceConditional.success();
 
         SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.next());
-        SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, player);
+        SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, adventurer);
         assertEquals(result, expectedSelectedChoice);
     }
 
     @Test
     void apply_choice_conditional_fail() {
         ConditionGold conditionGold = new ConditionGold(100, ComparatorKey.LT);
-        Player player = new Player();
+        Adventurer adventurer = new Adventurer();
 
-        when(mockedConditionVisitor.evaluate(conditionGold, player)).thenReturn(false);
+        when(mockedConditionVisitor.evaluate(conditionGold, adventurer)).thenReturn(false);
 
         ChoiceConditional choiceConditional = new ChoiceConditional("choice1",
                 "Text of node",
@@ -86,7 +86,7 @@ public class ChoiceVisitorTests {
         String expectedText = choiceConditional.text() + '\n' + choiceConditional.fail();
 
         SelectedChoice expectedSelectedChoice = new SelectedChoice(expectedText, choiceConditional.nextFail());
-        SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, player);
+        SelectedChoice result = choiceVisitor.applyChoice(choiceConditional, adventurer);
         assertEquals(result, expectedSelectedChoice);
     }
 }

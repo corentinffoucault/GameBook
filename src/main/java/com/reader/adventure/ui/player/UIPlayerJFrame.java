@@ -4,7 +4,7 @@ import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.choice.SelectedChoice;
 import com.reader.adventure.game.GameBook;
-import com.reader.adventure.ui.player.Adventurer.AdventurerSheet;
+import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 
 import javax.swing.*;
 import java.awt.*;

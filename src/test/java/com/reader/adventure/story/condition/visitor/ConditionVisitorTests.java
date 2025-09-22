@@ -1,9 +1,9 @@
 package com.reader.adventure.story.condition.visitor;
 
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.game.AttributeKey;
 import com.reader.adventure.game.ComparatorKey;
 import com.reader.adventure.game.dice.Dice20;
-import com.reader.adventure.player.model.Player;
 import com.reader.adventure.story.model.condition.ConditionAttributes;
 import com.reader.adventure.story.model.condition.ConditionGold;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,10 +58,10 @@ public class ConditionVisitorTests {
     })
     void evaluate_gold_condition(int playerGold, int goldLimit, ComparatorKey comparator, boolean expectedResult) {
         ConditionGold conditionGold = new ConditionGold(goldLimit, comparator);
-        Player player = new Player();
-        player.setGold(playerGold);
+        Adventurer adventurer = new Adventurer();
+        adventurer.setGold(playerGold);
 
-        boolean result = conditionVisitor.evaluate(conditionGold, player);
+        boolean result = conditionVisitor.evaluate(conditionGold, adventurer);
         assertEquals(result, expectedResult);
     }
 
@@ -95,10 +94,10 @@ public class ConditionVisitorTests {
 
         ConditionAttributes conditionAgility = new ConditionAttributes(AttributeKey.AG, comparator);
 
-        Player player = new Player();
-        player.setAgility(playerAgility);
+        Adventurer adventurer = new Adventurer();
+        adventurer.setAgility(playerAgility);
 
-        boolean result = conditionVisitor.evaluate(conditionAgility, player);
+        boolean result = conditionVisitor.evaluate(conditionAgility, adventurer);
         assertEquals(result, expectedResult);
     }
 }

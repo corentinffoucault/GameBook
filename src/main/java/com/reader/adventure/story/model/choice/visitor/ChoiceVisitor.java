@@ -1,6 +1,6 @@
 package com.reader.adventure.story.model.choice.visitor;
 
-import com.reader.adventure.player.model.Player;
+import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.story.model.choice.ChoiceConditional;
 import com.reader.adventure.story.model.choice.ChoiceDirect;
 import com.reader.adventure.story.model.choice.SelectedChoice;
@@ -14,14 +14,14 @@ public class ChoiceVisitor implements IChoiceVisitor {
     }
 
     @Override
-    public SelectedChoice applyChoice(ChoiceDirect choice, Player player) {
+    public SelectedChoice applyChoice(ChoiceDirect choice, Adventurer adventurer) {
         return new SelectedChoice(choice.text(), choice.next());
     }
 
     @Override
-    public SelectedChoice applyChoice(ChoiceConditional choice, Player player) {
+    public SelectedChoice applyChoice(ChoiceConditional choice, Adventurer adventurer) {
         StringBuilder sb = new StringBuilder(choice.text()).append('\n');
-        if (choice.condition().evaluate(conditionVisitor, player)) {
+        if (choice.condition().evaluate(conditionVisitor, adventurer)) {
             sb.append(choice.success());
             return new SelectedChoice(sb.toString(), choice.next());
         } else {
