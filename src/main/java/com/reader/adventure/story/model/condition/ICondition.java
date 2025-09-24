@@ -5,4 +5,6 @@ import com.reader.adventure.story.model.condition.visitor.IConditionVisitor;
 
 public sealed interface ICondition permits ConditionAttributes, ConditionGold {
     public boolean evaluate(IConditionVisitor visitor, Adventurer adventurer);
+    public String toString();
+    public String inverseToString();
 }

@@ -34,8 +34,8 @@ public class StoryJsonDaoJackson implements IStoryDao {
             List<NodeJackson> nodes = mapper.readValue(reader, new TypeReference<>() {});
             nodesById = nodes.stream().collect(Collectors.toMap(NodeJackson::getId, n -> n));
         } catch (Exception e) {
-            logger.error("Erreur lors du chargement du fichier", e);
-            throw new RuntimeException("Erreur lors du chargement du fichier", e);
+            logger.error("Erreur lors du chargement du fichier aventure", e);
+            throw new RuntimeException("Erreur lors du chargement du fichier aventure", e);
         }
     }
 }

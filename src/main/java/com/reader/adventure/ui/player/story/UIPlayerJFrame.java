@@ -4,7 +4,6 @@ import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.game.GameBook;
 import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 import com.reader.adventure.ui.player.story.choice.AChoicePanel;
-import com.reader.adventure.ui.player.story.choice.ChoiceWithAutoDicePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +13,10 @@ public class UIPlayerJFrame extends AUIPlayer {
     private JFrame frame;
     private JLabel titleLabel;
     private JTextArea textArea;
+    private JScrollPane cscroll;
 
-    public UIPlayerJFrame(GameBook gameBook, AdventurerSheet adventurerSheet, AChoicePanel choicesPanel) {
-        super(gameBook, adventurerSheet, choicesPanel);
+    public UIPlayerJFrame(GameBook gameBook, AChoicePanel choicesPanel) {
+        super(gameBook, choicesPanel);
     }
 
     protected void createUI() {
@@ -39,15 +39,14 @@ public class UIPlayerJFrame extends AUIPlayer {
         frame.add(scroll, BorderLayout.CENTER);
 
         choicesPanel.setLayout(new BoxLayout(choicesPanel, BoxLayout.Y_AXIS));
-        JScrollPane cscroll = new JScrollPane(choicesPanel);
-        cscroll.setPreferredSize(new Dimension(700, 140));
-        frame.add(cscroll, BorderLayout.SOUTH);
-
-        choicesPanel.setChoiceHandler((choice, result) -> {
-            JOptionPane.showMessageDialog(frame, result.text(), choice.name(), JOptionPane.PLAIN_MESSAGE);
+        choicesPanel.setChoiceHandler((name, result) -> {
+            JOptionPane.showMessageDialog(frame, result.text(), name, JOptionPane.PLAIN_MESSAGE);
             showNode(result.nextNode());
         });
 
+        cscroll = new JScrollPane(choicesPanel);
+        cscroll.setPreferredSize(new Dimension(700, 140));
+        frame.add(cscroll, BorderLayout.SOUTH);
         frame.setVisible(true);
     }
 
@@ -57,6 +56,10 @@ public class UIPlayerJFrame extends AUIPlayer {
             titleLabel.setText(node.getTitle());
             textArea.setText(node.getText());
             choicesPanel.refreshChoices(node);
+            System.out.println(choicesPanel.getHeight());
+            cscroll.setPreferredSize(new Dimension(700, choicesPanel.getPreferredSize().height + 10));
+            frame.revalidate();
+            frame.repaint();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage());
             throw new RuntimeException(e);

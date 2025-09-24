@@ -17,6 +17,10 @@ public class AdventurerSheet extends JFrame {
         this.adventurerDao = adventurerDao;
     }
 
+    public Adventurer getAdventurer() {
+        return adventurerDao.getAdventurer();
+    }
+
     public void createUi() {
         Adventurer adventurer = adventurerDao.getAdventurer();
 
@@ -71,7 +75,7 @@ public class AdventurerSheet extends JFrame {
         JPanel buttonPanel = new JPanel();
 
         JButton saveButton = new JButton("exporter en JSON");
-        saveButton.addActionListener(e -> sauvegarder());
+        saveButton.addActionListener(e -> save());
 
         buttonPanel.add(saveButton);
 
@@ -82,8 +86,7 @@ public class AdventurerSheet extends JFrame {
         this.setVisible(true);
     }
 
-    // TODO: deplacer cela dans le DAO
-    private void sauvegarder() {
+    private void save() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("export de la fiche");
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {

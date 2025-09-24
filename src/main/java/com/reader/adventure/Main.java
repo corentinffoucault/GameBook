@@ -8,12 +8,14 @@ import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.condition.visitor.ConditionVisitor;
 import com.reader.adventure.game.GameBook;
+import com.reader.adventure.ui.GameLauncherUI;
 import com.reader.adventure.ui.player.story.AUIPlayer;
 import com.reader.adventure.ui.player.adventurer.AdventurerForm;
 import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 import com.reader.adventure.ui.player.FileLoader;
 import com.reader.adventure.ui.player.story.UIPlayerJFrame;
 import com.reader.adventure.ui.player.story.choice.AChoicePanel;
+import com.reader.adventure.ui.player.story.choice.ChoiceManualPanel;
 import com.reader.adventure.ui.player.story.choice.ChoiceWithAutoDicePanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,29 +28,51 @@ public class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            try {
-                new Main().start();
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
+            new Main().start();
         });
     }
 
-    private void start() throws Exception {
+    private void start() {
         try {
             Dice20 dice = new Dice20(ThreadLocalRandom.current());
-            IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile());
-            IAdventurerDao adventurerDao = new AdventurerJsonDaoJackson();
-            ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
-            ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
-            GameBook gameBook = new GameBook(storyDao, adventurerDao, choiceVisitor);
 
-            AdventurerSheet adventurerSheet = new AdventurerSheet(adventurerDao);
+            GameLauncherUI gameLauncherUI = new GameLauncherUI();
 
-            AChoicePanel choicesPanel = new ChoiceWithAutoDicePanel(gameBook);
-            AUIPlayer playerUI = new UIPlayerJFrame(gameBook, adventurerSheet, choicesPanel);
-            AdventurerForm adventurerForm = new AdventurerForm(playerUI, adventurerDao);
-            adventurerForm.setVisible(true);
+            gameLauncherUI.setGameOptionHandler((gameOption) -> {
+
+                IAdventurerDao adventurerDao;
+                AChoicePanel choicesPanel;
+
+                IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile(gameOption.storyFile(), "/nodes.json"));
+                GameBook gameBook = new GameBook(storyDao);
+
+                ConditionVisitor conditionVisitor = new ConditionVisitor(dice);
+                ChoiceVisitor choiceVisitor = new ChoiceVisitor(conditionVisitor);
+
+                if (gameOption.fullAutoTest()) {
+                    adventurerDao = new AdventurerJsonDaoJackson(FileLoader.loadFile(gameOption.adventurerFile(), "/Adventurer.json"));
+                    choicesPanel = new ChoiceWithAutoDicePanel(choiceVisitor, adventurerDao);
+                    AdventurerSheet adventurerSheet = new AdventurerSheet(adventurerDao);
+
+                    adventurerSheet.createUi();
+                    adventurerSheet.setVisible(true);
+
+                    AUIPlayer playerUI = new UIPlayerJFrame(gameBook, choicesPanel);
+                    AdventurerForm adventurerForm = new AdventurerForm();
+                    adventurerForm.setAdventurerHandler((adventurer) -> {
+                        adventurerForm.setVisible(true);
+                        adventurerDao.saveAdventurer(adventurer);
+                        playerUI.startGame("Noeud 1");
+                    });
+
+                } else {
+                    choicesPanel = new ChoiceManualPanel(choiceVisitor);
+                    AUIPlayer playerUI = new UIPlayerJFrame(gameBook, choicesPanel);
+                    playerUI.startGame("Noeud 1");
+                }
+
+            });
+            gameLauncherUI.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erreur : " + e.getMessage());
         }

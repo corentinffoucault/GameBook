@@ -1,8 +1,9 @@
 package com.reader.adventure.ui.player.story.choice;
 
-import com.reader.adventure.game.GameBook;
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.choice.SelectedChoice;
+import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,21 +11,24 @@ import java.awt.event.ActionEvent;
 
 public class ChoiceWithAutoDicePanel extends AChoicePanel {
 
-    public ChoiceWithAutoDicePanel(GameBook gameBook) {
-        super(gameBook);
+    private IAdventurerDao adventurerDao;
+
+    public ChoiceWithAutoDicePanel(ChoiceVisitor choiceVisitor, IAdventurerDao adventurerDao) {
+        super(choiceVisitor);
+        this.adventurerDao = adventurerDao;
     }
 
-    protected JButton getButton(IChoice c) {
+    protected void addChoice(IChoice c) {
         JButton b = new JButton(c.name());
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 
         b.addActionListener((ActionEvent e) -> {
-            SelectedChoice selectedChoice = gameBook.applyChoice(c);
+            SelectedChoice selectedChoice = c.applyChoice(choiceVisitor, adventurerDao.getAdventurer());
             if (choiceHandler != null) {
-                choiceHandler.onChoiceSelected(c, selectedChoice);
+                choiceHandler.onChoiceSelected(c.name(), selectedChoice);
             }
         });
-        return b;
+        addButton(b);
     }
 }

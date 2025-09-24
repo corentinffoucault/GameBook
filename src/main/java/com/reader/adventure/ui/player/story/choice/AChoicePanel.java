@@ -1,18 +1,17 @@
 package com.reader.adventure.ui.player.story.choice;
 
-import com.reader.adventure.game.GameBook;
 import com.reader.adventure.story.model.choice.IChoice;
+import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.model.node.INode;
 
 import javax.swing.*;
 import java.awt.*;
 
 public abstract class AChoicePanel extends JPanel {
+    public ChoiceVisitor choiceVisitor;
 
-    protected GameBook gameBook;
-
-    public AChoicePanel(GameBook gameBook) {
-        this.gameBook = gameBook;
+    public AChoicePanel(ChoiceVisitor choiceVisitor) {
+        this.choiceVisitor = choiceVisitor;
     }
 
     protected IChoiceHandler choiceHandler; // callback externe
@@ -30,9 +29,7 @@ public abstract class AChoicePanel extends JPanel {
             this.add(done);
         } else {
             for (IChoice c : current.getChoice()) {
-                JButton b = getButton(c);
-                this.add(Box.createRigidArea(new Dimension(0,6)));
-                this.add(b);
+                addChoice(c);
             }
         }
 
@@ -40,5 +37,10 @@ public abstract class AChoicePanel extends JPanel {
         this.repaint();
     }
 
-    protected abstract JButton getButton(IChoice c);
+    protected void addButton(JButton b) {
+        this.add(Box.createRigidArea(new Dimension(0,6)));
+        this.add(b);
+    }
+
+    protected abstract void addChoice(IChoice c);
 }

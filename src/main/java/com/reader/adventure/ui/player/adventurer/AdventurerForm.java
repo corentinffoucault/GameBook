@@ -1,8 +1,6 @@
 package com.reader.adventure.ui.player.adventurer;
 
-import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.adventurer.model.Adventurer;
-import com.reader.adventure.ui.player.story.AUIPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,12 +28,9 @@ public class AdventurerForm extends JFrame {
     private JTextField goldField;
 
     private Adventurer lastCreatedAdventurer;
-    private AUIPlayer uiPlayerJFrame;
-    private IAdventurerDao adventurerDao;
+    private IAdventurerHandler adventurerHandler;
 
-    public AdventurerForm(AUIPlayer uiPlayerJFrame, IAdventurerDao adventurerDao) {
-        this.uiPlayerJFrame = uiPlayerJFrame;
-        this.adventurerDao = adventurerDao;
+    public AdventurerForm() {
         setTitle("Création d'un personnage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(450, 650);
@@ -68,29 +63,26 @@ public class AdventurerForm extends JFrame {
         // Boutons
         JPanel buttonPanel = new JPanel();
         JButton createButton = new JButton("Créer le personnage");
-        JButton ficheButton = new JButton("Afficher la fiche");
 
         createButton.addActionListener(e -> {
             lastCreatedAdventurer = createAdventurer();
             JOptionPane.showMessageDialog(AdventurerForm.this,
                     "Personnage " + lastCreatedAdventurer.getName() + " créé !");
-            goToGame(lastCreatedAdventurer);
-        });
-
-        ficheButton.addActionListener(e -> {
-            if (lastCreatedAdventurer != null) {
+            try {
                 goToGame(lastCreatedAdventurer);
-            } else {
-                JOptionPane.showMessageDialog(AdventurerForm.this,
-                        "⚠ Aucun personnage créé pour l’instant !");
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
 
         buttonPanel.add(createButton);
-        buttonPanel.add(ficheButton);
 
         getContentPane().add(new JScrollPane(panel), BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    public void setAdventurerHandler(IAdventurerHandler adventurerHandler) {
+        this.adventurerHandler = adventurerHandler;
     }
 
     private JTextField addField(JPanel panel, String label) {
@@ -134,9 +126,10 @@ public class AdventurerForm extends JFrame {
         }
     }
 
-    private void goToGame(Adventurer adventurer) {
+    private void goToGame(Adventurer adventurer) throws Exception {
         dispose();
-        this.adventurerDao.saveAdventurer(adventurer);
-        uiPlayerJFrame.startGame("Noeud 1");
+        if (adventurerHandler != null) {
+            adventurerHandler.onAdventurerCompleted(adventurer);
+        }
     }
 }

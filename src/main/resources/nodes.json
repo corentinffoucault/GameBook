@@ -20,8 +20,8 @@
         "type": "conditional",
         "name": "Sauter",
         "text": "Vous tentez de sauter",
-        "next": "Noeud 1.2",
-        "nextFail": "Noeud 1.1",
+        "next": "Noeud 1",
+        "nextFail": "Noeud 1",
         "condition" : {
           "type": "attribute",
           "attribute": "AG",
@@ -34,8 +34,8 @@
         "type": "conditional",
         "name": "Payer",
         "text": "Vous payez",
-        "next": "Noeud 1.2",
-        "nextFail": "Noeud 1.1",
+        "next": "Noeud 1",
+        "nextFail": "Noeud 1",
         "condition" : {
           "type": "Gold",
           "value": 10,

@@ -1,10 +1,8 @@
 package com.reader.adventure.game;
 
-import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.node.Node;
-import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,22 +16,18 @@ import static org.mockito.Mockito.*;
 class GameBookTests {
 
     private static IStoryDao mockedStoryDao;
-    private static IAdventurerDao mockedPlayerDao;
-    private static ChoiceVisitor mockedChoiceVisitor;
     private static GameBook gameBook;
 
     @BeforeAll
     static void initAll() {
         mockedStoryDao = Mockito.mock(IStoryDao.class);
-        mockedPlayerDao = Mockito.mock(IAdventurerDao.class);
-        mockedChoiceVisitor = Mockito.mock(ChoiceVisitor.class);
 
-        gameBook = new GameBook(mockedStoryDao, mockedPlayerDao, mockedChoiceVisitor);
+        gameBook = new GameBook(mockedStoryDao);
     }
 
     @BeforeEach
     void init() {
-        Mockito.reset(mockedStoryDao, mockedPlayerDao, mockedChoiceVisitor);
+        Mockito.reset(mockedStoryDao);
     }
 
     @Test

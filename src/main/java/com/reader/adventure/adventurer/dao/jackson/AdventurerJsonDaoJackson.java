@@ -9,15 +9,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 public class AdventurerJsonDaoJackson implements IAdventurerDao {
     private static final Logger logger = LogManager.getLogger(AdventurerJsonDaoJackson.class);
 
     private AdventurerJackson adventurer;
 
-    public AdventurerJsonDaoJackson() throws Exception {
-        this.loadAdventurer();
+    public AdventurerJsonDaoJackson(Reader reader) throws Exception {
+        this.loadAdventurer(reader);
     }
 
     public Adventurer getAdventurer() {
@@ -28,15 +28,13 @@ public class AdventurerJsonDaoJackson implements IAdventurerDao {
         this.adventurer = AdventurerMapper.INSTANCE.targetToSource(adventurer);
     }
 
-    private void loadAdventurer() throws Exception {
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try (InputStream in = AdventurerJsonDaoJackson.class.getResourceAsStream("/Adventurer.json")) {
-            if (in == null) {
-                throw new RuntimeException("Adventurer.json introuvable !");
-            }
-            adventurer = mapper.readValue(in, new TypeReference<AdventurerJackson>() {});
+    private void loadAdventurer(Reader reader) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            adventurer = mapper.readValue(reader, new TypeReference<AdventurerJackson>() {});
+        } catch (Exception e) {
+            logger.error("Erreur lors du chargement du fichier joueur", e);
+            throw new RuntimeException("Erreur lors du chargement du fichier joueur", e);
         }
     }
 

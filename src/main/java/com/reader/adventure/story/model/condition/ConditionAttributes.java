@@ -11,4 +11,12 @@ public record ConditionAttributes(AttributeKey attribute,
     public boolean evaluate(IConditionVisitor visitor, Adventurer adventurer) {
         return visitor.evaluate(this, adventurer);
     }
+
+    public String toString() {
+        return comparator.getSymbol() + " " + attribute.getName();
+    }
+
+    public String inverseToString() {
+        return comparator.getInverseSymbol() + " " + attribute.getName();
+    }
 }
