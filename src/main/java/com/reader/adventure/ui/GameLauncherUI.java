@@ -14,52 +14,78 @@ public class GameLauncherUI extends JFrame {
     public GameLauncherUI() {
         setTitle("Configuration du jeu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(550, 220);
+        setSize(550, 260);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout(10, 10));
 
-        JPanel panel = new JPanel(new GridLayout(3, 3, 5, 5));
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        panel.add(new JLabel("Fichier joueur :"));
+        JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.X_AXIS));
+        playerPanel.add(new JLabel("Fichier joueur : "));
         playerFileField = new JTextField();
-        panel.add(playerFileField);
+        Dimension fieldSize = new Dimension(300, playerFileField.getPreferredSize().height);
+        playerFileField.setPreferredSize(fieldSize);
+        playerFileField.setMaximumSize(fieldSize);
+        playerPanel.add(playerFileField);
         JButton browsePlayerBtn = new JButton("Parcourir...");
         browsePlayerBtn.addActionListener(e -> chooseFile(playerFileField));
-        panel.add(browsePlayerBtn);
+        playerPanel.add(Box.createHorizontalStrut(5));
+        playerPanel.add(browsePlayerBtn);
 
-        panel.add(new JLabel("Fichier histoire :"));
+        JPanel storyPanel = new JPanel();
+        storyPanel.setLayout(new BoxLayout(storyPanel, BoxLayout.X_AXIS));
+        storyPanel.add(new JLabel("Fichier histoire : "));
         storyFileField = new JTextField();
-        panel.add(storyFileField);
+        storyFileField.setPreferredSize(fieldSize);
+        storyFileField.setMaximumSize(fieldSize);
+        storyPanel.add(storyFileField);
         JButton browseStoryBtn = new JButton("Parcourir...");
         browseStoryBtn.addActionListener(e -> chooseFile(storyFileField));
-        panel.add(browseStoryBtn);
+        storyPanel.add(Box.createHorizontalStrut(5));
+        storyPanel.add(browseStoryBtn);
 
-        panel.add(new JLabel("Mode de choix :"));
+        JPanel choicePanel = new JPanel();
+        choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
+        choicePanel.add(new JLabel("Mode de choix : "));
 
-        JPanel choicePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        manualChoiceRadio = new JRadioButton("Manuel", true);
-        autoDiceRadio = new JRadioButton("Auto-dé");
+        manualChoiceRadio = new JRadioButton("Manuel");
+        autoDiceRadio = new JRadioButton("Auto-dé", true);
+
+        autoDiceRadio.addChangeListener(e -> {
+            playerPanel.setVisible(autoDiceRadio.isSelected());
+            playerPanel.revalidate();
+            playerPanel.repaint();
+        });
+
         ButtonGroup group = new ButtonGroup();
         group.add(manualChoiceRadio);
         group.add(autoDiceRadio);
+        choicePanel.add(Box.createHorizontalStrut(5));
         choicePanel.add(manualChoiceRadio);
+        choicePanel.add(Box.createHorizontalStrut(10));
         choicePanel.add(autoDiceRadio);
 
-        panel.add(choicePanel);
-        panel.add(new JLabel(""));
-
-        add(panel, BorderLayout.CENTER);
+        mainPanel.add(playerPanel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(storyPanel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(choicePanel);
 
         JButton startButton = new JButton("Démarrer l'aventure");
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.addActionListener(e -> {
             try {
                 startGame();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Erreur : " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Erreur : " + ex.getMessage());
                 throw new RuntimeException(ex);
             }
         });
-        add(startButton, BorderLayout.SOUTH);
+
+        getContentPane().add(mainPanel, BorderLayout.CENTER);
+        getContentPane().add(startButton, BorderLayout.SOUTH);
     }
 
     private void chooseFile(JTextField targetField) {
