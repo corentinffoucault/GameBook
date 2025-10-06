@@ -1,5 +1,7 @@
 package com.reader.adventure.ui;
 
+import com.reader.adventure.game.GameTypeKey;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -9,7 +11,9 @@ public class GameLauncherUI extends JFrame {
     private JTextField storyFileField;
     private JRadioButton manualChoiceRadio;
     private JRadioButton autoDiceRadio;
+    private JRadioButton exportRadio;
     private IGameOptionHandler gameOptionHandler;
+    private GameTypeKey gameTypeKey;
 
     public GameLauncherUI() {
         setTitle("Configuration du jeu");
@@ -52,20 +56,33 @@ public class GameLauncherUI extends JFrame {
 
         manualChoiceRadio = new JRadioButton("Manuel");
         autoDiceRadio = new JRadioButton("Auto-dé", true);
+        exportRadio = new JRadioButton("Export");
 
         autoDiceRadio.addChangeListener(e -> {
             playerPanel.setVisible(autoDiceRadio.isSelected());
             playerPanel.revalidate();
             playerPanel.repaint();
         });
+        autoDiceRadio.addActionListener(e -> {
+            gameTypeKey = GameTypeKey.AUTO;
+        });
+        manualChoiceRadio.addActionListener(e -> {
+            gameTypeKey = GameTypeKey.MANUAL;
+        });
+        exportRadio.addActionListener(e -> {
+            gameTypeKey = GameTypeKey.EXPORT;
+        });
 
         ButtonGroup group = new ButtonGroup();
         group.add(manualChoiceRadio);
         group.add(autoDiceRadio);
+        group.add(exportRadio);
         choicePanel.add(Box.createHorizontalStrut(5));
         choicePanel.add(manualChoiceRadio);
         choicePanel.add(Box.createHorizontalStrut(10));
         choicePanel.add(autoDiceRadio);
+        choicePanel.add(Box.createHorizontalStrut(15));
+        choicePanel.add(exportRadio);
 
         mainPanel.add(playerPanel);
         mainPanel.add(Box.createVerticalStrut(10));
@@ -73,7 +90,7 @@ public class GameLauncherUI extends JFrame {
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(choicePanel);
 
-        JButton startButton = new JButton("Démarrer l'aventure");
+        JButton startButton = new JButton("Go");
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.addActionListener(e -> {
             try {
@@ -102,7 +119,7 @@ public class GameLauncherUI extends JFrame {
         String storyFile = storyFileField.getText().trim();
 
         if (gameOptionHandler != null) {
-            GameOption gameOption = new GameOption(playerFile, storyFile, autoDiceRadio.isSelected());
+            GameOption gameOption = new GameOption(playerFile, storyFile, gameTypeKey);
             gameOptionHandler.onOptionSelected(gameOption);
         }
     }

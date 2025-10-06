@@ -13,10 +13,10 @@ public record ConditionAttributes(AttributeKey attribute,
     }
 
     public String toString() {
-        return comparator.getSymbol() + " " + attribute.getName();
+        return "jet " + comparator.getSymbol() + " " + attribute.getName();
     }
 
     public String inverseToString() {
-        return comparator.getInverseSymbol() + " " + attribute.getName();
+        return "jet " + comparator.getInverseSymbol() + " " + attribute.getName();
     }
 }

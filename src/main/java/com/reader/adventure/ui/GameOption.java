@@ -1,4 +1,6 @@
 package com.reader.adventure.ui;
 
-public record GameOption(String adventurerFile, String storyFile, boolean fullAutoTest ) {
+import com.reader.adventure.game.GameTypeKey;
+
+public record GameOption(String adventurerFile, String storyFile, GameTypeKey GameType ) {
 }

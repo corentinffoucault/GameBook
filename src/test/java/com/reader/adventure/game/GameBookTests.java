@@ -51,7 +51,7 @@ class GameBookTests {
 
         Exception exception = assertThrows(RuntimeException.class, () -> gameBook.getNodeById("999"));
 
-        assertEquals(exception.getMessage(), "Node with id 999 not found");
+        assertEquals("Node with id 999 not found", exception.getMessage());
         verify(mockedStoryDao).getNodeById("999");
     }
 }

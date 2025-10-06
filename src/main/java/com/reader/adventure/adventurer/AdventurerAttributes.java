@@ -29,7 +29,6 @@ public class AdventurerAttributes {
     }
 
     public static int getValue(Adventurer adventurer, AttributeKey key) {
-        System.out.println(key);
         Function<Adventurer, Integer> extractor = OPERATORS.get(key);
         if (extractor == null) throw new IllegalArgumentException("Aucun attribut pour la clé: " + key);
         return extractor.apply(adventurer);
