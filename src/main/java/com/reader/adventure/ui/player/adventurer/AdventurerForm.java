@@ -1,36 +1,38 @@
 package com.reader.adventure.ui.player.adventurer;
 
+import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.adventurer.model.Adventurer;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AdventurerForm extends JFrame {
-    private JTextField nameField;
+    private final JTextField nameField;
 
-    private JTextField agilityField;
-    private JTextField strengthField;
-    private JTextField intelligenceField;
-    private JTextField charismaField;
-    private JTextField courageField;
+    private final JSpinner agilityField;
+    private final JSpinner strengthField;
+    private final JSpinner intelligenceField;
+    private final JSpinner charismaField;
+    private final JSpinner courageField;
 
-    private JTextField attackField;
-    private JTextField parryField;
-    private JTextField throwingField;
-    private JTextField dodgeField;
-    private JTextField searchField;
+    private final JSpinner attackField;
+    private final JSpinner parryField;
+    private final JSpinner throwingField;
+    private final JSpinner dodgeField;
+    private final JSpinner searchField;
 
-    private JTextField inventivenessField;
-    private JTextField physicalMagicField;
-    private JTextField psychicMagicField;
-    private JTextField magicResistanceField;
+    private final JSpinner inventivenessField;
+    private final JSpinner physicalMagicField;
+    private final JSpinner psychicMagicField;
+    private final JSpinner magicResistanceField;
 
-    private JTextField goldField;
+    private final JSpinner goldField;
+    private final IAdventurerDao adventurerDao;
 
-    private Adventurer lastCreatedAdventurer;
     private IAdventurerHandler adventurerHandler;
 
-    public AdventurerForm() {
+    public AdventurerForm(IAdventurerDao adventurerDao) {
+        this.adventurerDao = adventurerDao;
         setTitle("Création d'un personnage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(450, 650);
@@ -38,98 +40,110 @@ public class AdventurerForm extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
+        Adventurer adventurer = this.adventurerDao.getAdventurer();
         // Champs
-        nameField = addField(panel, "Nom");
+        nameField = addTextField(panel, "Nom", adventurer.getName());
 
-        agilityField = addField(panel, "Agilité");
-        strengthField = addField(panel, "Force");
-        intelligenceField = addField(panel, "Intelligence");
-        charismaField = addField(panel, "Charisme");
-        courageField = addField(panel, "Courage");
+        agilityField = addCompField(panel, "Agilité", adventurer.getAgility());
+        strengthField = addCompField(panel, "Force", adventurer.getStrength());
+        intelligenceField = addCompField(panel, "Intelligence", adventurer.getIntelligence());
+        charismaField = addCompField(panel, "Charisme", adventurer.getCharisma());
+        courageField = addCompField(panel, "Courage", adventurer.getCourage());
 
-        attackField = addField(panel, "Attaque");
-        parryField = addField(panel, "Parade");
-        throwingField = addField(panel, "Lancer");
-        dodgeField = addField(panel, "Esquive");
-        searchField = addField(panel, "Fouille");
+        attackField = addCompField(panel, "Attaque", adventurer.getAttack());
+        parryField = addCompField(panel, "Parade", adventurer.getParry());
+        throwingField = addCompField(panel, "Lancer", adventurer.getThrowing());
+        dodgeField = addCompField(panel, "Esquive", adventurer.getDodge());
+        searchField = addCompField(panel, "Fouille", adventurer.getSearch());
 
-        inventivenessField = addField(panel, "Inventivité");
-        physicalMagicField = addField(panel, "Magie Physique");
-        psychicMagicField = addField(panel, "Magie Psychique");
-        magicResistanceField = addField(panel, "Résistance Magique");
+        inventivenessField = addCompField(panel, "Inventivité", adventurer.getInventiveness());
+        physicalMagicField = addCompField(panel, "Magie Physique", adventurer.getPhysical_magic());
+        psychicMagicField = addCompField(panel, "Magie Psychique", adventurer.getPsychic_magic());
+        magicResistanceField = addCompField(panel, "Résistance Magique", adventurer.getMagic_resistance());
 
-        goldField = addField(panel, "Or");
+        goldField = addNumberField(panel, "Or", adventurer.getGold(), 1000);
 
         // Boutons
+        JPanel buttonPanel = addCreateButton();
+
+        getContentPane().add(new JScrollPane(panel), BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private JPanel addCreateButton() {
         JPanel buttonPanel = new JPanel();
         JButton createButton = new JButton("Créer le personnage");
 
         createButton.addActionListener(e -> {
-            lastCreatedAdventurer = createAdventurer();
+            Adventurer lastCreatedAdventurer = createAdventurer();
             JOptionPane.showMessageDialog(AdventurerForm.this,
                     "Personnage " + lastCreatedAdventurer.getName() + " créé !");
             try {
-                goToGame(lastCreatedAdventurer);
+                goToGame();
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         });
 
         buttonPanel.add(createButton);
-
-        getContentPane().add(new JScrollPane(panel), BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        return buttonPanel;
     }
 
     public void setAdventurerHandler(IAdventurerHandler adventurerHandler) {
         this.adventurerHandler = adventurerHandler;
     }
 
-    private JTextField addField(JPanel panel, String label) {
+    private JTextField addTextField(JPanel panel, String label, String initialValue) {
         panel.add(new JLabel(label));
-        JTextField field = new JTextField();
+        JTextField field = new JTextField(initialValue);
+        panel.add(field);
+        return field;
+    }
+
+    private JSpinner addCompField(JPanel panel, String label, int initialValue) {
+        panel.add(new JLabel(label));
+        JSpinner field = new JSpinner(new SpinnerNumberModel(initialValue, 0, 20, 1));
+        panel.add(field);
+        return field;
+    }
+
+    private JSpinner addNumberField(JPanel panel, String label, int initialValue, int maxValue) {
+        panel.add(new JLabel(label));
+        JSpinner field = new JSpinner(new SpinnerNumberModel(initialValue, 0, maxValue, 1));
         panel.add(field);
         return field;
     }
 
     private Adventurer createAdventurer() {
-        Adventurer p = new Adventurer();
-        p.setName(nameField.getText());
+        Adventurer adventurer = new Adventurer();
+        adventurer.setName(nameField.getText());
 
-        p.setAgility(parseInt(agilityField));
-        p.setStrength(parseInt(strengthField));
-        p.setIntelligence(parseInt(intelligenceField));
-        p.setCharisma(parseInt(charismaField));
-        p.setCourage(parseInt(courageField));
+        adventurer.setAgility((int) agilityField.getValue());
+        adventurer.setStrength((int) strengthField.getValue());
+        adventurer.setIntelligence((int) intelligenceField.getValue());
+        adventurer.setCharisma((int) charismaField.getValue());
+        adventurer.setCourage((int) courageField.getValue());
 
-        p.setAttack(parseInt(attackField));
-        p.setParry(parseInt(parryField));
-        p.setThrowing(parseInt(throwingField));
-        p.setDodge(parseInt(dodgeField));
-        p.setSearch(parseInt(searchField));
+        adventurer.setAttack((int) attackField.getValue());
+        adventurer.setParry((int) parryField.getValue());
+        adventurer.setThrowing((int) throwingField.getValue());
+        adventurer.setDodge((int) dodgeField.getValue());
+        adventurer.setSearch((int) searchField.getValue());
 
-        p.setInventiveness(parseInt(inventivenessField));
-        p.setPhysical_magic(parseInt(physicalMagicField));
-        p.setPsychic_magic(parseInt(psychicMagicField));
-        p.setMagic_resistance(parseInt(magicResistanceField));
+        adventurer.setInventiveness((int) inventivenessField.getValue());
+        adventurer.setPhysical_magic((int) physicalMagicField.getValue());
+        adventurer.setPsychic_magic((int) psychicMagicField.getValue());
+        adventurer.setMagic_resistance((int) magicResistanceField.getValue());
 
-        p.setGold(parseInt(goldField));
+        adventurer.setGold((int) goldField.getValue());
 
-        return p;
+        adventurerDao.saveAdventurer(adventurer);
+
+        return adventurer;
     }
 
-    private Integer parseInt(JTextField field) {
-        try {
-            return Integer.parseInt(field.getText());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private void goToGame(Adventurer adventurer) throws Exception {
+    private void goToGame() throws Exception {
         dispose();
-        if (adventurerHandler != null) {
-            adventurerHandler.onAdventurerCompleted(adventurer);
-        }
+        adventurerHandler.onAdventurerCompleted();
     }
 }

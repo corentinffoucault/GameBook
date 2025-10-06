@@ -16,8 +16,7 @@ public class AdventurerJsonDaoJackson implements IAdventurerDao {
 
     private AdventurerJackson adventurer;
 
-    public AdventurerJsonDaoJackson(Reader reader) throws Exception {
-        this.loadAdventurer(reader);
+    public AdventurerJsonDaoJackson() {
     }
 
     public Adventurer getAdventurer() {
@@ -28,7 +27,7 @@ public class AdventurerJsonDaoJackson implements IAdventurerDao {
         this.adventurer = AdventurerMapper.INSTANCE.targetToSource(adventurer);
     }
 
-    private void loadAdventurer(Reader reader) {
+    public void loadAdventurer(Reader reader) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             adventurer = mapper.readValue(reader, new TypeReference<AdventurerJackson>() {});

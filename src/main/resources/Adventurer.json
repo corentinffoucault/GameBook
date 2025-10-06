@@ -1,5 +1,21 @@
 {
   "name": "Aedu",
   "agility": 10,
+  "strength": 10,
+  "intelligence": 10,
+  "charisma": 10,
+  "courage": 10,
+
+  "attack": 10,
+  "parry": 10,
+  "throwing": 10,
+  "dodge": 10,
+  "search": 10,
+
+  "inventiveness": 10,
+  "physical_magic": 10,
+  "psychic_magic": 10,
+  "magic_resistance": 10,
+
   "gold": 100
 }

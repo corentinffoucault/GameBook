@@ -10,15 +10,13 @@ import org.odftoolkit.odfdom.dom.element.text.TextPElement;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.dom.style.props.OdfParagraphProperties;
 import org.odftoolkit.odfdom.dom.style.props.OdfTextProperties;
-import org.odftoolkit.odfdom.incubator.doc.office.OdfOfficeStyles;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ExporterOdtTests {
@@ -26,7 +24,8 @@ public class ExporterOdtTests {
     @Test
     void apply_choice_direct() throws Exception {
         ExporterOdt example = new ExporterOdt();
-        IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile("", "/nodes.json"));
+        IStoryDao storyDao = new StoryJsonDaoJackson();
+        storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
         example.print(storyDao.getStory(), Paths.get("example.odt"));
 
     }
@@ -35,7 +34,8 @@ public class ExporterOdtTests {
     void shouldExportOdtWithCorrectFormatting() throws Exception {
         ExporterOdt exporter = new ExporterOdt();
 
-        IStoryDao storyDao = new StoryJsonDaoJackson(FileLoader.loadFile("", "/nodes.json"));
+        IStoryDao storyDao = new StoryJsonDaoJackson();
+        storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
 
         Path tmpFile = Files.createTempFile("export-formatting-", ".odt");
 
@@ -68,13 +68,11 @@ public class ExporterOdtTests {
 
             TextPElement lineBreakParagraph = (TextPElement) paragraphs.item(2);
             assertEquals(1, lineBreakParagraph.getChildNodes().getLength(), "Le paragraphe doit contenir un seul élément");
-            assertTrue(lineBreakParagraph.getFirstChild() instanceof TextLineBreakElement,
-                    "Le paragraphe doit contenir un TextLineBreakElement");
+            assertInstanceOf(TextLineBreakElement.class, lineBreakParagraph.getFirstChild(), "Le paragraphe doit contenir un TextLineBreakElement");
 
             TextPElement lineBreakParagraph2 = (TextPElement) paragraphs.item(3);
             assertEquals(1, lineBreakParagraph2.getChildNodes().getLength(), "Le paragraphe doit contenir un seul élément");
-            assertTrue(lineBreakParagraph2.getFirstChild() instanceof TextLineBreakElement,
-                    "Le paragraphe doit contenir un TextLineBreakElement");
+            assertInstanceOf(TextLineBreakElement.class, lineBreakParagraph2.getFirstChild(), "Le paragraphe doit contenir un TextLineBreakElement");
 
             TextPElement choiceParagraph = (TextPElement) paragraphs.item(4);
             assertEquals("Vous avez trop envie de vous mettre au chaud à la taverne et manger une bonne soupe chaude avec un morceau de boudin. Vous dirigez donc vos pas vers le nord en empruntant *** Rendez vous en Noeud 1.1.", choiceParagraph.getTextContent());

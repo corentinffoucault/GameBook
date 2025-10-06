@@ -20,10 +20,6 @@ public class StoryJsonDaoJackson implements IStoryDao {
 
     private Map<String, NodeJackson> nodesById;
 
-    public StoryJsonDaoJackson(Reader reader) throws Exception {
-        this.loadNodes(reader);
-    }
-
     public INode getNodeById(String id) {
         return NodeMapper.INSTANCE.sourceToTarget(nodesById.get(id));
     }
@@ -32,7 +28,7 @@ public class StoryJsonDaoJackson implements IStoryDao {
         return NodeMapper.INSTANCE.sourceToTarget(nodesById);
     }
 
-    private void loadNodes(Reader reader) throws Exception {
+    public void loadNodes(Reader reader) throws Exception {
         try {
             ObjectMapper mapper = new ObjectMapper();
             List<NodeJackson> nodes = mapper.readValue(reader, new TypeReference<>() {});

@@ -7,11 +7,11 @@ import java.awt.*;
 import java.io.File;
 
 public class GameLauncherUI extends JFrame {
-    private JTextField playerFileField;
-    private JTextField storyFileField;
-    private JRadioButton manualChoiceRadio;
-    private JRadioButton autoDiceRadio;
-    private JRadioButton exportRadio;
+    private final JTextField playerFileField;
+    private final JTextField storyFileField;
+    private final JRadioButton manualChoiceRadio;
+    private final JRadioButton autoDiceRadio;
+    private final JRadioButton exportRadio;
     private IGameOptionHandler gameOptionHandler;
     private GameTypeKey gameTypeKey;
 
@@ -56,6 +56,7 @@ public class GameLauncherUI extends JFrame {
 
         manualChoiceRadio = new JRadioButton("Manuel");
         autoDiceRadio = new JRadioButton("Auto-dé", true);
+        gameTypeKey = GameTypeKey.AUTO;
         exportRadio = new JRadioButton("Export");
 
         autoDiceRadio.addChangeListener(e -> {
