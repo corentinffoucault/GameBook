@@ -2,19 +2,29 @@ package com.reader.adventure.story.export.odt;
 
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
+import com.reader.adventure.story.model.choice.DirectionChoice;
+import com.reader.adventure.story.model.choice.IChoice;
+import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.ui.player.FileLoader;
 import org.junit.jupiter.api.Test;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
+import org.odftoolkit.odfdom.dom.element.office.OfficeTextElement;
 import org.odftoolkit.odfdom.dom.element.text.TextLineBreakElement;
 import org.odftoolkit.odfdom.dom.element.text.TextPElement;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.dom.style.props.OdfParagraphProperties;
 import org.odftoolkit.odfdom.dom.style.props.OdfTextProperties;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
+import org.odftoolkit.odfdom.incubator.doc.text.OdfTextSpan;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,73 +32,92 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ExporterOdtTests {
 
     @Test
-    void apply_choice_direct() throws Exception {
-        ExporterOdt example = new ExporterOdt();
-        IStoryDao storyDao = new StoryJsonDaoJackson();
-        storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
-        example.print(storyDao.getStory(), Paths.get("example.odt"));
-
-    }
-
-    @Test
     void shouldExportOdtWithCorrectFormatting() throws Exception {
         ExporterOdt exporter = new ExporterOdt();
 
         IStoryDao storyDao = new StoryJsonDaoJackson();
         storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
-
+        Map<String, INode> nodes = storyDao.getStory();
+        
         Path tmpFile = Files.createTempFile("export-formatting-", ".odt");
-
-        exporter.print(storyDao.getStory(), tmpFile);
+        exporter.print(nodes, tmpFile);
 
         try (OdfTextDocument doc = OdfTextDocument.loadDocument(tmpFile.toFile())) {
+            assertStyle(doc);
 
-            OdfStyle titleStyle = doc.getStylesDom().getOfficeStyles().getStyle("titleStyle", OdfStyleFamily.Paragraph);
-            assertEquals("titleStyle", titleStyle.getStyleNameAttribute());
-            assertEquals("center", titleStyle.getProperty(OdfParagraphProperties.TextAlign));
-            assertEquals("bold", titleStyle.getProperty(OdfTextProperties.FontWeight));
-
-            OdfStyle bodyStyle = doc.getStylesDom().getOfficeStyles().getStyle("bodyStyle", OdfStyleFamily.Paragraph);
-            assertEquals("justify", bodyStyle.getProperty(OdfParagraphProperties.TextAlign));
-            assertEquals("start", bodyStyle.getProperty(OdfParagraphProperties.TextAlignLast));
-            assertEquals("false", bodyStyle.getProperty(OdfParagraphProperties.JustifySingleWord));
-
-            OdfStyle choiceStyle = doc.getStylesDom().getOfficeStyles().getStyle("choiceStyle", OdfStyleFamily.Paragraph);
-            assertEquals("justify", choiceStyle.getProperty(OdfParagraphProperties.TextAlign));
-
-            var root = doc.getContentRoot();
-            var paragraphs = root.getElementsByTagName("text:p");
-
-            TextPElement titleParagraph = (TextPElement) paragraphs.item(0);
-            assertEquals("titleStyle", titleParagraph.getStyleName());
-            assertEquals("Noeud 1", titleParagraph.getTextContent());
-
-            TextPElement textParagraph = (TextPElement) paragraphs.item(1);
-            assertEquals("Arrivé du héros par le sud, il fait froid, la neige a déployé son manteau sur la ville.", textParagraph.getTextContent());
-
-            TextPElement lineBreakParagraph = (TextPElement) paragraphs.item(2);
-            assertEquals(1, lineBreakParagraph.getChildNodes().getLength(), "Le paragraphe doit contenir un seul élément");
-            assertInstanceOf(TextLineBreakElement.class, lineBreakParagraph.getFirstChild(), "Le paragraphe doit contenir un TextLineBreakElement");
-
-            TextPElement lineBreakParagraph2 = (TextPElement) paragraphs.item(3);
-            assertEquals(1, lineBreakParagraph2.getChildNodes().getLength(), "Le paragraphe doit contenir un seul élément");
-            assertInstanceOf(TextLineBreakElement.class, lineBreakParagraph2.getFirstChild(), "Le paragraphe doit contenir un TextLineBreakElement");
-
-            TextPElement choiceParagraph = (TextPElement) paragraphs.item(4);
-            assertEquals("Vous avez trop envie de vous mettre au chaud à la taverne et manger une bonne soupe chaude avec un morceau de boudin. Vous dirigez donc vos pas vers le nord en empruntant *** Rendez vous en Noeud 1.1.", choiceParagraph.getTextContent());
-            var spans = choiceParagraph.getElementsByTagName("text:span");
-            boolean hasBoldSpan = false;
-            for (int j = 0; j < spans.getLength(); j++) {
-                var span = spans.item(j);
-                var styleAttr = span.getAttributes().getNamedItem("text:style-name");
-                if (styleAttr != null && styleAttr.getNodeValue().toLowerCase().contains("strong")) {
-                    hasBoldSpan = true;
-                    break;
-                }
+            OfficeTextElement root = doc.getContentRoot();
+            NodeList paragraphs = root.getElementsByTagName("text:p");
+            int index = 0;
+            for (Map.Entry<String, INode> entry : nodes.entrySet()) {
+                index = assertNode(paragraphs, entry.getValue(), index);
             }
-            assertTrue(hasBoldSpan, "Le span de direction doit être en gras");
 
         }
+    }
+
+    void assertStyle(OdfTextDocument doc) throws IOException, SAXException {
+        OdfStyle titleStyle = doc.getStylesDom().getOfficeStyles().getStyle("titleStyle", OdfStyleFamily.Paragraph);
+        assertEquals("titleStyle", titleStyle.getStyleNameAttribute());
+        assertEquals("center", titleStyle.getProperty(OdfParagraphProperties.TextAlign));
+        assertEquals("bold", titleStyle.getProperty(OdfTextProperties.FontWeight));
+
+        OdfStyle bodyStyle = doc.getStylesDom().getOfficeStyles().getStyle("bodyStyle", OdfStyleFamily.Paragraph);
+        assertEquals("justify", bodyStyle.getProperty(OdfParagraphProperties.TextAlign));
+        assertEquals("start", bodyStyle.getProperty(OdfParagraphProperties.TextAlignLast));
+        assertEquals("false", bodyStyle.getProperty(OdfParagraphProperties.JustifySingleWord));
+
+        OdfStyle choiceStyle = doc.getStylesDom().getOfficeStyles().getStyle("choiceStyle", OdfStyleFamily.Paragraph);
+        assertEquals("justify", choiceStyle.getProperty(OdfParagraphProperties.TextAlign));
+    }
+
+    int assertNode(NodeList paragraphs, INode node, int index) {
+        assertTitle(paragraphs, index++, node.getId());
+        index = assertNode(paragraphs, index, node.getText());
+        assertJumpLine(paragraphs, index++);
+
+        for (IChoice choice : node.getChoice()) {
+            index = assertChoice(paragraphs, choice, index);
+        }
+
+        return index;
+    }
+
+    void assertTitle(NodeList paragraphs, int index, String textContent) {
+        TextPElement titleParagraph = (TextPElement) paragraphs.item(index);
+        assertEquals("titleStyle", titleParagraph.getStyleName());
+        assertEquals(textContent, titleParagraph.item(0).getTextContent());
+    }
+
+    int assertNode(NodeList paragraphs, int index, String textContent) {
+        for (String text : textContent.split("\n")) {
+            TextPElement titleParagraph = (TextPElement) paragraphs.item(index++);
+            assertEquals("bodyStyle", titleParagraph.getStyleName());
+            assertEquals(text, titleParagraph.item(0).getTextContent());
+            assertJumpLine(paragraphs, index++);
+        }
+        return index;
+    }
+
+    void assertJumpLine(NodeList paragraphs, int index) {
+        Node lineBreakParagraph = paragraphs.item(index);
+        assertEquals(1, lineBreakParagraph.getChildNodes().getLength());
+        assertInstanceOf(TextLineBreakElement.class, lineBreakParagraph.getFirstChild());
+    }
+
+    int assertChoice(NodeList paragraphs, IChoice choice, int index) {
+        List<DirectionChoice> directions = choice.getAllDirection();
+
+        for (DirectionChoice direction : directions) {
+            TextPElement choiceParagraph = (TextPElement) paragraphs.item(index++);
+            assertEquals("choiceStyle", choiceParagraph.getStyleName());
+            assertEquals(direction.text() + " Rendez vous en ", choiceParagraph.item(0).getTextContent());
+            assertEquals(direction.nextNode(), choiceParagraph.item(1).getTextContent());
+            assertEquals("Strong Emphasis", ((OdfTextSpan) choiceParagraph.item(1)).getStyleName());
+            assertEquals(".", choiceParagraph.item(2).getTextContent());
+            assertJumpLine(paragraphs, index++);
+        }
+
+        return index;
     }
 }
 

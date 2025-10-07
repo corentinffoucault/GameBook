@@ -5,7 +5,6 @@ import com.reader.adventure.story.model.choice.DirectionChoice;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.node.INode;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
-import org.odftoolkit.odfdom.dom.element.office.OfficeAutomaticStylesElement;
 import org.odftoolkit.odfdom.dom.element.office.OfficeTextElement;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.dom.style.props.OdfParagraphProperties;
@@ -85,14 +84,15 @@ public class ExporterOdt implements IExporter {
         for (DirectionChoice direction : directions) {
             addDirection(document, direction, styleByName);
             OdfTextParagraph lineBreak = document.newParagraph();
+            lineBreak.newTextLineBreakElement();
         }
     }
 
     public void addDirection(OdfTextDocument document, DirectionChoice direction, Map<String, OdfStyle> styleByName) throws Exception {
-        OdfTextParagraph p = document.newParagraph(direction.text() + " Rendez vous en ");
+        OdfTextParagraph p = document.newParagraph(direction.text());
+        p.addContent(" Rendez vous en ");
         p.addStyledSpan("Strong Emphasis", direction.nextNode());
         p.addContent(".");
-        p.setProperty(OdfParagraphProperties.TextAlign, "justify");
         p.setStyleName(styleByName.get("choiceStyle").getStyleNameAttribute());
     }
 }
