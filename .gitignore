@@ -1,6 +1,7 @@
 .idea
 .gradle
 build
+.vs
 
 # Log file
 *.log
