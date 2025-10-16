@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
     implementation(libs.guava)
+    implementation("org.apache.pdfbox:pdfbox:3.0.5")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.20")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.20.0")
@@ -17,6 +18,7 @@ dependencies {
     implementation("org.odftoolkit:odfdom-java:0.12.0")
     testImplementation("org.mockito:mockito-core:5.19.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
+    testImplementation("de.redsix:pdfcompare:1.2.5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.4")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 }

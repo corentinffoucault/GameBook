@@ -1,0 +1,158 @@
+{
+  "author": "Author",
+  "firstNode": "Noeud 1",
+  "nodes": [
+    {
+      "id": "Noeud 1",
+      "title": "Arrivé",
+      "text": "Arrivé du héros par le sud, il fait froid, la neige a déployé son manteau sur la ville.",
+      "choice": [
+        {
+          "type": "direct",
+          "name": "Aller à la taverne du centre?",
+          "text": "Vous avez trop envie de vous mettre au chaud à la taverne et manger une bonne soupe chaude avec un morceau de boudin. Vous dirigez donc vos pas vers le nord en empruntant ***",
+          "next": "Noeud 1.1"
+        },
+        {
+          "type": "direct",
+          "name": "Se diriger vers l'est et les commerces",
+          "text": "Vous avez quelques babioles à vendre et/ou des provisions à refaire. Vous savez qu'un donjon facile se trouve à l'est. De plus quelques échoppes locales dont des boucheries pourraient encore être ouvertes et proposer le célèbre boudin de Valtordu.",
+          "next": "Noeud 1.2"
+        },
+        {
+          "type": "conditional",
+          "name": "Sauter",
+          "text": "Vous tentez de sauter",
+          "next": "Noeud 1",
+          "nextFail": "Noeud 1",
+          "condition": {
+            "type": "attribute",
+            "attribute": "AG",
+            "comparator": "<"
+          },
+          "success": "Le saut est réussis",
+          "fail": "Le saut est échoué"
+        },
+        {
+          "type": "conditional",
+          "name": "Payer",
+          "text": "Vous payez",
+          "next": "Noeud 1",
+          "nextFail": "Noeud 1",
+          "condition": {
+            "type": "Gold",
+            "value": 10,
+            "comparator": "<"
+          },
+          "success": "Vous avez assez d'argent",
+          "fail": "Vous n'avez pas assez d'argent"
+        }
+      ]
+    },
+    {
+      "id": "Noeud 1.1",
+      "title": "La Taverne",
+      "text": "La taverne est chaleureuse, l'odeur de soupe est réconfortante. Un musicien joue un air plaintif.",
+      "choice": [
+        {
+          "type": "direct",
+          "name": "Commander une soupe",
+          "text": "Vous commandez une soupe fumante et engagez la conversation avec le tavernier.",
+          "next": "Noeud Fini"
+        },
+        {
+          "type": "direct",
+          "name": "Sortir et aller au donjon",
+          "text": "La curiosité l'emporte, vous foncez vers le donjon à l'est.",
+          "next": "Noeud 1.2"
+        }
+      ]
+    },
+    {
+      "id": "Noeud 1.2",
+      "title": "Les Échoppes de l'Est",
+      "text": "Les portes sont ouvertes, on voit des habitants affairés à changer la marchandise avant l'hiver.",
+      "choice": [
+        {
+          "type": "direct",
+          "name": "Explorer le donjon",
+          "text": "Vous partez vers l'entrée du donjon, épée à la main.",
+          "next": "Noeud Fini"
+        }
+      ]
+    },
+    {
+      "id": "Noeud Fini",
+      "title": "Fin",
+      "text": "Fin de l'exemple. Merci d'avoir joué !",
+      "choice": []
+    },
+    {
+      "id": "Noeud 3.16",
+      "title": "Seigneur",
+      "text": "Vous décidez qu'il est temps de rendre visite au seigneur, déjà pour avoir une ambauche officielle, mais aussi, peut être, pour lui faire part de vos premières observations et soupçons.\nA l'entrée du chateau, vous croisez Grégoir qui vous salue.\nIl vous accompagne dans les couloirs jusqu'à la salle d'audience où le seigneur est assis sur un siège en bois lourd et massif. La pièce est richement décorée et agréablement chauffée par une cheminée ronronnante.\nSur ses genoux, une jeune femme qui a clairement 20 ans de moins que lui, si ce n'est plus.\nGrégoir s'avance et vous annonce :\n'Seigneur Jeanfort, j'amène ici un(e) aventurier(e) qui a décidé de traquer le coupable de la série de meurtres que subit le village depuis une demi-décade maintenant.'\nLe seigneur ne semble pas avoir entendu grand chose, occupé qu'il est à batifoler avec sa concubine.\nIl finit par remarquer la présence de Grégoir\n'Ha Grégoir, vous voilà. Faites quérir Kintoch... J'ai besoin de ses services!'\n'Monseigneur, je vous rappelle que nous n'avons plus de ses nouvelles depuis plus d'une décade... Il était partit chercher des ingrédient pour vos requêtes justement!\nD'ailleurs il était assez remonté quand je l'ai vu. Mais je suis ici pour vous faire part d'une affaire bien plus urgente que... Que cela.\nNous avons déjà 5 morts, sans doute 6 au rythme de 1 par jour. Aujourd'hui nous n'en avons pas encore ressencé.\nEt defait, cet(te) aventurier(e) a pris la charge de résoudre ce problème et requiert audience.'\n'Il n'est toujours pas revenu?'\nIl congédie sa concubine et après quelques instants s'intéresse enfin à vous.\n'Vous traquez donc le vampire dont j'ai entendu parler?' Il vous dévisage et vous juge.\nSi vous m'apportez la preuve de la mort du coupable avec des arguments irrévocables, je vous promet 500 pièces d'or si vous résolvez cela d'ici demain soir.\nMais la somme sera réduite de moitié pour chaque journée et mort supplémentaire... Cela devrait vous motiver à vous presser.'\nAprès un court instant, alors que vous vous apprétiez à tourner les talons au vu du ton impérieux du seigneur, celui-ci ajoute :\n'Grégoir, allez quand même voire dans les appartements de Kintoch s'il est revenu. Il pourrait vous aider et il arrêterait de râler!'",
+      "choice": [
+        {
+          "type": "direct",
+          "name": "Négocier",
+          "text": "Vous avez la négoce dans le sang et réussissez un jet de CHA",
+          "next": "Noeud 3.16.1"
+        },
+        {
+          "type": "direct",
+          "name": "Théorie",
+          "text": "Vous avez déjà visité d'autres lieux avant de venir voir le seigneur. vous avez donc peut être une idée du coupable et de sa motivation.\n    Deux mots spécifiques donc. Notez le nombre de lettre de chaque mot. Multipliez les et entrez ce code.",
+          "next": "Noeud 64"
+        },
+        {
+          "type": "direct",
+          "name": "Accompagner",
+          "text": "Proposer à Grégoir de l'accompagner aux appartements du mage",
+          "next": "Noeud 3.16.2"
+        },
+        {
+          "type": "direct",
+          "name": "L'étudiante",
+          "text": "Interroger les gardes au sujet de Liane Boitier",
+          "next": "Noeud 3.11"
+        },
+        {
+          "type": "direct",
+          "name": "Célia de Tartomielle",
+          "text": "Se rendre chez 'Me Connasse' pour questionner la bonne et chercher des indices.",
+          "next": "Noeud 3.12"
+        },
+        {
+          "type": "direct",
+          "name": "Le pêcheur",
+          "text": "Aller examiner le moulin, et examiner le corps avec la guérisseuse.",
+          "next": "Noeud 3.13"
+        },
+        {
+          "type": "direct",
+          "name": "Jean michel Fer blanc",
+          "text": "Aller voir le légume et interroger sa femme.",
+          "next": "Noeud 3.14"
+        },
+        {
+          "type": "direct",
+          "name": "Aliz",
+          "text": "Essayer de parler avec le boulanger et sa femme au sujet de leur fille et s'ils l'autorisent, inspecter la chambre.",
+          "next": "Noeud 3.15"
+        },
+        {
+          "type": "direct",
+          "name": "Taverne",
+          "text": "(seulement comme 2e piste) passer par la taverne pour prendre un petit casse croute pour la suite de la journée",
+          "next": "Noeud 3.17"
+        },
+        {
+          "type": "direct",
+          "name": "Fin de la journée",
+          "text": "Vous avez épuisé votre compte de scènes à examiner aujourd'hui et vous en retournez à l'auberge",
+          "next": "Noeud 4"
+        }
+      ]
+    }
+  ]
+}

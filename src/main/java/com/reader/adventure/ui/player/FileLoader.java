@@ -16,7 +16,7 @@ public class FileLoader {
                 if (filePath.isEmpty()) {
                     InputStream in = FileLoader.class.getResourceAsStream(alternativeResource);
                     if (in == null) {
-                        throw new RuntimeException("nodes.json introuvable dans resources !");
+                        throw new RuntimeException(alternativeResource + " introuvable dans resources !");
                     }
                     return new InputStreamReader(in, StandardCharsets.UTF_8);
                 }
