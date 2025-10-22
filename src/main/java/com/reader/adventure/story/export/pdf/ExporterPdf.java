@@ -42,9 +42,7 @@ public class ExporterPdf implements IExporter {
         writeTextWithWrap(doc, pdfWriter, node.getId(), fontTitle);
         pdfWriter.jumpLine();
         for (String paragraph : node.getText().split("\n")) {
-            if (!paragraph.trim().isEmpty()) {
-                writeTextWithWrap(doc, pdfWriter, paragraph, fontBody);
-            }
+            writeTextWithWrap(doc, pdfWriter, paragraph, fontBody);
             pdfWriter.jumpLine();
         }
         pdfWriter.jumpLine();
@@ -61,7 +59,8 @@ public class ExporterPdf implements IExporter {
                 writeTextWithWrap(doc, pdfWriter, parts[i], fontBody);
                 pdfWriter.jumpLine();
             }
-            writeTextWithWrap(doc, pdfWriter, parts[parts.length - 1], fontBody);
+            String lastPart = parts[parts.length - 1];
+            writeTextWithWrap(doc, pdfWriter, lastPart, fontBody);
             pdfWriter.jumpLine();
             writeTextWithWrap(doc, pdfWriter, " Rendez vous en " + dir.nextNode() + ".", fontDirection);
             pdfWriter.jumpLine();
@@ -72,38 +71,19 @@ public class ExporterPdf implements IExporter {
                                    PdfWriter pdfWriter,
                                    String text,
                                    FontDetail font) throws IOException {
-        float maxWidth = pdfWriter.getPageWidth();
-        List<String> lines = wrapText(text, font, maxWidth);
-        for (int i = 0; i < lines.size() - 1; i++) {
-            pdfWriter.assertTextInPage(doc);
-            pdfWriter.addText(font, lines.get(i));
-            pdfWriter.jumpLine();
+        if (text.trim().isEmpty()) {
+            return;
         }
-        pdfWriter.assertTextInPage(doc);
-        pdfWriter.addText(font, lines.getLast());
+        PdfBlock block = wrapText(text, font, pdfWriter);
+        pdfWriter.writeMultipleLines(doc, block);
     }
 
-    private List<String> wrapText(String text, FontDetail font, float maxWidth) throws IOException {
-        List<String> lines = new ArrayList<>();
+    private PdfBlock wrapText(String text, FontDetail font, PdfWriter pdfWriter) throws IOException {
         String[] words = text.trim().split(" ");
-        StringBuilder line = new StringBuilder(words[0]);
-        float currentWidth = font.getSpaceWidthForWord(line.toString());
+        PdfBlock block = new PdfBlock(words[0], font, pdfWriter.getPageWidth());
         for (int index = 1; index < words.length; index++) {
-            String word = words[index];
-            float wordWith = font.getSpaceWidthForWord(words[index]);
-            if ((currentWidth + font.getSpaceWidth() + wordWith) > maxWidth) {
-                lines.add(line.toString());
-                line = new StringBuilder(word);
-                currentWidth = wordWith;
-            } else {
-                line.append(" ");
-                line.append(word);
-                currentWidth += font.getSpaceWidth() + wordWith;
-            }
+            block.addWord(words[index]);
         }
-        if (!line.isEmpty()) {
-            lines.add(line.toString());
-        }
-        return lines;
+        return block;
     }
 }

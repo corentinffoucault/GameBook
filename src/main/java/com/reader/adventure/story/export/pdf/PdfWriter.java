@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PdfWriter
 {
@@ -42,6 +43,23 @@ public class PdfWriter
     public void jumpLine() {
         goToLine();
         this.y -= this.lineHeight;
+    }
+
+    public void writeMultipleLines(PDDocument doc, PdfBlock block) throws IOException {
+        List<PdfLine> lines = block.getLines();
+        for (int i = 0; i < lines.size() - 1; i++) {
+            assertTextInPage(doc);
+            writeLine(lines.get(i));
+            jumpLine();
+        }
+        assertTextInPage(doc);
+        writeLine(lines.getLast());
+    }
+
+    public void writeLine(PdfLine line) throws IOException {
+        for (PdfPartLine part: line.getParts()) {
+            addText(part.getFont(), part.getText().toString());
+        }
     }
 
     public void assertTextInPage(PDDocument doc) throws IOException {
