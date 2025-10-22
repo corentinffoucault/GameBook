@@ -42,7 +42,9 @@ public class ExporterPdf implements IExporter {
         writeTextWithWrap(doc, pdfWriter, node.getId(), fontTitle);
         pdfWriter.jumpLine();
         for (String paragraph : node.getText().split("\n")) {
-            writeTextWithWrap(doc, pdfWriter, paragraph, fontBody);
+            if (!paragraph.trim().isEmpty()) {
+                writeTextWithWrap(doc, pdfWriter, paragraph, fontBody);
+            }
             pdfWriter.jumpLine();
         }
         pdfWriter.jumpLine();
@@ -83,21 +85,20 @@ public class ExporterPdf implements IExporter {
 
     private List<String> wrapText(String text, FontDetail font, float maxWidth) throws IOException {
         List<String> lines = new ArrayList<>();
-        String[] words = text.split(" ");
-        StringBuilder line = new StringBuilder();
-        for (String word : words) {
-            String temp = line.isEmpty() ? word : line + " " + word;
-            float width = font.font().getStringWidth(temp) / 1000 * font.size();
-            if (width > maxWidth) {
-                if (!line.isEmpty()) {
-                    lines.add(line.toString());
-                    line = new StringBuilder(word);
-                } else {
-                    lines.add(word); // mot trop long
-                    line = new StringBuilder();
-                }
+        String[] words = text.trim().split(" ");
+        StringBuilder line = new StringBuilder(words[0]);
+        float currentWidth = font.getSpaceWidthForWord(line.toString());
+        for (int index = 1; index < words.length; index++) {
+            String word = words[index];
+            float wordWith = font.getSpaceWidthForWord(words[index]);
+            if ((currentWidth + font.getSpaceWidth() + wordWith) > maxWidth) {
+                lines.add(line.toString());
+                line = new StringBuilder(word);
+                currentWidth = wordWith;
             } else {
-                line = new StringBuilder(temp);
+                line.append(" ");
+                line.append(word);
+                currentWidth += font.getSpaceWidth() + wordWith;
             }
         }
         if (!line.isEmpty()) {

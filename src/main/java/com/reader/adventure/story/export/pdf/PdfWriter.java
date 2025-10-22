@@ -56,7 +56,7 @@ public class PdfWriter
 
     public void addText(FontDetail font, String text) throws IOException {
         cs.beginText();
-        cs.setFont(font.font(), font.size());
+        cs.setFont(font.getFont(), font.getSize());
         cs.newLineAtOffset(MARGIN, y);
         cs.showText(text);
         cs.endText();
