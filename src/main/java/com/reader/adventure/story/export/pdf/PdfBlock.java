@@ -8,14 +8,17 @@ public class PdfBlock {
     private final List<PdfLine> lines;
     private final float maxWidth;
 
-    public PdfBlock(String firstWord, FontDetail font, float maxWidth) throws IOException {
+    public PdfBlock(float maxWidth) {
         this.lines = new ArrayList<>();
-        this.lines.add(new PdfLine(firstWord, font));
         this.maxWidth = maxWidth;
     }
 
     public List<PdfLine> getLines() {
         return lines;
+    }
+
+    public void initSubBlock(String firstWord, FontDetail font) throws IOException {
+        this.lines.add(new PdfLine(firstWord, font));
     }
 
     public void addWord(String word) throws IOException {

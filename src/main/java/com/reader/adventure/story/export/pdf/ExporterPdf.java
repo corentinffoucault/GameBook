@@ -39,12 +39,12 @@ public class ExporterPdf implements IExporter {
     }
 
     private void printNode(PDDocument doc, PdfWriter pdfWriter, INode node) throws IOException {
-        writeTextWithWrap(doc, pdfWriter, node.getId(), fontTitle);
-        pdfWriter.jumpLine();
+        PdfBlock block = new PdfBlock(pdfWriter.getPageWidth());
+        wrapText( node.getId(), fontTitle, block);
         for (String paragraph : node.getText().split("\n")) {
-            writeTextWithWrap(doc, pdfWriter, paragraph, fontBody);
-            pdfWriter.jumpLine();
+            wrapText(paragraph, fontBody, block);
         }
+        pdfWriter.writeMultipleLines(doc, block);
         pdfWriter.jumpLine();
         for (IChoice choice : node.getChoice()) {
             printChoice(doc, pdfWriter, choice);
@@ -53,37 +53,25 @@ public class ExporterPdf implements IExporter {
 
     private void printChoice(PDDocument doc, PdfWriter pdfWriter, IChoice choice) throws IOException {
         for (DirectionChoice dir : choice.getAllDirection()) {
+            PdfBlock block = new PdfBlock(pdfWriter.getPageWidth());
             String choiceText = dir.text();
             String[] parts = choiceText.split("\n");
             for (int i = 0; i < parts.length - 1; i++) {
-                writeTextWithWrap(doc, pdfWriter, parts[i], fontBody);
-                pdfWriter.jumpLine();
+                wrapText(parts[i], fontBody, block);
             }
             String lastPart = parts[parts.length - 1];
-            writeTextWithWrap(doc, pdfWriter, lastPart, fontBody);
-            pdfWriter.jumpLine();
-            writeTextWithWrap(doc, pdfWriter, " Rendez vous en " + dir.nextNode() + ".", fontDirection);
-            pdfWriter.jumpLine();
+            wrapText(lastPart, fontBody, block);
+            wrapText(" Rendez vous en " + dir.nextNode() + ".", fontDirection, block);
+            pdfWriter.writeMultipleLines(doc, block);
         }
     }
 
-    private void writeTextWithWrap(PDDocument doc,
-                                   PdfWriter pdfWriter,
-                                   String text,
-                                   FontDetail font) throws IOException {
-        if (text.trim().isEmpty()) {
-            return;
-        }
-        PdfBlock block = wrapText(text, font, pdfWriter);
-        pdfWriter.writeMultipleLines(doc, block);
-    }
-
-    private PdfBlock wrapText(String text, FontDetail font, PdfWriter pdfWriter) throws IOException {
-        String[] words = text.trim().split(" ");
-        PdfBlock block = new PdfBlock(words[0], font, pdfWriter.getPageWidth());
+    private void wrapText(String text, FontDetail font, PdfBlock block) throws IOException {
+        String trimed = text.trim();
+        String[] words = trimed.split(" ");
+        block.initSubBlock(words[0], font);
         for (int index = 1; index < words.length; index++) {
             block.addWord(words[index]);
         }
-        return block;
     }
 }

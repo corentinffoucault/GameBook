@@ -47,13 +47,11 @@ public class PdfWriter
 
     public void writeMultipleLines(PDDocument doc, PdfBlock block) throws IOException {
         List<PdfLine> lines = block.getLines();
-        for (int i = 0; i < lines.size() - 1; i++) {
+        for (PdfLine line: lines) {
             assertTextInPage(doc);
-            writeLine(lines.get(i));
+            writeLine(line);
             jumpLine();
         }
-        assertTextInPage(doc);
-        writeLine(lines.getLast());
     }
 
     public void writeLine(PdfLine line) throws IOException {
