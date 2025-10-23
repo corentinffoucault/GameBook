@@ -61,14 +61,14 @@ public class Main {
                     adventurerForm.setAdventurerHandler(() -> {
                         adventurerSheet.createUi();
                         adventurerSheet.setVisible(true);
-                        playerUI.startGame("Noeud 1");
+                        playerUI.startGame(gameBook.getFirstNodeId());
                     });
                     adventurerForm.setVisible(true);
 
                 } else if (gameOption.GameType() == GameTypeKey.MANUAL) {
                     choicesPanel = new ChoiceManualPanel(choiceVisitor);
                     AUIPlayer playerUI = new UIPlayerJFrame(gameBook, choicesPanel);
-                    playerUI.startGame("Noeud 1");
+                    playerUI.startGame(gameBook.getFirstNodeId());
                 } else if (gameOption.GameType() == GameTypeKey.EXPORT) {
                     ExportUI exportUI = new ExportUI(storyDao);
                     exportUI.setExporterHandler(Main::closeGame);

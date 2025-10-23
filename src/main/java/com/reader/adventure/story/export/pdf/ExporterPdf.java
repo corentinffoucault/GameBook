@@ -4,6 +4,7 @@ import com.reader.adventure.story.export.IExporter;
 import com.reader.adventure.story.model.choice.DirectionChoice;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.story.IStory;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts.*;
 import org.apache.pdfbox.pdmodel.font.*;
@@ -22,15 +23,21 @@ public class ExporterPdf implements IExporter {
 
     private static final float LINE_HEIGHT = 14;
 
-    public void print(Map<String, INode> nodes, Path exportPath) throws IOException {
+    public void print(IStory story, Path exportPath) throws IOException {
         try (PDDocument doc = new PDDocument()) {
             PdfWriter pdfWriter = new PdfWriter(LINE_HEIGHT);
             pdfWriter.init(doc);
 
-            for (Map.Entry<String, INode> entry : nodes.entrySet()) {
+            INode firstNode = story.getNodes().get(story.getFirstNode());
+            printNode(doc, pdfWriter, firstNode);
+            pdfWriter.jumpLine();
+
+            for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
                 INode node = entry.getValue();
-                printNode(doc, pdfWriter, node);
-                pdfWriter.jumpLine();
+                if (!node.equals(firstNode)) {
+                    printNode(doc, pdfWriter, node);
+                    pdfWriter.jumpLine();
+                }
             }
 
             pdfWriter.getCs().close();

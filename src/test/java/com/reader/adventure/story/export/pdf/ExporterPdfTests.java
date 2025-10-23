@@ -3,6 +3,7 @@ package com.reader.adventure.story.export.pdf;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.story.IStory;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -25,10 +26,10 @@ public class ExporterPdfTests {
 
         IStoryDao storyDao = new StoryJsonDaoJackson();
         storyDao.loadNodes(loadFile("/nodes.json"));
-        Map<String, INode> nodes = storyDao.getStory();
+        IStory story = storyDao.getStory();
 
         Path tmpFile = Files.createTempFile("export-formatting-", ".pdf");
-        exporter.print(nodes, tmpFile);
+        exporter.print(story, tmpFile);
 
         Path expected = Path.of("src/test/resources/expectedPdf.pdf");
         boolean isEqual = new PdfComparator(expected, tmpFile).compare().isEqual();

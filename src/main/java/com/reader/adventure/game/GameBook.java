@@ -24,4 +24,8 @@ public class GameBook {
         }
         return node;
     }
+
+    public String getFirstNodeId() {
+        return storyDao.getFirstNodeId();
+    }
 }

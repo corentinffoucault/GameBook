@@ -4,6 +4,7 @@ import com.reader.adventure.story.export.IExporter;
 import com.reader.adventure.story.model.choice.DirectionChoice;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.story.IStory;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.odfdom.dom.element.office.OfficeTextElement;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
@@ -22,16 +23,20 @@ import java.util.List;
 import java.util.Map;
 
 public class ExporterOdt implements IExporter {
-    public void print(Map<String, INode> nodes, Path exportPath) throws Exception {
+    public void print(IStory story, Path exportPath) throws Exception {
         OdfTextDocument document = OdfTextDocument.newTextDocument();
         OfficeTextElement root = document.getContentRoot();
         Node firstP = root.getElementsByTagName("text:p").item(0);
         root.removeChild(firstP);
 
         Map<String, OdfStyle> styleByName = createStyles(document);
-
-        for (Map.Entry<String, INode> entry : nodes.entrySet()) {
-            addNode(document, entry.getValue(), styleByName);
+        INode firstNode = story.getNodes().get(story.getFirstNode());
+        addNode(document, firstNode, styleByName);
+        for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
+            INode node = entry.getValue();
+            if (!node.equals(firstNode)) {
+                addNode(document, node, styleByName);
+            }
         }
         document.save(exportPath.toString());
     }

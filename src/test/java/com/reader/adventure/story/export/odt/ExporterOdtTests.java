@@ -5,6 +5,7 @@ import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.model.choice.DirectionChoice;
 import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.story.IStory;
 import com.reader.adventure.ui.player.FileLoader;
 import org.junit.jupiter.api.Test;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
@@ -37,10 +38,10 @@ public class ExporterOdtTests {
 
         IStoryDao storyDao = new StoryJsonDaoJackson();
         storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
-        Map<String, INode> nodes = storyDao.getStory();
+        IStory story = storyDao.getStory();
         
         Path tmpFile = Files.createTempFile("export-formatting-", ".odt");
-        exporter.print(nodes, tmpFile);
+        exporter.print(story, tmpFile);
 
         try (OdfTextDocument doc = OdfTextDocument.loadDocument(tmpFile.toFile())) {
             assertStyle(doc);
@@ -48,8 +49,13 @@ public class ExporterOdtTests {
             OfficeTextElement root = doc.getContentRoot();
             NodeList paragraphs = root.getElementsByTagName("text:p");
             int index = 0;
-            for (Map.Entry<String, INode> entry : nodes.entrySet()) {
-                index = assertNode(paragraphs, entry.getValue(), index);
+            INode firstNode = story.getNodes().get(story.getFirstNode());
+            index = assertNode(paragraphs, firstNode, index);
+            for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
+                INode node = entry.getValue();
+                if (!node.equals(firstNode)) {
+                    index = assertNode(paragraphs, node, index);
+                }
             }
 
         }

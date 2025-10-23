@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reader.adventure.story.dao.IStoryDao;
 import com.reader.adventure.story.dao.Jackson.node.NodeMapper;
 import com.reader.adventure.story.dao.Jackson.story.StoryJackson;
+import com.reader.adventure.story.dao.Jackson.story.StoryMapper;
 import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.model.story.Story;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Reader;
-import java.util.Map;
 
 public class StoryJsonDaoJackson implements IStoryDao {
 
@@ -22,8 +23,12 @@ public class StoryJsonDaoJackson implements IStoryDao {
         return NodeMapper.INSTANCE.sourceToTarget(story.nodes().get(id));
     }
 
-    public Map<String, INode> getStory() {
-        return NodeMapper.INSTANCE.sourceToTarget(story.nodes());
+    public Story getStory() {
+        return StoryMapper.INSTANCE.sourceToTarget(story);
+    }
+
+    public String getFirstNodeId() {
+        return story.firstNode();
     }
 
     public void loadNodes(Reader reader) throws RuntimeException {
