@@ -37,7 +37,7 @@ public class FontDetail {
         return spaceWidth;
     }
 
-    public float getSpaceWidthForWord(String word) throws IOException {
+    public float getWidthOfWord(String word) throws IOException {
         return font.getStringWidth(word) / THOUSANDS * size;
     }
 }

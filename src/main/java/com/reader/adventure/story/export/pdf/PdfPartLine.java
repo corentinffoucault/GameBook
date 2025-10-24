@@ -1,18 +1,20 @@
 package com.reader.adventure.story.export.pdf;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PdfPartLine {
 
-    private final StringBuilder text;
+    private final List<String> text;
     private final FontDetail font;
     
-    public PdfPartLine(String word, FontDetail font) throws IOException {
-        this.text = new StringBuilder(word);
+    public PdfPartLine(String word, FontDetail font) {
+        this.text = new ArrayList<>();
+        this.text.add(word);
         this.font = font;
     }
 
-    public StringBuilder getText() {
+    public List<String> getText() {
         return text;
     }
 
@@ -20,8 +22,8 @@ public class PdfPartLine {
         return font;
     }
 
-    public void addWord(String word) throws IOException {
-        text.append(word);
+    public void addWord(String word) {
+        text.add(word);
     }
     
 }

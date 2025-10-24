@@ -18,9 +18,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExporterOdt implements IExporter {
     public void print(IStory story, Path exportPath) throws Exception {
@@ -32,11 +30,12 @@ public class ExporterOdt implements IExporter {
         Map<String, OdfStyle> styleByName = createStyles(document);
         INode firstNode = story.getNodes().get(story.getFirstNode());
         addNode(document, firstNode, styleByName);
-        for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
-            INode node = entry.getValue();
-            if (!node.equals(firstNode)) {
-                addNode(document, node, styleByName);
-            }
+
+        Set<String> keys = new HashSet<>(story.getNodes().keySet());
+        keys.remove(story.getFirstNode());
+        for (String key : keys) {
+            INode node = story.getNodes().get(key);
+            addNode(document, node, styleByName);
         }
         document.save(exportPath.toString());
     }

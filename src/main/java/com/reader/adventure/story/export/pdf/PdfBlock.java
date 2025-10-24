@@ -24,7 +24,7 @@ public class PdfBlock {
     public void addWord(String word) throws IOException {
         PdfLine currentLine = lines.getLast();
         FontDetail font = currentLine.getCurrentFont();
-        float wordWith = font.getSpaceWidthForWord(word);
+        float wordWith = font.getWidthOfWord(word);
         if ((currentLine.getSize() + font.getSpaceWidth() + wordWith) > maxWidth) {
             lines.add(new PdfLine(word, font));
         } else {

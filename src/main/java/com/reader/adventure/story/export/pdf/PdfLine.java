@@ -13,7 +13,7 @@ public class PdfLine {
         this.parts = new ArrayList<>();
         this.parts.add(new PdfPartLine(firstWord, font));
         this.lastUsedFont = font;
-        this.size = font.getSpaceWidthForWord(firstWord);
+        this.size = font.getWidthOfWord(firstWord);
     }
 
     public List<PdfPartLine> getParts() {
@@ -24,7 +24,7 @@ public class PdfLine {
         parts.getLast().addWord(" ");
         size += lastUsedFont.getSpaceWidth();
         parts.getLast().addWord(word);
-        size += lastUsedFont.getSpaceWidthForWord(word);
+        size += lastUsedFont.getWidthOfWord(word);
     }
 
     public FontDetail getCurrentFont() {

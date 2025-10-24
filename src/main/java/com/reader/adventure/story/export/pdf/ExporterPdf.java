@@ -32,12 +32,12 @@ public class ExporterPdf implements IExporter {
             printNode(doc, pdfWriter, firstNode);
             pdfWriter.jumpLine();
 
-            for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
-                INode node = entry.getValue();
-                if (!node.equals(firstNode)) {
-                    printNode(doc, pdfWriter, node);
-                    pdfWriter.jumpLine();
-                }
+            Set<String> keys = new HashSet<>(story.getNodes().keySet());
+            keys.remove(story.getFirstNode());
+            for (String key : keys) {
+                INode node = story.getNodes().get(key);
+                printNode(doc, pdfWriter, node);
+                pdfWriter.jumpLine();
             }
 
             pdfWriter.getCs().close();

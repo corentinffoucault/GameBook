@@ -56,7 +56,7 @@ public class PdfWriter
 
     public void writeLine(PdfLine line) throws IOException {
         for (PdfPartLine part: line.getParts()) {
-            addText(part.getFont(), part.getText().toString());
+            addText(part.getFont(), String.join("", part.getText()));
         }
     }
 

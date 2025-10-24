@@ -24,8 +24,10 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,11 +53,12 @@ public class ExporterOdtTests {
             int index = 0;
             INode firstNode = story.getNodes().get(story.getFirstNode());
             index = assertNode(paragraphs, firstNode, index);
-            for (Map.Entry<String, INode> entry : story.getNodes().entrySet()) {
-                INode node = entry.getValue();
-                if (!node.equals(firstNode)) {
-                    index = assertNode(paragraphs, node, index);
-                }
+
+            Set<String> keys = new HashSet<>(story.getNodes().keySet());
+            keys.remove(story.getFirstNode());
+            for (String key : keys) {
+                INode node = story.getNodes().get(key);
+                index = assertNode(paragraphs, node, index);
             }
 
         }
