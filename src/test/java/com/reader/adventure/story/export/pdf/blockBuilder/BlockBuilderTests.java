@@ -1,0 +1,119 @@
+package com.reader.adventure.story.export.pdf.blockBuilder;
+
+import com.reader.adventure.story.dao.IStoryDao;
+import com.reader.adventure.story.dao.Jackson.StoryJsonDaoJackson;
+import com.reader.adventure.story.export.pdf.block.PdfBlock;
+import com.reader.adventure.story.export.pdf.block.PdfLine;
+import com.reader.adventure.story.export.pdf.block.PdfPartLine;
+import com.reader.adventure.story.export.pdf.font.Fonts;
+import com.reader.adventure.story.model.choice.DirectionChoice;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class BlockBuilderTests {
+
+    @Test
+    void shouldBuildEmptyCondition() {
+        assertDoesNotThrow(() -> {
+            DirectionChoice directionChoice = new DirectionChoice("", "", "");
+            PdfBlock block = new PdfBlock(100);
+            BlockBuilder.buildChoiceBlock(block, directionChoice);
+            assertEquals(2, block.getLines().size());
+
+            PdfLine firstLine = block.getLines().getFirst();
+            assertEquals(0, firstLine.getSize());
+            assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
+
+            PdfLine directionLine = block.getLines().getLast();
+            assertEquals(98.02, directionLine.getSize(), 0.01);
+            assertEquals(1, directionLine.getParts().size());
+            assertEquals("[Rendez,  , vous,  , en,  , .]", directionLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
+        });
+    }
+
+    @Test
+    void shouldBuildARealConditionWithUserJumpLine() {
+        assertDoesNotThrow(() -> {
+            IStoryDao storyDao = new StoryJsonDaoJackson();
+            storyDao.loadNodes(loadFile("/nodes.json"));
+            PdfBlock block = new PdfBlock(PDRectangle.A4.getWidth());
+
+            DirectionChoice directionChoice = storyDao.getNodeById("Noeud 3.16").getChoice().get(1).getAllDirection().getFirst();
+            BlockBuilder.buildChoiceBlock(block, directionChoice);
+            assertEquals(4, block.getLines().size());
+
+            PdfLine firstLine = block.getLines().getFirst();
+            assertEquals(556.57, firstLine.getSize(), 0.01);
+            assertEquals(1, firstLine.getParts().size());
+            assertEquals("[Vous,  , avez,  , déjà,  , visité,  , d'autres,  , lieux,  , avant,  , de,  , venir,  , voir,  , le,  , seigneur.,  , vous,  , avez,  , donc,  , peut,  , être,  , une,  , idée,  , du]", firstLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
+
+            PdfLine secondLine = block.getLines().get(1);
+            assertEquals(156.08, secondLine.getSize(), 0.01);
+            assertEquals(1, secondLine.getParts().size());
+            assertEquals("[coupable,  , et,  , de,  , sa,  , motivation.]", secondLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_BODY, secondLine.getCurrentFont());
+
+            PdfLine thirdLine = block.getLines().get(2);
+            assertEquals(548.24, thirdLine.getSize(), 0.01);
+            assertEquals(1, thirdLine.getParts().size());
+            assertEquals("[Deux,  , mots,  , spécifiques,  , donc.,  , Notez,  , le,  , nombre,  , de,  , lettre,  , de,  , chaque,  , mot.,  , Multipliez,  , les,  , et,  , entrez,  , ce,  , code.]", thirdLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_BODY, thirdLine.getCurrentFont());
+
+            PdfLine directionLine = block.getLines().getLast();
+            assertEquals(152.03, directionLine.getSize(), 0.01);
+            assertEquals(1, directionLine.getParts().size());
+            assertEquals("[Rendez,  , vous,  , en,  , Noeud,  , 64.]", directionLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
+        });
+    }
+
+    @Test
+    void shouldBuildARealConditionWithoutUserJumpLine() {
+        assertDoesNotThrow(() -> {
+            IStoryDao storyDao = new StoryJsonDaoJackson();
+            storyDao.loadNodes(loadFile("/nodes.json"));
+            PdfBlock block = new PdfBlock(PDRectangle.A4.getWidth());
+
+            DirectionChoice directionChoice = storyDao.getNodeById(storyDao.getFirstNodeId()).getChoice().getFirst().getAllDirection().getFirst();
+            BlockBuilder.buildChoiceBlock(block, directionChoice);
+            assertEquals(3, block.getLines().size());
+
+            PdfLine firstLine = block.getLines().getFirst();
+            assertEquals(554.987, firstLine.getSize(), 0.01);
+            assertEquals(1, firstLine.getParts().size());
+            assertEquals("[Vous,  , avez,  , trop,  , envie,  , de,  , vous,  , mettre,  , au,  , chaud,  , à,  , la,  , taverne,  , et,  , manger,  , une,  , bonne,  , soupe,  , chaude,  , avec,  , un]", firstLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
+
+            PdfLine secondLine = block.getLines().get(1);
+            assertEquals(413.531, secondLine.getSize(), 0.01);
+            assertEquals(1, secondLine.getParts().size());
+            assertEquals("[morceau,  , de,  , boudin.,  , Vous,  , dirigez,  , donc,  , vos,  , pas,  , vers,  , le,  , nord,  , en,  , empruntant,  , ***]", secondLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_BODY, secondLine.getCurrentFont());
+
+            PdfLine directionLine = block.getLines().getLast();
+            assertEquals(155.375, directionLine.getSize(), 0.001);
+            assertEquals(1, directionLine.getParts().size());
+            assertEquals("[Rendez,  , vous,  , en,  , Noeud,  , 1.1.]", directionLine.getParts().getFirst().getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
+        });
+    }
+
+    public static Reader loadFile(String resourceName) {
+        InputStream in = BlockBuilderTests.class.getResourceAsStream(resourceName);
+        if (in == null) {
+            throw new RuntimeException(resourceName + " introuvable dans resources !");
+        }
+        return new InputStreamReader(in, StandardCharsets.UTF_8);
+    }
+}
+

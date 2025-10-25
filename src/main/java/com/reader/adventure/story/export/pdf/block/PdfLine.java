@@ -1,4 +1,6 @@
-package com.reader.adventure.story.export.pdf;
+package com.reader.adventure.story.export.pdf.block;
+
+import com.reader.adventure.story.export.pdf.font.FontDetail;
 
 import java.io.IOException;
 import java.util.ArrayList;

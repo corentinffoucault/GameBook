@@ -1,5 +1,9 @@
 package com.reader.adventure.story.export.pdf;
 
+import com.reader.adventure.story.export.pdf.block.PdfBlock;
+import com.reader.adventure.story.export.pdf.block.PdfLine;
+import com.reader.adventure.story.export.pdf.block.PdfPartLine;
+import com.reader.adventure.story.export.pdf.font.FontDetail;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -16,6 +20,7 @@ public class PdfWriter
     private static final float MARGIN = 50;
     private static final float PAGE_HEIGHT = PDRectangle.A4.getHeight();
     private static final float PAGE_WIDTH = PDRectangle.A4.getWidth();
+    private static final float PAGE_WIDTH_WITH_MARGIN = PAGE_WIDTH - 2 * MARGIN;
 
     public PdfWriter(float lineHeight) {
         this.y = PAGE_HEIGHT - MARGIN;
@@ -29,11 +34,11 @@ public class PdfWriter
     }
 
     public float getPageWidth() {
-        return PAGE_WIDTH - 2 * MARGIN;
+        return PAGE_WIDTH_WITH_MARGIN;
     }
 
-    public PDPageContentStream getCs() {
-        return cs;
+    public void close() throws IOException {
+        cs.close();
     }
 
     public void goToLine() {
@@ -43,6 +48,15 @@ public class PdfWriter
     public void jumpLine() {
         goToLine();
         this.y -= this.lineHeight;
+    }
+
+    public void writeCentered(PDDocument doc, String text, FontDetail font) throws IOException {
+        assertTextInPage(doc);
+        float textSize = font.getWidthOfWord(text);
+
+        addText((PAGE_WIDTH - textSize)/2, font, text);
+        jumpLine();
+
     }
 
     public void writeMultipleLines(PDDocument doc, PdfBlock block) throws IOException {
@@ -56,7 +70,7 @@ public class PdfWriter
 
     public void writeLine(PdfLine line) throws IOException {
         for (PdfPartLine part: line.getParts()) {
-            addText(part.getFont(), String.join("", part.getText()));
+            addText(MARGIN, part.getFont(), String.join("", part.getText()));
         }
     }
 
@@ -70,10 +84,10 @@ public class PdfWriter
         }
     }
 
-    public void addText(FontDetail font, String text) throws IOException {
+    public void addText(float startingX, FontDetail font, String text) throws IOException {
         cs.beginText();
         cs.setFont(font.getFont(), font.getSize());
-        cs.newLineAtOffset(MARGIN, y);
+        cs.newLineAtOffset(startingX, y);
         cs.showText(text);
         cs.endText();
     }

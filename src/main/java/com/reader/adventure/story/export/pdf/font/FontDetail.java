@@ -1,4 +1,4 @@
-package com.reader.adventure.story.export.pdf;
+package com.reader.adventure.story.export.pdf.font;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
@@ -13,7 +13,7 @@ public class FontDetail {
 
     private static final int THOUSANDS = 1000;
 
-    FontDetail(PDFont font, float size) {
+    public FontDetail(PDFont font, float size) {
         this.font = font;
         this.size = size;
         float tmpSpaceWidth;
