@@ -3,7 +3,6 @@ package com.reader.adventure.story.export.pdf.block;
 import com.reader.adventure.story.export.pdf.font.Fonts;
 import org.junit.jupiter.api.Test;
 
-import javax.sound.sampled.Line;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +19,7 @@ public class PdfBlockTests {
         // TODO: this throw would be remove whend font can change in line
         assertThrows(NoSuchElementException.class, () -> {
             PdfBlock pdfBlock = new PdfBlock(100);
-            pdfBlock.addWord("word");
+            pdfBlock.addWord("word", Fonts.FONT_BODY);
         });
     }
 
@@ -45,15 +44,14 @@ public class PdfBlockTests {
         assertDoesNotThrow(() -> {
             PdfBlock pdfBlock = new PdfBlock(100);
             pdfBlock.initSubBlock("word", Fonts.FONT_BODY);
-            pdfBlock.addWord("hello");
+            pdfBlock.addWord("hello", Fonts.FONT_BODY);
             assertEquals(1, pdfBlock.getLines().size());
 
             PdfLine line = pdfBlock.getLines().getFirst();
             assertEquals(1, line.getParts().size());
             assertEquals(54.684, line.getSize(), 0.001);
-            assertEquals(3, line.getParts().getFirst().getText().size());
+            assertEquals(2, line.getParts().getFirst().getText().size());
             assertEquals("word", line.getParts().getFirst().getText().getFirst());
-            assertEquals(" ", line.getParts().getFirst().getText().get(1));
             assertEquals("hello", line.getParts().getFirst().getText().getLast());
             assertEquals(Fonts.FONT_BODY, line.getParts().getFirst().getFont());
         });
@@ -64,7 +62,7 @@ public class PdfBlockTests {
         assertDoesNotThrow(() -> {
             PdfBlock pdfBlock = new PdfBlock(50);
             pdfBlock.initSubBlock("word", Fonts.FONT_BODY);
-            pdfBlock.addWord("hello");
+            pdfBlock.addWord("hello", Fonts.FONT_BODY);
             assertEquals(2, pdfBlock.getLines().size());
 
             PdfLine firstLine = pdfBlock.getLines().getFirst();

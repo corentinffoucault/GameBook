@@ -23,14 +23,13 @@ public class PdfBlock {
         this.lines.add(new PdfLine(firstWord, font));
     }
 
-    public void addWord(String word) throws IOException {
+    public void addWord(String word, FontDetail font) throws IOException {
         PdfLine currentLine = lines.getLast();
-        FontDetail font = currentLine.getCurrentFont();
         float wordWith = font.getWidthOfWord(word);
         if ((currentLine.getSize() + font.getSpaceWidth() + wordWith) > maxWidth) {
             lines.add(new PdfLine(word, font));
         } else {
-            currentLine.addWord(word);
+            currentLine.addWord(word, font);
         }
     }
 }

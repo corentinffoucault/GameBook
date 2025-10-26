@@ -26,17 +26,20 @@ public class BlockBuilderTests {
             DirectionChoice directionChoice = new DirectionChoice("", "", "");
             PdfBlock block = new PdfBlock(100);
             BlockBuilder.buildChoiceBlock(block, directionChoice);
-            assertEquals(2, block.getLines().size());
+            assertEquals(1, block.getLines().size());
 
             PdfLine firstLine = block.getLines().getFirst();
-            assertEquals(0, firstLine.getSize());
-            assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
+            assertEquals(98.02, firstLine.getSize(), 0.01);
+            assertEquals(Fonts.FONT_DIRECTION, firstLine.getCurrentFont());
+            assertEquals(2, firstLine.getParts().size());
 
-            PdfLine directionLine = block.getLines().getLast();
-            assertEquals(98.02, directionLine.getSize(), 0.01);
-            assertEquals(1, directionLine.getParts().size());
-            assertEquals("[Rendez,  , vous,  , en,  , .]", directionLine.getParts().getFirst().getText().toString());
-            assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
+            PdfPartLine firstPartLine = firstLine.getParts().getFirst();
+            assertEquals("[]", firstPartLine.getText().toString());
+            assertEquals(Fonts.FONT_BODY, firstPartLine.getFont());
+
+            PdfPartLine lastPartLine = firstLine.getParts().getLast();
+            assertEquals("[Rendez, vous, en, .]", lastPartLine.getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, lastPartLine.getFont());
         });
     }
 
@@ -54,25 +57,31 @@ public class BlockBuilderTests {
             PdfLine firstLine = block.getLines().getFirst();
             assertEquals(556.57, firstLine.getSize(), 0.01);
             assertEquals(1, firstLine.getParts().size());
-            assertEquals("[Vous,  , avez,  , déjà,  , visité,  , d'autres,  , lieux,  , avant,  , de,  , venir,  , voir,  , le,  , seigneur.,  , vous,  , avez,  , donc,  , peut,  , être,  , une,  , idée,  , du]", firstLine.getParts().getFirst().getText().toString());
+            assertEquals("[Vous, avez, déjà, visité, d'autres, lieux, avant, de, venir, voir, le, seigneur., vous, avez, donc, peut, être, une, idée, du]", firstLine.getParts().getFirst().getText().toString());
             assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
 
             PdfLine secondLine = block.getLines().get(1);
             assertEquals(156.08, secondLine.getSize(), 0.01);
             assertEquals(1, secondLine.getParts().size());
-            assertEquals("[coupable,  , et,  , de,  , sa,  , motivation.]", secondLine.getParts().getFirst().getText().toString());
+            assertEquals("[coupable, et, de, sa, motivation.]", secondLine.getParts().getFirst().getText().toString());
             assertEquals(Fonts.FONT_BODY, secondLine.getCurrentFont());
 
             PdfLine thirdLine = block.getLines().get(2);
-            assertEquals(548.24, thirdLine.getSize(), 0.01);
-            assertEquals(1, thirdLine.getParts().size());
-            assertEquals("[Deux,  , mots,  , spécifiques,  , donc.,  , Notez,  , le,  , nombre,  , de,  , lettre,  , de,  , chaque,  , mot.,  , Multipliez,  , les,  , et,  , entrez,  , ce,  , code.]", thirdLine.getParts().getFirst().getText().toString());
-            assertEquals(Fonts.FONT_BODY, thirdLine.getCurrentFont());
+            assertEquals(590.91, thirdLine.getSize(), 0.01);
+            assertEquals(2, thirdLine.getParts().size());
+
+            PdfPartLine firstPartLine = thirdLine.getParts().getFirst();
+            assertEquals("[Deux, mots, spécifiques, donc., Notez, le, nombre, de, lettre, de, chaque, mot., Multipliez, les, et, entrez, ce, code.]", firstPartLine.getText().toString());
+            assertEquals(Fonts.FONT_BODY, firstPartLine.getFont());
+
+            PdfPartLine lastPartLine = thirdLine.getParts().getLast();
+            assertEquals("[Rendez]", lastPartLine.getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, lastPartLine.getFont());
 
             PdfLine directionLine = block.getLines().getLast();
-            assertEquals(152.03, directionLine.getSize(), 0.01);
+            assertEquals(106.03, directionLine.getSize(), 0.01);
             assertEquals(1, directionLine.getParts().size());
-            assertEquals("[Rendez,  , vous,  , en,  , Noeud,  , 64.]", directionLine.getParts().getFirst().getText().toString());
+            assertEquals("[vous, en, Noeud, 64.]", directionLine.getParts().getFirst().getText().toString());
             assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
         });
     }
@@ -86,25 +95,25 @@ public class BlockBuilderTests {
 
             DirectionChoice directionChoice = storyDao.getNodeById(storyDao.getFirstNodeId()).getChoice().getFirst().getAllDirection().getFirst();
             BlockBuilder.buildChoiceBlock(block, directionChoice);
-            assertEquals(3, block.getLines().size());
+            assertEquals(2, block.getLines().size());
 
             PdfLine firstLine = block.getLines().getFirst();
             assertEquals(554.987, firstLine.getSize(), 0.01);
             assertEquals(1, firstLine.getParts().size());
-            assertEquals("[Vous,  , avez,  , trop,  , envie,  , de,  , vous,  , mettre,  , au,  , chaud,  , à,  , la,  , taverne,  , et,  , manger,  , une,  , bonne,  , soupe,  , chaude,  , avec,  , un]", firstLine.getParts().getFirst().getText().toString());
+            assertEquals("[Vous, avez, trop, envie, de, vous, mettre, au, chaud, à, la, taverne, et, manger, une, bonne, soupe, chaude, avec, un]", firstLine.getParts().getFirst().getText().toString());
             assertEquals(Fonts.FONT_BODY, firstLine.getCurrentFont());
 
             PdfLine secondLine = block.getLines().get(1);
-            assertEquals(413.531, secondLine.getSize(), 0.01);
-            assertEquals(1, secondLine.getParts().size());
-            assertEquals("[morceau,  , de,  , boudin.,  , Vous,  , dirigez,  , donc,  , vos,  , pas,  , vers,  , le,  , nord,  , en,  , empruntant,  , ***]", secondLine.getParts().getFirst().getText().toString());
-            assertEquals(Fonts.FONT_BODY, secondLine.getCurrentFont());
+            assertEquals(568.90, secondLine.getSize(), 0.01);
+            assertEquals(2, secondLine.getParts().size());
 
-            PdfLine directionLine = block.getLines().getLast();
-            assertEquals(155.375, directionLine.getSize(), 0.001);
-            assertEquals(1, directionLine.getParts().size());
-            assertEquals("[Rendez,  , vous,  , en,  , Noeud,  , 1.1.]", directionLine.getParts().getFirst().getText().toString());
-            assertEquals(Fonts.FONT_DIRECTION, directionLine.getCurrentFont());
+            PdfPartLine firstPartLine = secondLine.getParts().getFirst();
+            assertEquals("[morceau, de, boudin., Vous, dirigez, donc, vos, pas, vers, le, nord, en, empruntant, ***]", firstPartLine.getText().toString());
+            assertEquals(Fonts.FONT_BODY, firstPartLine.getFont());
+
+            PdfPartLine lastPartLine = secondLine.getParts().getLast();
+            assertEquals("[Rendez, vous, en, Noeud, 1.1.]", lastPartLine.getText().toString());
+            assertEquals(Fonts.FONT_DIRECTION, lastPartLine.getFont());
         });
     }
 

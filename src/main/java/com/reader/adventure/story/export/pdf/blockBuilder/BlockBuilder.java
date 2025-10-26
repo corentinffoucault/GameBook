@@ -26,7 +26,7 @@ public class BlockBuilder {
         }
         String lastPart = parts[parts.length - 1];
         wrapText(lastPart, FONT_BODY, block);
-        wrapText(" Rendez vous en " + dir.nextNode() + ".", FONT_DIRECTION, block);
+        addText(" Rendez vous en " + dir.nextNode() + ".", FONT_DIRECTION, block);
     }
 
     private static void wrapText(String text, FontDetail font, PdfBlock block) throws IOException {
@@ -34,7 +34,15 @@ public class BlockBuilder {
         String[] words = trimed.split(" ");
         block.initSubBlock(words[0], font);
         for (int index = 1; index < words.length; index++) {
-            block.addWord(words[index]);
+            block.addWord(words[index], font);
+        }
+    }
+
+    private static void addText(String text, FontDetail font, PdfBlock block) throws IOException {
+        String trimed = text.trim();
+        String[] words = trimed.split(" ");
+        for (int index = 0; index < words.length; index++) {
+            block.addWord(words[index], font);
         }
     }
 }

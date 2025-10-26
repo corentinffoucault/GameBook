@@ -33,14 +33,33 @@ public class PdfLineTests {
     void checkStateAfterAddingAnOtherWordWithSameFont() {
         assertDoesNotThrow(() -> {
             PdfLine pdfLine = new PdfLine("word", Fonts.FONT_BODY);
-            pdfLine.addWord("hello");
+            pdfLine.addWord("hello", Fonts.FONT_BODY);
             assertEquals(1, pdfLine.getParts().size());
-            assertEquals(54.684, pdfLine.getSize(), 0.001);
-            assertEquals(3, pdfLine.getParts().getFirst().getText().size());
+            assertEquals(54.68, pdfLine.getSize(), 0.01);
+            assertEquals(2, pdfLine.getParts().getFirst().getText().size());
             assertEquals("word", pdfLine.getParts().getFirst().getText().getFirst());
-            assertEquals(" ", pdfLine.getParts().getFirst().getText().get(1));
             assertEquals("hello", pdfLine.getParts().getFirst().getText().getLast());
             assertEquals(Fonts.FONT_BODY, pdfLine.getParts().getFirst().getFont());
+        });
+    }
+
+    @Test
+    void checkStateAfterAddingAnOtherWordWithOtherFont() {
+        assertDoesNotThrow(() -> {
+            PdfLine pdfLine = new PdfLine("word", Fonts.FONT_BODY);
+            pdfLine.addWord("hello", Fonts.FONT_DIRECTION);
+            assertEquals(2, pdfLine.getParts().size());
+            assertEquals(54.01, pdfLine.getSize(), 0.01);
+
+            PdfPartLine firstPart = pdfLine.getParts().getFirst();
+            assertEquals(1, firstPart.getText().size());
+            assertEquals("word", firstPart.getText().getFirst());
+            assertEquals(Fonts.FONT_BODY, firstPart.getFont());
+
+            PdfPartLine secondPart = pdfLine.getParts().getLast();
+            assertEquals(1, secondPart.getText().size());
+            assertEquals("hello", secondPart.getText().getLast());
+            assertEquals(Fonts.FONT_DIRECTION, secondPart.getFont());
         });
     }
 }
