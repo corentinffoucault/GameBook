@@ -7,29 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PdfBlock {
-    private final List<PdfLine> lines;
-    private final float maxWidth;
+    private final List<PdfParagraph> paragraphs;
+    private final float pageWidth;
 
-    public PdfBlock(float maxWidth) {
-        this.lines = new ArrayList<>();
-        this.maxWidth = maxWidth;
+    public PdfBlock(float pageWidth) {
+        this.paragraphs = new ArrayList<>();
+        this.pageWidth = pageWidth;
     }
 
-    public List<PdfLine> getLines() {
-        return lines;
+    public List<PdfParagraph> getParagraphs() {
+        return paragraphs;
     }
 
-    public void initSubBlock(String firstWord, FontDetail font) throws IOException {
-        this.lines.add(new PdfLine(firstWord, font));
+    public void createParagraph() {
+        paragraphs.add(new PdfParagraph(pageWidth));
     }
 
-    public void addWord(String word, FontDetail font) throws IOException {
-        PdfLine currentLine = lines.getLast();
-        float wordWith = font.getWidthOfWord(word);
-        if ((currentLine.getSize() + font.getSpaceWidth() + wordWith) > maxWidth) {
-            lines.add(new PdfLine(word, font));
-        } else {
-            currentLine.addWord(word, font);
+    public void addWord(PdfWord word, FontDetail font) throws IOException {
+        if (paragraphs.isEmpty()) {
+            paragraphs.add(new PdfParagraph(pageWidth));
         }
+        paragraphs.getLast().addWord(word, font);
     }
 }

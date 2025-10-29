@@ -9,19 +9,18 @@ import java.util.stream.Stream;
 
 public class PdfPartLine {
 
-    private final List<String> text;
+    private final List<PdfWord> text;
     private final FontDetail font;
     private float size;
 
-    public PdfPartLine(String word, FontDetail font) throws IOException {
+    public PdfPartLine(FontDetail font) {
         this.text = new ArrayList<>();
-        this.text.add(word);
-        size = font.getWidthOfWord(word);
         this.font = font;
+        this.size = 0;
     }
 
     public List<String> getText() {
-        return text;
+        return text.stream().map(PdfWord::getWord).toList();
     }
 
     public FontDetail getFont() {
@@ -32,16 +31,18 @@ public class PdfPartLine {
         return size;
     }
 
-    public void addWord(String word) throws IOException {
+    public void addWord(PdfWord word) {
+        if (!text.isEmpty()) {
+            size += font.getSpaceWidth();
+        }
         text.add(word);
-        size += font.getWidthOfWord(word);
-        size += font.getSpaceWidth();
+        size += word.getWidth();
     }
 
     public List<Object> generateJustifiedDetail(float expectedSpaceSize) {
         float offSet = (expectedSpaceSize - font.getSpaceWidth()) / font.getSize() * 1000f;
         return text.stream()
-                .flatMap(t -> Stream.<Object>of(t, " ", -offSet))
+                .flatMap(t -> Stream.<Object>of(t.getWord(), " ", -offSet))
                 .toList();
     }
 }

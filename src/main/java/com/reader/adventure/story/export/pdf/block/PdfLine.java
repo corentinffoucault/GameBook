@@ -10,10 +10,8 @@ public class PdfLine {
     private final List<PdfPartLine> parts;
     private FontDetail lastUsedFont;
 
-    public PdfLine(String firstWord, FontDetail font) throws IOException {
+    public PdfLine() {
         this.parts = new ArrayList<>();
-        this.parts.add(new PdfPartLine(firstWord, font));
-        this.lastUsedFont = font;
     }
 
     public List<PdfPartLine> getParts() {
@@ -22,18 +20,16 @@ public class PdfLine {
 
     public FontDetail getCurrentFont() { return lastUsedFont; }
 
-
     public int getNbWord() {
         return parts.stream().mapToInt(part -> part.getText().size()).sum();
     }
 
-    public void addWord(String word, FontDetail font) throws IOException {
-        if (lastUsedFont != font) {
+    public void addWord(PdfWord word, FontDetail font) throws IOException {
+        if (lastUsedFont != font || parts.isEmpty()) {
             lastUsedFont = font;
-            parts.add(new PdfPartLine(word, font));
-        } else {
-            parts.getLast().addWord(word);
+            parts.add(new PdfPartLine(font));
         }
+        parts.getLast().addWord(word);
     }
 
     public float getSize() {

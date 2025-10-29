@@ -1,7 +1,7 @@
 package com.reader.adventure.story.export.pdf.blockBuilder;
 
-import com.reader.adventure.story.export.pdf.font.FontDetail;
 import com.reader.adventure.story.export.pdf.block.PdfBlock;
+import com.reader.adventure.story.export.pdf.block.PdfWord;
 import com.reader.adventure.story.model.choice.DirectionChoice;
 import com.reader.adventure.story.model.node.INode;
 
@@ -14,7 +14,7 @@ public class BlockBuilder {
 
     public static void buildNodeBlock(PdfBlock block, INode node) throws IOException {
         for (String paragraph : node.getText().split("\n")) {
-            wrapText(paragraph, FONT_BODY, block);
+            wrapText(paragraph, block);
         }
     }
 
@@ -22,27 +22,27 @@ public class BlockBuilder {
         String choiceText = dir.text();
         String[] parts = choiceText.split("\n");
         for (int i = 0; i < parts.length - 1; i++) {
-            wrapText(parts[i], FONT_BODY, block);
+            wrapText(parts[i], block);
         }
         String lastPart = parts[parts.length - 1];
-        wrapText(lastPart, FONT_BODY, block);
-        addText(" Rendez vous en " + dir.nextNode() + ".", FONT_DIRECTION, block);
+        wrapText(lastPart, block);
+        addDirection(dir.nextNode(), block);
     }
 
-    private static void wrapText(String text, FontDetail font, PdfBlock block) throws IOException {
-        String trimed = text.trim();
-        String[] words = trimed.split(" ");
-        block.initSubBlock(words[0], font);
-        for (int index = 1; index < words.length; index++) {
-            block.addWord(words[index], font);
+    private static void wrapText(String text, PdfBlock block) throws IOException {
+        block.createParagraph();
+        String[] words = text.trim().split(" ");
+        for (String word : words) {
+            PdfWord pdfWord = new PdfWord(word, FONT_BODY);
+            block.addWord(pdfWord, FONT_BODY);
         }
     }
 
-    private static void addText(String text, FontDetail font, PdfBlock block) throws IOException {
-        String trimed = text.trim();
-        String[] words = trimed.split(" ");
-        for (int index = 0; index < words.length; index++) {
-            block.addWord(words[index], font);
+    private static void addDirection(String nextNode, PdfBlock block) throws IOException {
+        String[] words = ("Rendez vous en " + nextNode + ".").split(" ");
+        for (String word : words) {
+            PdfWord pdfWord = new PdfWord(word, FONT_DIRECTION);
+            block.addWord(pdfWord, FONT_DIRECTION);
         }
     }
 }

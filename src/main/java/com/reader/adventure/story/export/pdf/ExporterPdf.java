@@ -8,8 +8,6 @@ import com.reader.adventure.story.model.choice.IChoice;
 import com.reader.adventure.story.model.node.INode;
 import com.reader.adventure.story.model.story.IStory;
 import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.*;
-import org.apache.pdfbox.pdmodel.font.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,7 +45,7 @@ public class ExporterPdf implements IExporter {
 
         PdfBlock block = new PdfBlock(pdfWriter.getPageWidth());
         BlockBuilder.buildNodeBlock(block, node);
-        pdfWriter.writeMultipleLines(doc, block);
+        pdfWriter.writeParagraph(doc, block);
         pdfWriter.jumpLine();
         for (IChoice choice : node.getChoice()) {
             printChoice(doc, pdfWriter, choice);
@@ -58,7 +56,7 @@ public class ExporterPdf implements IExporter {
         for (DirectionChoice dir : choice.getAllDirection()) {
             PdfBlock block = new PdfBlock(pdfWriter.getPageWidth());
             BlockBuilder.buildChoiceBlock(block, dir);
-            pdfWriter.writeMultipleLines(doc, block);
+            pdfWriter.writeParagraph(doc, block);
         }
     }
 }

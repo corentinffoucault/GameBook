@@ -2,6 +2,7 @@ package com.reader.adventure.story.export.pdf;
 
 import com.reader.adventure.story.export.pdf.block.PdfBlock;
 import com.reader.adventure.story.export.pdf.block.PdfLine;
+import com.reader.adventure.story.export.pdf.block.PdfParagraph;
 import com.reader.adventure.story.export.pdf.block.PdfPartLine;
 import com.reader.adventure.story.export.pdf.font.FontDetail;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -10,9 +11,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class PdfWriter
 {
@@ -55,14 +54,19 @@ public class PdfWriter
     public void writeCentered(PDDocument doc, String text, FontDetail font) throws IOException {
         assertTextInPage(doc);
         float textSize = font.getWidthOfWord(text);
-
         addText((PAGE_WIDTH - textSize)/2, font, text);
         jumpLine();
-
     }
 
-    public void writeMultipleLines(PDDocument doc, PdfBlock block) throws IOException {
-        List<PdfLine> lines = block.getLines();
+    public void writeParagraph(PDDocument doc, PdfBlock block) throws IOException {
+        List<PdfParagraph> paragraphs = block.getParagraphs();
+        for (PdfParagraph paragraph : paragraphs) {
+            writeMultipleLine(doc, paragraph);
+        }
+    }
+
+    public void writeMultipleLine(PDDocument doc, PdfParagraph paragraph) throws IOException {
+        List<PdfLine> lines = paragraph.getLines();
         for (int index  = 0; index < lines.size() - 1; index++) {
             assertTextInPage(doc);
             writeLineJustified(lines.get(index));
@@ -78,11 +82,7 @@ public class PdfWriter
         float offsetForPDF;
 
         float currentFontSpaceSize = line.getCurrentFont().getSpaceWidth();
-        if (spaceToComplete < 100) {
-            offsetForPDF = currentFontSpaceSize + spaceToComplete / (line.getNbWord() - 1);
-        } else {
-            offsetForPDF = currentFontSpaceSize;
-        }
+        offsetForPDF = currentFontSpaceSize + spaceToComplete / (line.getNbWord() - 1);
         float x = MARGIN;
 
         PdfPartLine firstPart = line.getParts().getFirst();
@@ -113,14 +113,9 @@ public class PdfWriter
     public void writeLine(PdfLine line) throws IOException {
         float x = MARGIN;
 
-        PdfPartLine part = line.getParts().getFirst();
-        addText(x, part.getFont(), String.join(" ", part.getText()));
-        x += part.getSize();
-
-        for (int index  = 1; index < line.getParts().size(); index++) {
-            part = line.getParts().get(index);
-            addText(x, part.getFont(), " " + String.join(" ", part.getText()));
-            x += part.getSize();
+        for (PdfPartLine part : line.getParts()) {
+            addText(x, part.getFont(), String.join(" ", part.getText()) + " ");
+            x += part.getSize() + part.getFont().getSpaceWidth();
         }
     }
 
