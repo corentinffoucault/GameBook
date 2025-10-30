@@ -2,7 +2,6 @@ package com.reader.adventure.story.export.pdf.block;
 
 import com.reader.adventure.story.export.pdf.font.FontDetail;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -11,12 +10,10 @@ public class PdfPartLine {
 
     private final List<PdfWord> text;
     private final FontDetail font;
-    private float size;
 
     public PdfPartLine(FontDetail font) {
         this.text = new ArrayList<>();
         this.font = font;
-        this.size = 0;
     }
 
     public List<String> getText() {
@@ -28,15 +25,13 @@ public class PdfPartLine {
     }
 
     public float getSize() {
-        return size;
+        return (float) text.stream()
+                .mapToDouble(PdfWord::getWidth)
+                .sum() + (text.size()-1)*font.getSpaceWidth();
     }
 
     public void addWord(PdfWord word) {
-        if (!text.isEmpty()) {
-            size += font.getSpaceWidth();
-        }
         text.add(word);
-        size += word.getWidth();
     }
 
     public List<Object> generateJustifiedDetail(float expectedSpaceSize) {

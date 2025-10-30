@@ -23,7 +23,7 @@ public class PdfBlock {
         paragraphs.add(new PdfParagraph(pageWidth));
     }
 
-    public void addWord(PdfWord word, FontDetail font) throws IOException {
+    public void addWord(PdfWord word, FontDetail font) {
         if (paragraphs.isEmpty()) {
             paragraphs.add(new PdfParagraph(pageWidth));
         }

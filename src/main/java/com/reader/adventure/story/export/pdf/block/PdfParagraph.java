@@ -2,7 +2,6 @@ package com.reader.adventure.story.export.pdf.block;
 
 import com.reader.adventure.story.export.pdf.font.FontDetail;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +18,12 @@ public class PdfParagraph {
         return lines;
     }
 
-    public void addWord(PdfWord word, FontDetail font) throws IOException {
+    public void addWord(PdfWord word, FontDetail font) {
         if (lines.isEmpty()) {
             lines.add(new PdfLine());
         }
         PdfLine currentLine = lines.getLast();
-        if ((currentLine.getSize() + font.getSpaceWidth() + word.getWidth()) > maxWidth) {
+        if ((currentLine.getSize() + word.getWidth()) > maxWidth) {
             lines.add(new PdfLine());
             currentLine = lines.getLast();
         }

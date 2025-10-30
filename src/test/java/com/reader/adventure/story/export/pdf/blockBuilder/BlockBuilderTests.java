@@ -25,7 +25,7 @@ public class BlockBuilderTests {
     void shouldBuildEmptyCondition() {
         assertDoesNotThrow(() -> {
             DirectionChoice directionChoice = new DirectionChoice("", "", "");
-            PdfBlock block = new PdfBlock(100);
+            PdfBlock block = new PdfBlock(110);
             BlockBuilder.buildChoiceBlock(block, directionChoice);
             assertEquals(1, block.getParagraphs().size());
 
