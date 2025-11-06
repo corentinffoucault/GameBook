@@ -1,9 +1,6 @@
 package com.reader.adventure.story.export.pdf;
 
-import com.reader.adventure.story.export.pdf.block.PdfBlock;
-import com.reader.adventure.story.export.pdf.block.PdfLine;
-import com.reader.adventure.story.export.pdf.block.PdfParagraph;
-import com.reader.adventure.story.export.pdf.block.PdfPartLine;
+import com.reader.adventure.story.export.pdf.block.*;
 import com.reader.adventure.story.export.pdf.font.FontDetail;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -78,36 +75,10 @@ public class PdfWriter
     }
 
     public void writeLineJustified(PdfLine line) throws IOException {
-        float spaceToComplete = PAGE_WIDTH_WITH_MARGIN - line.getSize();
-        float offsetForPDF;
-
-        float currentFontSpaceSize = line.getCurrentFont().getSpaceWidth();
-        offsetForPDF = currentFontSpaceSize + spaceToComplete / (line.getNbWord() - 1);
-        float x = MARGIN;
-
-        PdfPartLine firstPart = line.getParts().getFirst();
-        List<Object> text = firstPart.generateJustifiedDetail(offsetForPDF);
-        addTextJustified(x, firstPart.getFont(), text);
-
-        x += firstPart.getSize() + calculateFullOffset(text, firstPart.getFont());
-
-        for (int index  = 1; index < line.getParts().size(); index++) {
-            PdfPartLine part = line.getParts().get(index);
-            List<Object> tmpText = part.generateJustifiedDetail(offsetForPDF);
-            addTextJustified(x, part.getFont(), tmpText);
-            x += part.getSize() + calculateFullOffset(tmpText, part.getFont());
+        List<JustifiedPartLine> justifiedPartLines = line.generateJustifiedLine(PAGE_WIDTH_WITH_MARGIN, MARGIN);
+        for (JustifiedPartLine justifiedPartLine : justifiedPartLines) {
+            addTextJustified(justifiedPartLine.startingPosition(), justifiedPartLine.font(), justifiedPartLine.objectToWrite());
         }
-    }
-
-    public float calculateFullOffset(List<Object> text, FontDetail font) {
-        float totalOffset = 0;
-        float ratio =  font.getSize() / 1000f;
-        for (Object o : text) {
-            if (o instanceof Number) {
-                totalOffset += -((Number) o).floatValue() * ratio;
-            }
-        }
-        return totalOffset;
     }
 
     public void writeLine(PdfLine line) throws IOException {

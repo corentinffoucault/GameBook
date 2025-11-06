@@ -34,8 +34,8 @@ public class PdfPartLine {
         text.add(word);
     }
 
-    public List<Object> generateJustifiedDetail(float expectedSpaceSize) {
-        float offSet = (expectedSpaceSize - font.getSpaceWidth()) / font.getSize() * 1000f;
+    public List<Object> generateJustifiedDetail(float realSpaceSize) {
+        float offSet = realSpaceSize / font.getSize() * 1000f;
         return text.stream()
                 .flatMap(t -> Stream.<Object>of(t.getWord(), " ", -offSet))
                 .toList();
