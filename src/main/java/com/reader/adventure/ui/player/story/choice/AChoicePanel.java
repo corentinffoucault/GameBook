@@ -23,12 +23,12 @@ public abstract class AChoicePanel extends JPanel {
     public void refreshChoices(INode current) {
         this.removeAll();
 
-        if (current.getChoice() == null || current.getChoice().isEmpty()) {
+        if (current.choice() == null || current.choice().isEmpty()) {
             JLabel done = new JLabel("Aucun choix disponible — fin possible.");
             done.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
             this.add(done);
         } else {
-            for (IChoice c : current.getChoice()) {
+            for (IChoice c : current.choice()) {
                 addChoice(c);
             }
         }

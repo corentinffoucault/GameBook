@@ -54,7 +54,7 @@ public class BlockBuilderTests {
             storyDao.loadNodes(loadFile("/nodes.json"));
             PdfBlock block = new PdfBlock(PDRectangle.A4.getWidth());
 
-            DirectionChoice directionChoice = storyDao.getNodeById("Noeud 3.16").getChoice().get(1).getAllDirection().getFirst();
+            DirectionChoice directionChoice = storyDao.getNodeById("Noeud 3.16").choice().get(1).getAllDirection().getFirst();
             BlockBuilder.buildChoiceBlock(block, directionChoice);
             assertEquals(2, block.getParagraphs().size());
 
@@ -103,7 +103,7 @@ public class BlockBuilderTests {
             storyDao.loadNodes(loadFile("/nodes.json"));
             PdfBlock block = new PdfBlock(PDRectangle.A4.getWidth());
 
-            DirectionChoice directionChoice = storyDao.getNodeById(storyDao.getFirstNodeId()).getChoice().getFirst().getAllDirection().getFirst();
+            DirectionChoice directionChoice = storyDao.getNodeById(storyDao.getFirstNodeId()).choice().getFirst().getAllDirection().getFirst();
             BlockBuilder.buildChoiceBlock(block, directionChoice);
             assertEquals(1, block.getParagraphs().size());
 

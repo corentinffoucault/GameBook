@@ -13,7 +13,7 @@ import static com.reader.adventure.story.read.export.pdf.font.Fonts.FONT_DIRECTI
 public class BlockBuilder {
 
     public static void buildNodeBlock(PdfBlock block, INode node) throws IOException {
-        for (String paragraph : node.getText().split("\n")) {
+        for (String paragraph : node.text().split("\n")) {
             wrapText(paragraph, block);
         }
     }

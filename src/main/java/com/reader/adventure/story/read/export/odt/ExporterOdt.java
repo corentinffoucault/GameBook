@@ -28,13 +28,13 @@ public class ExporterOdt implements IExporter {
         root.removeChild(firstP);
 
         Map<String, OdfStyle> styleByName = createStyles(document);
-        INode firstNode = story.getNodes().get(story.getFirstNode());
+        INode firstNode = story.nodes().get(story.firstNode());
         addNode(document, firstNode, styleByName);
 
-        Set<String> keys = new HashSet<>(story.getNodes().keySet());
-        keys.remove(story.getFirstNode());
+        Set<String> keys = new HashSet<>(story.nodes().keySet());
+        keys.remove(story.firstNode());
         for (String key : keys) {
-            INode node = story.getNodes().get(key);
+            INode node = story.nodes().get(key);
             addNode(document, node, styleByName);
         }
         document.save(exportPath.toString());
@@ -64,10 +64,10 @@ public class ExporterOdt implements IExporter {
     }
 
     public void addNode(OdfTextDocument document, INode node, Map<String, OdfStyle> styleByName) throws Exception {
-        OdfTextParagraph title = document.newParagraph(node.getId());
+        OdfTextParagraph title = document.newParagraph(node.id());
         title.setStyleName(styleByName.get("titleStyle").getStyleNameAttribute());
 
-        for (String text : node.getText().split("\n")) {
+        for (String text : node.text().split("\n")) {
             OdfTextParagraph p = document.newParagraph();
             p.setStyleName(styleByName.get("bodyStyle").getStyleNameAttribute());
             p.addContent(text);
@@ -78,7 +78,7 @@ public class ExporterOdt implements IExporter {
         OdfTextParagraph lineBreak = document.newParagraph();
         lineBreak.newTextLineBreakElement();
 
-        for (IChoice choice : node.getChoice()) {
+        for (IChoice choice : node.choice()) {
             addChoice(document, choice, styleByName);
         }
     }

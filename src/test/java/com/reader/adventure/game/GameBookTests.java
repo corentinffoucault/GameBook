@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+
 import static org.mockito.Mockito.*;
 
 class GameBookTests {
@@ -32,16 +35,15 @@ class GameBookTests {
 
     @Test
     void getNodeById_existingId_returnsNode() {
-        Node expectedNode = new Node();
-        expectedNode.setId("1");
-        expectedNode.setText("A test node");
+        Node expectedNode = new Node("1", "A test node", "text", new ArrayList<>());
         when(mockedStoryDao.getNodeById("1")).thenReturn(expectedNode);
 
         INode result = gameBook.getNodeById("1");
 
         assertNotNull(result);
-        assertEquals("1", result.getId());
-        assertEquals("A test node", result.getText());
+        assertEquals("1", result.id());
+        assertEquals("A test node", result.title());
+        assertEquals("text", result.text());
         verify(mockedStoryDao).getNodeById("1");
     }
 

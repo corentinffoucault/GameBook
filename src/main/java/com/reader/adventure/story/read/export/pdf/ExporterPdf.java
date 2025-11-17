@@ -23,14 +23,14 @@ public class ExporterPdf implements IExporter {
             PdfWriter pdfWriter = new PdfWriter(LINE_HEIGHT);
             pdfWriter.init(doc);
 
-            INode firstNode = story.getNodes().get(story.getFirstNode());
+            INode firstNode = story.nodes().get(story.firstNode());
             printNode(doc, pdfWriter, firstNode);
             pdfWriter.jumpLine();
 
-            Set<String> keys = new HashSet<>(story.getNodes().keySet());
-            keys.remove(story.getFirstNode());
+            Set<String> keys = new HashSet<>(story.nodes().keySet());
+            keys.remove(story.firstNode());
             for (String key : keys) {
-                INode node = story.getNodes().get(key);
+                INode node = story.nodes().get(key);
                 printNode(doc, pdfWriter, node);
                 pdfWriter.jumpLine();
             }
@@ -41,13 +41,13 @@ public class ExporterPdf implements IExporter {
     }
 
     private void printNode(PDDocument doc, PdfWriter pdfWriter, INode node) throws IOException {
-        pdfWriter.writeCentered(doc, node.getTitle(), FONT_TITLE);
+        pdfWriter.writeCentered(doc, node.title(), FONT_TITLE);
 
         PdfBlock block = new PdfBlock(pdfWriter.getPageWidth());
         BlockBuilder.buildNodeBlock(block, node);
         pdfWriter.writeParagraph(doc, block);
         pdfWriter.jumpLine();
-        for (IChoice choice : node.getChoice()) {
+        for (IChoice choice : node.choice()) {
             printChoice(doc, pdfWriter, choice);
         }
     }

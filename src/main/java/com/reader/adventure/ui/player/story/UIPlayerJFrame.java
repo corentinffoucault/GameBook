@@ -52,8 +52,8 @@ public class UIPlayerJFrame extends AUIPlayer {
     protected void showNode(String id) {
         try {
             INode node = gameBook.getNodeById(id);
-            titleLabel.setText(node.getTitle());
-            textArea.setText(node.getText());
+            titleLabel.setText(node.title());
+            textArea.setText(node.text());
             choicesPanel.refreshChoices(node);
             System.out.println(choicesPanel.getHeight());
             cscroll.setPreferredSize(new Dimension(700, choicesPanel.getPreferredSize().height + 10));

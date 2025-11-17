@@ -2,7 +2,6 @@ package com.reader.adventure.story.read.export.odt;
 
 import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.dao.Jackson.StoryJsonDaoJackson;
-import com.reader.adventure.story.read.export.odt.ExporterOdt;
 import com.reader.adventure.story.read.model.choice.DirectionChoice;
 import com.reader.adventure.story.read.model.choice.IChoice;
 import com.reader.adventure.story.read.model.node.INode;
@@ -31,7 +30,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class ExporterOdtTests {
 
     @Test
@@ -51,13 +49,13 @@ public class ExporterOdtTests {
             OfficeTextElement root = doc.getContentRoot();
             NodeList paragraphs = root.getElementsByTagName("text:p");
             int index = 0;
-            INode firstNode = story.getNodes().get(story.getFirstNode());
+            INode firstNode = story.nodes().get(story.firstNode());
             index = assertNode(paragraphs, firstNode, index);
 
-            Set<String> keys = new HashSet<>(story.getNodes().keySet());
-            keys.remove(story.getFirstNode());
+            Set<String> keys = new HashSet<>(story.nodes().keySet());
+            keys.remove(story.firstNode());
             for (String key : keys) {
-                INode node = story.getNodes().get(key);
+                INode node = story.nodes().get(key);
                 index = assertNode(paragraphs, node, index);
             }
 
@@ -80,11 +78,11 @@ public class ExporterOdtTests {
     }
 
     int assertNode(NodeList paragraphs, INode node, int index) {
-        assertTitle(paragraphs, index++, node.getId());
-        index = assertNode(paragraphs, index, node.getText());
+        assertTitle(paragraphs, index++, node.id());
+        index = assertNode(paragraphs, index, node.text());
         assertJumpLine(paragraphs, index++);
 
-        for (IChoice choice : node.getChoice()) {
+        for (IChoice choice : node.choice()) {
             index = assertChoice(paragraphs, choice, index);
         }
 
