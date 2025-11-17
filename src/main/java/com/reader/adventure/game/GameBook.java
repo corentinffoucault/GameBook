@@ -1,7 +1,7 @@
 package com.reader.adventure.game;
 
-import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.read.dao.IStoryDao;
+import com.reader.adventure.story.read.model.node.INode;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

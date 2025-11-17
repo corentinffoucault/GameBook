@@ -51,7 +51,7 @@ gradle run
 ## Story Files
 
 The JSON files containing the stories are stored in this repository:  
-[Story_For_GameBook](https://github.com/corentinffoucault/Story_For_GameBook)
+[Public_Story_For_GameBook](https://github.com/corentinffoucault/Public_Story_For_GameBook)
 
 Clone or download the stories to use them with **GameBook**.
 

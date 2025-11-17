@@ -1,7 +1,7 @@
 package com.reader.adventure.ui.export;
 
-import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.export.ExportTypeKey;
+import com.reader.adventure.story.read.dao.IStoryDao;
+import com.reader.adventure.story.read.export.ExportTypeKey;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;

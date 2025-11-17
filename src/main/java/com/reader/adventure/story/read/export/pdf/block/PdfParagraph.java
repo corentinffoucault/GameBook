@@ -1,0 +1,32 @@
+package com.reader.adventure.story.read.export.pdf.block;
+
+import com.reader.adventure.story.read.export.pdf.font.FontDetail;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PdfParagraph {
+    private final List<PdfLine> lines;
+    private final float maxWidth;
+
+    public PdfParagraph(float maxWidth) {
+        this.lines = new ArrayList<>();
+        this.maxWidth = maxWidth;
+    }
+
+    public List<PdfLine> getLines() {
+        return lines;
+    }
+
+    public void addWord(PdfWord word, FontDetail font) {
+        if (lines.isEmpty()) {
+            lines.add(new PdfLine());
+        }
+        PdfLine currentLine = lines.getLast();
+        if ((currentLine.getSize() + word.getWidth()) > maxWidth) {
+            lines.add(new PdfLine());
+            currentLine = lines.getLast();
+        }
+        currentLine.addWord(word, font);
+    }
+}

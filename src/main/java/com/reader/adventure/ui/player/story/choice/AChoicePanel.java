@@ -1,8 +1,8 @@
 package com.reader.adventure.ui.player.story.choice;
 
-import com.reader.adventure.story.model.choice.IChoice;
-import com.reader.adventure.story.model.choice.visitor.ChoiceVisitor;
-import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.read.model.choice.IChoice;
+import com.reader.adventure.story.read.model.choice.visitor.ChoiceVisitor;
+import com.reader.adventure.story.read.model.node.INode;
 
 import javax.swing.*;
 import java.awt.*;

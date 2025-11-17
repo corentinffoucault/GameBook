@@ -1,8 +1,8 @@
 package com.reader.adventure.game;
 
-import com.reader.adventure.story.dao.IStoryDao;
-import com.reader.adventure.story.model.node.INode;
-import com.reader.adventure.story.model.node.Node;
+import com.reader.adventure.story.read.dao.IStoryDao;
+import com.reader.adventure.story.read.model.node.INode;
+import com.reader.adventure.story.read.model.node.Node;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;

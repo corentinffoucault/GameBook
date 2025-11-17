@@ -1,8 +1,7 @@
 package com.reader.adventure.ui.player.story;
 
-import com.reader.adventure.story.model.node.INode;
+import com.reader.adventure.story.read.model.node.INode;
 import com.reader.adventure.game.GameBook;
-import com.reader.adventure.ui.player.adventurer.AdventurerSheet;
 import com.reader.adventure.ui.player.story.choice.AChoicePanel;
 
 import javax.swing.*;
