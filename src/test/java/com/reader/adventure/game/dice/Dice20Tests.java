@@ -1,23 +1,21 @@
 package com.reader.adventure.game.dice;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class Dice20Tests {
-    static ADice dice20;
 
-    @BeforeAll
-    static void initAll() {
-        dice20 = new Dice20(ThreadLocalRandom.current());
-    }
+    @Autowired
+    Dice20 dice20;
 
     @RepeatedTest(1000)
     void assertFaceBetween1_20() {

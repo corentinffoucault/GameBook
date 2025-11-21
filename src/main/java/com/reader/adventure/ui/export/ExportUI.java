@@ -1,6 +1,5 @@
 package com.reader.adventure.ui.export;
 
-import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.export.ExportTypeKey;
 import org.apache.commons.io.FilenameUtils;
 
@@ -11,11 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ExportUI {
-    private IStoryDao storyDao;
     private IExporterHandler exporterHandler;
 
-    public ExportUI(IStoryDao storyDao) {
-        this.storyDao = storyDao;
+    public ExportUI() {
     }
 
     public void run(Component parent) {
@@ -64,9 +61,8 @@ public class ExportUI {
             }
 
             try {
-                extension.getExporter().print(storyDao.getStory(), fileToSave);
                 if (exporterHandler != null) {
-                    exporterHandler.onExportEnded();
+                    exporterHandler.onExportEnded(new ExportOption(extension, fileToSave));
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(parent, "Erreur lors de la sauvegarde : " + e.getMessage(),

@@ -6,23 +6,24 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
+@Service
 public class PdfWriter
 {
     private float y;
-    private final float lineHeight;
+    private static final float LINE_HEIGHT = 14;
     private PDPageContentStream cs;
     private static final float MARGIN = 50;
     private static final float PAGE_HEIGHT = PDRectangle.A4.getHeight();
     private static final float PAGE_WIDTH = PDRectangle.A4.getWidth();
     private static final float PAGE_WIDTH_WITH_MARGIN = PAGE_WIDTH - 2 * MARGIN;
 
-    public PdfWriter(float lineHeight) {
+    public PdfWriter() {
         this.y = PAGE_HEIGHT - MARGIN;
-        this.lineHeight = lineHeight;
     }
 
     public void init(PDDocument doc) throws IOException {
@@ -40,12 +41,12 @@ public class PdfWriter
     }
 
     public void goToLine() {
-        this.y -= this.lineHeight / 2;
+        this.y -= LINE_HEIGHT / 2;
     }
 
     public void jumpLine() {
         goToLine();
-        this.y -= this.lineHeight;
+        this.y -= LINE_HEIGHT;
     }
 
     public void writeCentered(PDDocument doc, String text, FontDetail font) throws IOException {
@@ -91,7 +92,7 @@ public class PdfWriter
     }
 
     public void assertTextInPage(PDDocument doc) throws IOException {
-        if (y < MARGIN + this.lineHeight) {
+        if (y < MARGIN + LINE_HEIGHT) {
             cs.close();
             PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);

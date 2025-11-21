@@ -2,7 +2,6 @@ package com.reader.adventure.story.read.export.pdf;
 
 import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.dao.Jackson.StoryJsonDaoJackson;
-import com.reader.adventure.story.read.model.story.IStory;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -13,21 +12,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import de.redsix.pdfcompare.PdfComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class ExporterPdfTests {
+    @Autowired
+    private IStoryDao storyDao;
+
+    @Autowired
+    private ExporterPdf exporter;
 
     @Test
     void shouldExportPdfWithCorrectFormatting() throws Exception {
-        ExporterPdf exporter = new ExporterPdf();
-
         IStoryDao storyDao = new StoryJsonDaoJackson();
         storyDao.loadNodes(loadFile("/nodes.json"));
-        IStory story = storyDao.getStory();
 
         Path tmpFile = Files.createTempFile("export-formatting-", ".pdf");
-        exporter.print(story, tmpFile);
+        exporter.print(tmpFile);
 
         Path expected = Path.of("src/test/resources/expectedPdf.pdf");
         boolean isEqual = new PdfComparator(expected, tmpFile).compare().isEqual();

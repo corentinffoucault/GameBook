@@ -2,14 +2,15 @@ package com.reader.adventure.game;
 
 import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.model.node.INode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+@Service
 public class GameBook {
 
     public IStoryDao storyDao;
-    private static final Logger logger = LogManager.getLogger(GameBook.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameBook.class);
 
     public GameBook(IStoryDao storyDao) {
         this.storyDao = storyDao;

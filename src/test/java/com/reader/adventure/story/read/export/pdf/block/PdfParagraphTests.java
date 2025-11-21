@@ -1,8 +1,5 @@
 package com.reader.adventure.story.read.export.pdf.block;
 
-import com.reader.adventure.story.read.export.pdf.block.PdfLine;
-import com.reader.adventure.story.read.export.pdf.block.PdfParagraph;
-import com.reader.adventure.story.read.export.pdf.block.PdfWord;
 import com.reader.adventure.story.read.export.pdf.font.Fonts;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

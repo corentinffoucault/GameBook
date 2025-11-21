@@ -1,5 +1,5 @@
 package com.reader.adventure.ui.export;
 
 public interface IExporterHandler {
-    void onExportEnded() throws Exception;
+    void onExportEnded(ExportOption option) throws Exception;
 }

@@ -1,7 +1,6 @@
 package com.reader.adventure.story.read.model.condition;
 
 import com.reader.adventure.game.ComparatorKey;
-import com.reader.adventure.story.read.model.condition.Comparator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

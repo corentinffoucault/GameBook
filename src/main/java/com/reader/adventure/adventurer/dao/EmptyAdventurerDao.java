@@ -1,9 +1,13 @@
 package com.reader.adventure.adventurer.dao;
 
 import com.reader.adventure.adventurer.model.Adventurer;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import java.io.Reader;
 
+@Repository
+@Scope("singleton")
 public class EmptyAdventurerDao implements IAdventurerDao {
 
     @Override

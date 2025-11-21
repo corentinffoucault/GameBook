@@ -4,17 +4,25 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reader.adventure.adventurer.dao.IAdventurerDao;
 import com.reader.adventure.adventurer.model.Adventurer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
+@Repository("adventurerJsonDaoJackson")
+@Scope("singleton")
 public class AdventurerJsonDaoJackson implements IAdventurerDao {
-    private static final Logger logger = LogManager.getLogger(AdventurerJsonDaoJackson.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(AdventurerJsonDaoJackson.class);
 
     private AdventurerJackson adventurer;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public AdventurerJsonDaoJackson() {
     }
@@ -29,7 +37,6 @@ public class AdventurerJsonDaoJackson implements IAdventurerDao {
 
     public void loadAdventurer(Reader reader) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
             adventurer = mapper.readValue(reader, new TypeReference<AdventurerJackson>() {});
         } catch (Exception e) {
             logger.error("Erreur lors du chargement du fichier joueur", e);
@@ -38,9 +45,7 @@ public class AdventurerJsonDaoJackson implements IAdventurerDao {
     }
 
     public void exportToJson(String path) {
-        try {
-            FileWriter fileWriter = new FileWriter(path, java.nio.charset.StandardCharsets.UTF_8);
-            ObjectMapper mapper = new ObjectMapper();
+        try(FileWriter fileWriter = new FileWriter(path, StandardCharsets.UTF_8)) {
             mapper.writeValue(fileWriter, adventurer);
         } catch (IOException e) {
             logger.error("Erreur lors de l'export de l'aventurier", e);

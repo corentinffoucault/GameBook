@@ -6,8 +6,6 @@ import com.reader.adventure.game.ComparatorKey;
 import com.reader.adventure.game.dice.Dice20;
 import com.reader.adventure.story.read.model.condition.ConditionAttributes;
 import com.reader.adventure.story.read.model.condition.ConditionGold;
-import com.reader.adventure.story.read.model.condition.visitor.ConditionVisitor;
-import com.reader.adventure.story.read.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;

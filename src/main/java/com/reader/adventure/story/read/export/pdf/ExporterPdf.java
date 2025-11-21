@@ -1,13 +1,16 @@
 package com.reader.adventure.story.read.export.pdf;
 
+import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.export.IExporter;
 import com.reader.adventure.story.read.export.pdf.block.PdfBlock;
 import com.reader.adventure.story.read.export.pdf.blockBuilder.BlockBuilder;
 import com.reader.adventure.story.read.model.choice.DirectionChoice;
 import com.reader.adventure.story.read.model.choice.IChoice;
 import com.reader.adventure.story.read.model.node.INode;
-import com.reader.adventure.story.read.model.story.IStory;
+import com.reader.adventure.story.read.model.story.Story;
 import org.apache.pdfbox.pdmodel.*;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,12 +18,20 @@ import java.util.*;
 
 import static com.reader.adventure.story.read.export.pdf.font.Fonts.FONT_TITLE;
 
+@Service("exporterPdf")
+@Scope("singleton")
 public class ExporterPdf implements IExporter {
-    private static final float LINE_HEIGHT = 14;
+    public IStoryDao storyDao;
+    public PdfWriter pdfWriter;
 
-    public void print(IStory story, Path exportPath) throws IOException {
+    public ExporterPdf(IStoryDao storyDao, PdfWriter pdfWriter) {
+        this.storyDao = storyDao;
+        this.pdfWriter = pdfWriter;
+    }
+
+    public void print(Path exportPath) throws IOException {
+        Story story = storyDao.getStory();
         try (PDDocument doc = new PDDocument()) {
-            PdfWriter pdfWriter = new PdfWriter(LINE_HEIGHT);
             pdfWriter.init(doc);
 
             INode firstNode = story.nodes().get(story.firstNode());

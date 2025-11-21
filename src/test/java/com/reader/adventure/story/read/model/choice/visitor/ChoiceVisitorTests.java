@@ -5,7 +5,6 @@ import com.reader.adventure.game.ComparatorKey;
 import com.reader.adventure.story.read.model.choice.ChoiceConditional;
 import com.reader.adventure.story.read.model.choice.ChoiceDirect;
 import com.reader.adventure.story.read.model.choice.SelectedChoice;
-import com.reader.adventure.story.read.model.choice.visitor.ChoiceVisitor;
 import com.reader.adventure.story.read.model.condition.ConditionGold;
 import com.reader.adventure.story.read.model.condition.visitor.IConditionVisitor;
 import org.junit.jupiter.api.BeforeAll;

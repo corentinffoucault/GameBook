@@ -7,15 +7,25 @@ import java.awt.*;
 import java.io.File;
 
 public class GameLauncherUI extends JFrame {
-    private final JTextField playerFileField;
-    private final JTextField storyFileField;
-    private final JRadioButton manualChoiceRadio;
-    private final JRadioButton autoDiceRadio;
-    private final JRadioButton exportRadio;
+
+    private final JTextField playerFileField = new JTextField();
+    private final JTextField storyFileField = new JTextField();
+    private final JRadioButton manualChoiceRadio = new JRadioButton("Manual");
+    private final JRadioButton autoDiceRadio = new JRadioButton("Auto Dice", true);
+    private final JRadioButton exportRadio = new JRadioButton("Export");
     private IGameOptionHandler gameOptionHandler;
     private GameTypeKey gameTypeKey;
 
     public GameLauncherUI() {
+    }
+
+    public static GameLauncherUI create() {
+        GameLauncherUI ui = new GameLauncherUI();
+        ui.initUI();
+        return ui;
+    }
+
+    public void initUI() {
         setTitle("Configuration du jeu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(550, 260);
@@ -28,7 +38,6 @@ public class GameLauncherUI extends JFrame {
         JPanel playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.X_AXIS));
         playerPanel.add(new JLabel("Fichier joueur : "));
-        playerFileField = new JTextField();
         Dimension fieldSize = new Dimension(300, playerFileField.getPreferredSize().height);
         playerFileField.setPreferredSize(fieldSize);
         playerFileField.setMaximumSize(fieldSize);
@@ -41,7 +50,6 @@ public class GameLauncherUI extends JFrame {
         JPanel storyPanel = new JPanel();
         storyPanel.setLayout(new BoxLayout(storyPanel, BoxLayout.X_AXIS));
         storyPanel.add(new JLabel("Fichier histoire : "));
-        storyFileField = new JTextField();
         storyFileField.setPreferredSize(fieldSize);
         storyFileField.setMaximumSize(fieldSize);
         storyPanel.add(storyFileField);
@@ -54,10 +62,7 @@ public class GameLauncherUI extends JFrame {
         choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
         choicePanel.add(new JLabel("Mode de choix : "));
 
-        manualChoiceRadio = new JRadioButton("Manuel");
-        autoDiceRadio = new JRadioButton("Auto-dé", true);
         gameTypeKey = GameTypeKey.AUTO;
-        exportRadio = new JRadioButton("Export");
 
         autoDiceRadio.addChangeListener(e -> {
             playerPanel.setVisible(autoDiceRadio.isSelected());
@@ -127,9 +132,5 @@ public class GameLauncherUI extends JFrame {
 
     public void setGameOptionHandler(IGameOptionHandler gameOptionHandler) {
         this.gameOptionHandler = gameOptionHandler;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameLauncherUI().setVisible(true));
     }
 }

@@ -5,10 +5,13 @@ import com.reader.adventure.story.read.model.node.INode;
 import com.reader.adventure.story.read.model.node.Node;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import org.mockito.Mockito;
 
@@ -16,17 +19,12 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class GameBookTests {
-
-    private static IStoryDao mockedStoryDao;
-    private static GameBook gameBook;
-
-    @BeforeAll
-    static void initAll() {
-        mockedStoryDao = Mockito.mock(IStoryDao.class);
-
-        gameBook = new GameBook(mockedStoryDao);
-    }
+    @MockitoBean
+    private IStoryDao mockedStoryDao;
+    @Autowired
+    private GameBook gameBook;
 
     @BeforeEach
     void init() {

@@ -5,7 +5,9 @@ import com.reader.adventure.story.read.model.choice.ChoiceConditional;
 import com.reader.adventure.story.read.model.choice.ChoiceDirect;
 import com.reader.adventure.story.read.model.choice.SelectedChoice;
 import com.reader.adventure.story.read.model.condition.visitor.IConditionVisitor;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChoiceVisitor implements IChoiceVisitor {
     private final IConditionVisitor conditionVisitor;
 

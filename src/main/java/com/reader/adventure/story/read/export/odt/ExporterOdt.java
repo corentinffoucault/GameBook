@@ -1,10 +1,11 @@
 package com.reader.adventure.story.read.export.odt;
 
+import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.export.IExporter;
 import com.reader.adventure.story.read.model.choice.DirectionChoice;
 import com.reader.adventure.story.read.model.choice.IChoice;
 import com.reader.adventure.story.read.model.node.INode;
-import com.reader.adventure.story.read.model.story.IStory;
+import com.reader.adventure.story.read.model.story.Story;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.odfdom.dom.element.office.OfficeTextElement;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
@@ -13,6 +14,8 @@ import org.odftoolkit.odfdom.dom.style.props.OdfTextProperties;
 import org.odftoolkit.odfdom.incubator.doc.office.OdfOfficeStyles;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.odfdom.incubator.doc.text.OdfTextParagraph;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -20,8 +23,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
+@Service("exporterOdt")
+@Scope("singleton")
 public class ExporterOdt implements IExporter {
-    public void print(IStory story, Path exportPath) throws Exception {
+    public IStoryDao storyDao;
+
+    public ExporterOdt(IStoryDao storyDao) {
+        this.storyDao  = storyDao;
+    }
+
+    public void print(Path exportPath) throws Exception {
+        Story story = storyDao.getStory();
         OdfTextDocument document = OdfTextDocument.newTextDocument();
         OfficeTextElement root = document.getContentRoot();
         Node firstP = root.getElementsByTagName("text:p").item(0);

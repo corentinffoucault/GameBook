@@ -1,5 +1,6 @@
 package com.reader.adventure.story.read.export.odt;
 
+import com.reader.adventure.game.GameBook;
 import com.reader.adventure.story.read.dao.IStoryDao;
 import com.reader.adventure.story.read.dao.Jackson.StoryJsonDaoJackson;
 import com.reader.adventure.story.read.model.choice.DirectionChoice;
@@ -17,6 +18,8 @@ import org.odftoolkit.odfdom.dom.style.props.OdfParagraphProperties;
 import org.odftoolkit.odfdom.dom.style.props.OdfTextProperties;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.odfdom.incubator.doc.text.OdfTextSpan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -30,19 +33,23 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class ExporterOdtTests {
+
+    @Autowired
+    private IStoryDao storyDao;
+
+    @Autowired
+    private ExporterOdt exporter;
 
     @Test
     void shouldExportOdtWithCorrectFormatting() throws Exception {
-        ExporterOdt exporter = new ExporterOdt();
-
-        IStoryDao storyDao = new StoryJsonDaoJackson();
         storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
-        IStory story = storyDao.getStory();
         
         Path tmpFile = Files.createTempFile("export-formatting-", ".odt");
-        exporter.print(story, tmpFile);
+        exporter.print(tmpFile);
 
+        IStory story = storyDao.getStory();
         try (OdfTextDocument doc = OdfTextDocument.loadDocument(tmpFile.toFile())) {
             assertStyle(doc);
 
