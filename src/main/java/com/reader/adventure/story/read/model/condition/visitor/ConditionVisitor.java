@@ -6,7 +6,9 @@ import com.reader.adventure.adventurer.AdventurerAttributes;
 import com.reader.adventure.story.read.model.condition.Comparator;
 import com.reader.adventure.story.read.model.condition.ConditionAttributes;
 import com.reader.adventure.story.read.model.condition.ConditionGold;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ConditionVisitor implements IConditionVisitor {
 
     private final Dice20 dice;

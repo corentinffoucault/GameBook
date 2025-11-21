@@ -2,6 +2,7 @@ package com.reader.adventure.adventurer;
 
 import com.reader.adventure.adventurer.model.Adventurer;
 import com.reader.adventure.game.AttributeKey;
+import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
 import java.util.Map;

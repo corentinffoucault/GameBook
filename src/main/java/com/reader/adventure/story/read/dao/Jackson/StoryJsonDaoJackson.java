@@ -8,14 +8,18 @@ import com.reader.adventure.story.read.dao.Jackson.story.StoryJackson;
 import com.reader.adventure.story.read.dao.Jackson.story.StoryMapper;
 import com.reader.adventure.story.read.model.node.INode;
 import com.reader.adventure.story.read.model.story.Story;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Reader;
 
+@Repository
+@Scope("singleton")
 public class StoryJsonDaoJackson implements IStoryDao {
 
-    private static final Logger logger = LogManager.getLogger(StoryJsonDaoJackson.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoryJsonDaoJackson.class);
 
     private StoryJackson story;
 
