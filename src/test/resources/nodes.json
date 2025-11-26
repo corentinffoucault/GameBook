@@ -3,7 +3,7 @@
   "firstNode": "Noeud 1",
   "nodes": [
     {
-      "id": "Noeud 1",
+      "name": "Noeud 1",
       "title": "Arrivé",
       "text": "Arrivé du héros par le sud, il fait froid, la neige a déployé son manteau sur la ville.",
       "choice": [
@@ -50,7 +50,7 @@
       ]
     },
     {
-      "id": "Noeud 1.1",
+      "name": "Noeud 1.1",
       "title": "La Taverne",
       "text": "La taverne est chaleureuse, l'odeur de soupe est réconfortante. Un musicien joue un air plaintif.",
       "choice": [
@@ -69,7 +69,7 @@
       ]
     },
     {
-      "id": "Noeud 1.2",
+      "name": "Noeud 1.2",
       "title": "Les Échoppes de l'Est",
       "text": "Les portes sont ouvertes, on voit des habitants affairés à changer la marchandise avant l'hiver.",
       "choice": [
@@ -82,13 +82,13 @@
       ]
     },
     {
-      "id": "Noeud Fini",
+      "name": "Noeud Fini",
       "title": "Fin",
       "text": "Fin de l'exemple. Merci d'avoir joué !",
       "choice": []
     },
     {
-      "id": "Noeud 3.16",
+      "name": "Noeud 3.16",
       "title": "Seigneur",
       "text": "Vous décidez qu'il est temps de rendre visite au seigneur, déjà pour avoir une ambauche officielle, mais aussi, peut être, pour lui faire part de vos premières observations et soupçons.\nA l'entrée du chateau, vous croisez Grégoir qui vous salue.\nIl vous accompagne dans les couloirs jusqu'à la salle d'audience où le seigneur est assis sur un siège en bois lourd et massif. La pièce est richement décorée et agréablement chauffée par une cheminée ronronnante.\nSur ses genoux, une jeune femme qui a clairement 20 ans de moins que lui, si ce n'est plus.\nGrégoir s'avance et vous annonce :\n'Seigneur Jeanfort, j'amène ici un(e) aventurier(e) qui a décidé de traquer le coupable de la série de meurtres que subit le village depuis une demi-décade maintenant.'\nLe seigneur ne semble pas avoir entendu grand chose, occupé qu'il est à batifoler avec sa concubine.\nIl finit par remarquer la présence de Grégoir\n'Ha Grégoir, vous voilà. Faites quérir Kintoch... J'ai besoin de ses services!'\n'Monseigneur, je vous rappelle que nous n'avons plus de ses nouvelles depuis plus d'une décade... Il était partit chercher des ingrédient pour vos requêtes justement!\nD'ailleurs il était assez remonté quand je l'ai vu. Mais je suis ici pour vous faire part d'une affaire bien plus urgente que... Que cela.\nNous avons déjà 5 morts, sans doute 6 au rythme de 1 par jour. Aujourd'hui nous n'en avons pas encore ressencé.\nEt defait, cet(te) aventurier(e) a pris la charge de résoudre ce problème et requiert audience.'\n'Il n'est toujours pas revenu?'\nIl congédie sa concubine et après quelques instants s'intéresse enfin à vous.\n'Vous traquez donc le vampire dont j'ai entendu parler?' Il vous dévisage et vous juge.\nSi vous m'apportez la preuve de la mort du coupable avec des arguments irrévocables, je vous promet 500 pièces d'or si vous résolvez cela d'ici demain soir.\nMais la somme sera réduite de moitié pour chaque journée et mort supplémentaire... Cela devrait vous motiver à vous presser.'\nAprès un court instant, alors que vous vous apprétiez à tourner les talons au vu du ton impérieux du seigneur, celui-ci ajoute :\n'Grégoir, allez quand même voire dans les appartements de Kintoch s'il est revenu. Il pourrait vous aider et il arrêterait de râler!'",
       "choice": [

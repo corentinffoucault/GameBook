@@ -39,7 +39,7 @@ class GameBookTests {
         INode result = gameBook.getNodeById("1");
 
         assertNotNull(result);
-        assertEquals("1", result.id());
+        assertEquals("1", result.name());
         assertEquals("A test node", result.title());
         assertEquals("text", result.text());
         verify(mockedStoryDao).getNodeById("1");
