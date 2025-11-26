@@ -12,7 +12,11 @@ dependencies {
     implementation(libs.guava)
 
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.slf4j:slf4j-api:2.0.13")
+
+    implementation("com.h2database:h2:2.2.224")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.20")
