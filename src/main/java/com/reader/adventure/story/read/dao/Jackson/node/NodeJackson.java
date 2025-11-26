@@ -4,7 +4,7 @@ import com.reader.adventure.story.read.dao.Jackson.choice.IChoiceJackson;
 
 import java.util.List;
 
-public record NodeJackson(String name,
+public record NodeJackson(String id,
                           String title,
                           String text,
                           List<IChoiceJackson> choice)  {}

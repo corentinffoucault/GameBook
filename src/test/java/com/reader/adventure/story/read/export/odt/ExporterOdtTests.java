@@ -85,7 +85,7 @@ public class ExporterOdtTests {
     }
 
     int assertNode(NodeList paragraphs, INode node, int index) {
-        assertTitle(paragraphs, index++, node.name());
+        assertTitle(paragraphs, index++, node.id());
         index = assertNode(paragraphs, index, node.text());
         assertJumpLine(paragraphs, index++);
 

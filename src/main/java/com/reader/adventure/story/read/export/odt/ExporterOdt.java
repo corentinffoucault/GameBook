@@ -76,7 +76,7 @@ public class ExporterOdt implements IExporter {
     }
 
     public void addNode(OdfTextDocument document, INode node, Map<String, OdfStyle> styleByName) throws Exception {
-        OdfTextParagraph title = document.newParagraph(node.name());
+        OdfTextParagraph title = document.newParagraph(node.id());
         title.setStyleName(styleByName.get("titleStyle").getStyleNameAttribute());
 
         for (String text : node.text().split("\n")) {

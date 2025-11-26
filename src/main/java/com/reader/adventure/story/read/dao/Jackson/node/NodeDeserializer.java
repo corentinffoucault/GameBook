@@ -18,7 +18,7 @@ public class NodeDeserializer extends JsonDeserializer<Map<String, NodeJackson>>
 
         for (JsonNode node : arrayNode) {
             NodeJackson obj = parser.getCodec().treeToValue(node, NodeJackson.class);
-            nodes.put(obj.name(), obj);
+            nodes.put(obj.id(), obj);
         }
         return nodes;
     }

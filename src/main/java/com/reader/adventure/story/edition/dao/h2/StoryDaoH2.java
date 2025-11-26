@@ -30,10 +30,7 @@ public class StoryDaoH2 {
     }
 
     @Transactional(readOnly = true)
-    public NodeH2 getNodeById(String name) {
-        return session()
-                .createQuery("FROM NodeH2 n WHERE n.name = :name", NodeH2.class)
-                .setParameter("name", name)
-                .getSingleResult();
+    public NodeH2 getNodeById(String id) {
+        return session().find(NodeH2.class, id);
     }
 }

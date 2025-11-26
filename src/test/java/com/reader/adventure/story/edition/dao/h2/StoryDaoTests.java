@@ -14,7 +14,7 @@ public class StoryDaoTests {
     StoryDaoServiceH2 storyDao;
 
     @Test
-    void shouldExportOdtWithCorrectFormatting() {
+    void shouldLoadJsonToH2() {
 
         storyDao.loadNodes(FileLoader.loadFile("", "/nodes.json"));
         IStory story = storyDao.getStory();

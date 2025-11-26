@@ -6,14 +6,13 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "node")
 public class NodeH2 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
+    private String id;
     @Column(length = 10000)
     private String title;
     @Column(columnDefinition="text")
@@ -27,23 +26,28 @@ public class NodeH2 {
 
     public NodeH2() {}
 
-    public NodeH2(long id, String name, String title, String text, List<AChoiceH2> choice) {
+    public NodeH2(String id, String title, String text, List<AChoiceH2> choice) {
         this.id = id;
-        this.name = name;
         this.title = title;
         this.text = text;
         this.choice = choice;
+    }
+
+    @PrePersist
+    private void ensureId() {
+        System.out.println("voici l'id");
+        System.out.println(id);
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+        }
     }
 
     public void setStory(StoryH2 story) {
         this.story = story;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

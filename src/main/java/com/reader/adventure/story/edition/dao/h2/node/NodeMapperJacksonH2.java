@@ -12,7 +12,6 @@ import java.util.Map;
 public interface NodeMapperJacksonH2 {
     NodeMapperJacksonH2 INSTANCE = Mappers.getMapper(NodeMapperJacksonH2.class);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "story", ignore = true)
     NodeH2 sourceToTarget(NodeJackson node);
     Map<String, NodeH2> sourceToTarget(Map<String, NodeJackson> nodes);
