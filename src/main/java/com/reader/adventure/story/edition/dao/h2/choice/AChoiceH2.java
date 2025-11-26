@@ -1,7 +1,6 @@
 package com.reader.adventure.story.edition.dao.h2.choice;
 
 import com.reader.adventure.story.edition.dao.h2.node.NodeH2;
-import com.reader.adventure.story.edition.dao.h2.story.StoryH2;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,8 +15,10 @@ public abstract class AChoiceH2 {
     String name;
     @Column(columnDefinition="text")
     String text;
-    @Column(length = 10000)
-    String next;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "next_node_id")
+    private NodeH2 nextNode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "node_id")
@@ -25,10 +26,9 @@ public abstract class AChoiceH2 {
 
     AChoiceH2() {}
 
-    AChoiceH2(String name, String text, String next) {
+    AChoiceH2(String name, String text) {
         this.name = name;
         this.text = text;
-        this.next = next;
     }
 
     public String getName() {
@@ -47,11 +47,9 @@ public abstract class AChoiceH2 {
         this.text = text;
     }
 
-    public String getNext() {
-        return next;
-    }
+    public NodeH2 getNextNode() { return nextNode; }
+    public void setNextNode(NodeH2 nextNode) { this.nextNode = nextNode; }
 
-    public void setNext(String next) {
-        this.next = next;
-    }
+    public NodeH2 getNode() { return node; }
+    public void setNode(NodeH2 node) { this.node = node; }
 }

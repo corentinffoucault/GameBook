@@ -7,8 +7,10 @@ import com.reader.adventure.story.read.dao.Jackson.story.StoryJackson;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Mapper(uses = {NodeMapperJacksonH2.class})
 public interface StoryMapperJacksonToH2 {
@@ -18,7 +20,7 @@ public interface StoryMapperJacksonToH2 {
     StoryH2 sourceToTarget(StoryJackson story);
 
     @AfterMapping
-    default void linkChildren(@MappingTarget StoryH2 story) {
+    default void linkChildren(@MappingTarget StoryH2 story, @Context StoryJackson storyJackson) {
         if (story.getNodes() == null) return;
         story.getNodes().forEach(node -> node.setStory(story));
     }
@@ -26,9 +28,14 @@ public interface StoryMapperJacksonToH2 {
     @Named("mapNodes")
     default List<NodeH2> mapNodes(Map<String, NodeJackson> nodes) {
         if (nodes == null) return null;
-        return nodes.values()
+        Map<String, NodeH2> mapNodes = nodes.entrySet()
                 .stream()
-                .map(NodeMapperJacksonH2.INSTANCE::sourceToTarget)
-                .toList();
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> NodeMapperJacksonH2.INSTANCE.sourceToTarget(e.getValue())
+                ));
+
+        NodeMapperJacksonH2.INSTANCE.linkNextNodes(nodes, mapNodes);
+        return new ArrayList<>(mapNodes.values());
     }
 }

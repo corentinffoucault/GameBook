@@ -5,6 +5,7 @@ import com.reader.adventure.story.read.dao.Jackson.choice.ChoiceConditionalJacks
 import com.reader.adventure.story.read.dao.Jackson.choice.ChoiceDirectJackson;
 import com.reader.adventure.story.read.dao.Jackson.choice.IChoiceJackson;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -13,7 +14,12 @@ import java.util.List;
 public interface ChoiceMapperJacksonH2 {
     ChoiceMapperJacksonH2 INSTANCE = Mappers.getMapper(ChoiceMapperJacksonH2.class);
 
+    @Mapping(target = "nextNode", ignore = true)
+    @Mapping(target = "node", ignore = true)
     ChoiceDirectH2 choiceDirectToModel(ChoiceDirectJackson choice);
+    @Mapping(target = "nextNode", ignore = true)
+    @Mapping(target = "nextFail", ignore = true)
+    @Mapping(target = "node", ignore = true)
     ChoiceConditionalH2 choiceConditionalToModel(ChoiceConditionalJackson choice);
 
     default AChoiceH2 map(IChoiceJackson choice) {

@@ -10,7 +10,7 @@ public class ChoiceDirectH2 extends AChoiceH2 {
         super();
     }
 
-    ChoiceDirectH2(String name, String text, String next) {
-        super(name, text, next);
+    ChoiceDirectH2(String name, String text) {
+        super(name, text);
     }
 }

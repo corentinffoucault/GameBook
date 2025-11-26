@@ -5,20 +5,30 @@ import com.reader.adventure.story.edition.model.choice.ChoiceConditional;
 import com.reader.adventure.story.edition.model.choice.ChoiceDirect;
 import com.reader.adventure.story.edition.model.choice.IChoice;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {ConditionMapper.class})
 public interface ChoiceMapper {
     ChoiceMapper INSTANCE = Mappers.getMapper(ChoiceMapper.class);
 
+    @Mapping(target = "next", ignore = true)
     ChoiceDirect choiceDirectToModel(ChoiceDirectH2 choice);
+
+    @Mapping(target = "next", ignore = true)
+    @Mapping(target = "nextFail", ignore = true)
     ChoiceConditional choiceConditionalToModel(ChoiceConditionalH2 choice);
 
     default IChoice map(AChoiceH2 choice) {
         if (choice instanceof ChoiceDirectH2) {
-            return choiceDirectToModel((ChoiceDirectH2) choice);
+            ChoiceDirect choiceDirect = choiceDirectToModel((ChoiceDirectH2) choice);
+            choiceDirect.setNext(choice.getNextNode().getId());
+            return choiceDirect;
         } else if (choice instanceof ChoiceConditionalH2) {
-            return choiceConditionalToModel((ChoiceConditionalH2) choice);
+            ChoiceConditional choiceConditional =  choiceConditionalToModel((ChoiceConditionalH2) choice);
+            choiceConditional.setNext(choice.getNextNode().getId());
+            choiceConditional.setFail(((ChoiceConditionalH2) choice).getNextFail().getId());
+            return choiceConditional;
         }
         throw new IllegalArgumentException("Type non supporté: " + choice.getClass());
     }

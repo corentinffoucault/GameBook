@@ -16,7 +16,6 @@ public interface NodeMapper {
     Node nodeH2toNode(NodeH2 node);
     Map<String, INode> sourceToTarget(Map<String, NodeH2> nodes);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "story", ignore = true)
     default INode map(NodeH2 node) {
         return nodeH2toNode(node);
